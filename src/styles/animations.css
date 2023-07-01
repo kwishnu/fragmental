@@ -1,0 +1,155 @@
+@keyframes pulse {
+  from {
+    scale: 1;
+  }
+  50% {
+    scale: 1.2;
+  }
+  to {
+    scale: 1;
+  }
+}
+
+@keyframes flare {
+  from
+  {
+    /* background-color: #00000000; */
+    transform: scale(1);
+  }
+  50% {
+    /* background-color: #adfa75; */
+    transform: scale(1.1);
+  }
+  to {
+    /* background-color: #adfa75; */
+    transform: scale(1);
+  }
+}
+.animate__flare {
+  animation-timing-function: ease;
+  animation-name: flare;
+}
+
+@keyframes grow {
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  100% {
+    transform: scale3d(1.3, 1.3, 1);
+  }
+}
+.animate__grow {
+  /* animation-timing-function: ease; */
+  animation-name: grow;
+}
+
+/* @keyframes up-then-down {
+  from
+  {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  75% {
+    transform: scale(1.1);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.animate__up-then-down {
+  animation-timing-function: ease;
+  animation-name: up-then-down;
+} */
+
+@keyframes flash-pink {
+  from
+  {
+    background-color: #00000000;
+    transform: scale(1);
+  }
+  50% {
+    background-color: #f31177;
+    transform: scale(1.1);
+  }
+  to {
+    background-color: #00000000;
+    transform: scale(1);
+  }
+}
+.animate__flash-pink {
+  animation-timing-function: ease;
+  animation-name: flash-pink;
+}
+
+
+@keyframes showoff {
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+
+  10%,
+  20% {
+    transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+  }
+
+  35%,
+  65% {
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+  }
+
+  50%,
+  80% {
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+  }
+
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.animate__showoff {
+  animation-name: showoff;
+}
+
+@keyframes flipX {
+  from {
+    transform: perspective(400px);
+  }
+
+  30% {
+    transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+  }
+  70% {
+    transform: perspective(400px) rotate3d(1, 0, 0, -90deg);
+  }
+
+  to {
+    transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+  }
+}
+
+.animate__flipX {
+  animation-duration: calc(var(--animate-duration) * 0.75);
+  animation-name: flipX;
+  backface-visibility: visible !important;
+}
+
+.shimmer {
+  color: grey;
+  display:inline-block;
+  -webkit-mask:linear-gradient(-60deg,#000 30%,#0005,#000 70%) right/300% 100%;
+  mask:linear-gradient(-60deg,#000 30%,#0005,#000 70%) right/300% 100%;
+  background-repeat: no-repeat;
+  animation: shimmer 0.5s infinite;
+  font-size: 50px;
+  max-width:200px;
+}
+
+@keyframes shimmer {
+  100% {-webkit-mask-position:left}
+}
