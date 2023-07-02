@@ -12,7 +12,7 @@ function Header(props) {
   let isPC = props.deviceType === "pc"?true:false;
   let isTablet = props.deviceType === "tablet"?true:false;
   return(
-    <div style={{...headerStyles.container, width: props.scrWidth, backgroundColor: colors.darker_blue}}>
+    <div style={{...headerStyles.container, width: props.scrWidth, backgroundColor: colors.very_dark_gray}}>
       {/* global.bgColor */}
       <div style={headerStyles.left_div}>
       <img 

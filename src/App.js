@@ -23,18 +23,16 @@ class App extends Component {
       showGame4: false,
       showGame5: false,
       gameBgColor: colors.gray_4,
-      title: "FragMental"
+      title: ""
     }
   }
 
   componentDidMount(){
-    this.setState({ showLaunch: true, title: "" });
   }
 
   toggleMenu(respond) {
     if(respond){
       this.setState({ showMenu: !this.state.showMenu });
-
     }
   }
 
@@ -47,7 +45,7 @@ class App extends Component {
       switch (which) {
         case "FragMental Start":
             this.toggleMenu(true);
-            this.setState({ showLaunch: true, gameBgColor: colors.gray_4 });
+            this.setState({ showLaunch: true, gameBgColor: colors.gray_4, title: "" });
           break;
         case "Settings":
           this.setState({ showSettingsModal: true });
@@ -84,6 +82,7 @@ class App extends Component {
   }
 
   startGame(which){
+    this.setState({title: "FragMental"});
     switch(which){
       case 3:
         this.setState({showGame3: true, showGame4: false, showGame5: false, gameBgColor: colors.very_dark_green});

@@ -30,7 +30,8 @@ export const colors = {
   translucent: '#30303080',
   very_dark_blue: '#05104a',
   very_dark_green: '#022101',
-  very_dark_red: '#7d0000',//4a0507
+  very_dark_red: '#7d0000',
+  very_dark_gray: '#1d1d1d',
 
 };
 
