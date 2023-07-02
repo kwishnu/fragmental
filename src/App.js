@@ -19,6 +19,10 @@ class App extends Component {
       scrHeight: window.innerHeight,
       scrWidth: window.innerWidth,
       showLaunch: true,
+      showGame3: false,
+      showGame4: false,
+      showGame5: false,
+      gameBgColor: colors.gray_4,
       title: "FragMental"
     }
   }
@@ -34,13 +38,16 @@ class App extends Component {
     }
   }
 
+  closeMenu() {
+      this.setState({ showMenu: false });
+  }
+
   toggleModal(which, open) {
     if (open) {
       switch (which) {
         case "FragMental Start":
-          console.log("Launch...");
             this.toggleMenu(true);
-            this.setState({ showLaunch: true });
+            this.setState({ showLaunch: true, gameBgColor: colors.gray_4 });
           break;
         case "Settings":
           this.setState({ showSettingsModal: true });
@@ -76,6 +83,19 @@ class App extends Component {
     this.toggleModal(which, open);
   }
 
+  startGame(which){
+    switch(which){
+      case 3:
+        this.setState({showGame3: true, showGame4: false, showGame5: false, gameBgColor: colors.very_dark_green});
+      break;
+      case 4:
+        this.setState({showGame4: true, showGame3: false, showGame5: false, gameBgColor: colors.very_dark_blue});
+      break;
+      default:
+        this.setState({showGame5: true, showGame3: false, showGame4: false, gameBgColor: colors.very_dark_red});
+    }
+  }
+
   handleVisibilityChange(visible) {
     if (visible) {
       // dateToday = formatDate(new Date(), "MM-dd-yyyy");
@@ -105,7 +125,7 @@ class App extends Component {
       bgColor: global.bgColor,
       animation: false,
       fontSize: 3,
-      message: "Please play RavL in portrait mode"
+      message: "Please play FragMental in portrait mode"
     }
 
     return (
@@ -119,7 +139,7 @@ class App extends Component {
             scrHeight={this.state.scrHeight}
             scrWidth={this.state.scrWidth}
           />
-          <div style={styles.appContainer} onClick={this.state.showMenu ? (respond) => this.toggleMenu(respond) : null}>
+          <div style={{...styles.appContainer, backgroundColor: this.state.gameBgColor}} onClick={this.state.showMenu ? (respond) => this.toggleMenu(respond) : null}>
           <Header
             clickMenu={(respond) => this.toggleMenu(respond)}
             showModal={(which, open) => this.showModal(which, open)}
@@ -136,25 +156,28 @@ class App extends Component {
               id="appLeftBox"
               style={{ ...styles.adBox, backgroundColor: colors.gray_3, borderRightColor: colors.off_black, left: 0 }}
             />
-
-            <GameBoard />
-            {/* <div style={styles.footer}>
-              <p style={styles.footerText}>©2023 KWish Apps</p>
-            </div> */}
+            {this.state.showGame3 &&
+              <GameBoard count={3} gameBgColor={this.state.gameBgColor}/>
+            }
+            {this.state.showGame4 &&
+              <GameBoard count={4} gameBgColor={this.state.gameBgColor}/>
+            }
+            {this.state.showGame5 &&
+              <GameBoard count={5} gameBgColor={this.state.gameBgColor}/>
+            }
             <div 
               id="appRightBox"
               style={{ ...styles.adBox, backgroundColor:colors.gray_3, borderRightColor: colors.off_black, right: 0 }}
             />
           </div>
-
           <Launch
             isModalVisible={this.state.showLaunch}
             introText={sampleBlurb}
             requestModalClose={(which, open) => { this.toggleModal(which, open) }}
-            requestMenuClose={(respond) => { this.toggleMenu(respond)}}
+            startGame={(which) => { this.startGame(which) }}
+            requestMenuClose={() => { this.closeMenu()}}
             darkModeEnabled={this.state.darkModeEnabled}
           />
-
         </div>
       </PageVisibility>
     );

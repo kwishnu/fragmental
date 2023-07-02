@@ -27,6 +27,7 @@ export function generateArray(size) {
   let goodGameArray = false;
   let initialWordLength;
   const numLetters = (size * 6) + 2;
+  const maxWidth = size === 3?9:11;
 
   while(!goodGameArray){
     const arraySize = 40;
@@ -199,7 +200,7 @@ export function generateArray(size) {
     if(!array)continue;
 
     truncArray = truncateArray(array, defaultChar);
-    const tooTallOrWide = truncArray.length > 8 || truncArray[0].length > 11?true:false;
+    const tooTallOrWide = truncArray.length > 8 || truncArray[0].length > maxWidth?true:false;
     const hasAdjacentHorizontalWords = checkArrayForAdjacentWords(array, defaultChar);
     const hasAdjacentVerticalWords = checkVerticalsForAdjacentWords(array, defaultChar);
     const containsNoRepeats = checkUniqueStrings(wordCollection);

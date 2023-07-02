@@ -28,6 +28,9 @@ export const colors = {
   text_white: '#FFFFFF',
   transparent: '#00000000',
   translucent: '#30303080',
+  very_dark_blue: '#05104a',
+  very_dark_green: '#022101',
+  very_dark_red: '#7d0000',//4a0507
 
 };
 

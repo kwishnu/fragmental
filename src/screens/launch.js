@@ -4,7 +4,7 @@ import formatDate from 'date-fns/format';
 import launch_styles from "../styles/launch_styles";
 import colors from '../config/colors';
 import config from '../config/config';
-import MenuImage from '../images/fragmental3.png';
+import MenuImage from '../images/fragmental4.png';
 import SmallPuzzle from '../images/small_puzzle.png';
 import MediumPuzzle from '../images/medium_puzzle.png';
 import LargePuzzle from '../images/large_puzzle.png';
@@ -18,7 +18,7 @@ class Launch extends Component {
     super(props);
     this.state = {
       darkModeEnabled: false,
-      toggleMenuListener: true
+      closeMenuListener: true
     };
   }
   componentDidMount() {
@@ -39,23 +39,27 @@ class Launch extends Component {
     this.props.requestModalClose("Launch", false);
   }
 
-  toggleMenu(){
+  closeMenu(){
+    console.log("clicked");
     setTimeout(() => {
-      this.props.requestMenuClose(this.state.toggleMenuListener);
+      this.props.requestMenuClose(this.state.closeMenuListener);
     }, 100);
   }
 
   launchPuzzle(which){
     this.setState({toggleMenuListener: false});
     switch(which){
-      case 0:
+      case 3:
         this.closeSelf();
+        this.props.startGame(3);
       break;
-      case 1:
+      case 4:
         this.closeSelf();
+        this.props.startGame(4);
       break;
       default:
         this.closeSelf();
+        this.props.startGame(5);
     }
   }
 
@@ -73,16 +77,16 @@ class Launch extends Component {
           transition={{ type: "spring", bounce: 0, duration: 0.4 }}
         >
 
-          <div style={{...launch_styles.modalView, backgroundColor: darkModeEnabled ? colors.gray_4:colors.gray_4}} onClick={() => this.toggleMenu()}>
+          <div style={{...launch_styles.modalView, backgroundColor: darkModeEnabled ? colors.gray_4:colors.gray_4}} onClick={() => this.closeMenu()}>
             <div style={launch_styles.headerImageContainer}>
-              <img src={MenuImage} alt={"Menu"} style={{boxShadow: `4px 4px 0px ${colors.off_black}`, height: config.scrHeight/9}}/>
+              <img src={MenuImage} alt={"Menu"} style={{boxShadow: `4px 4px 0px ${colors.off_black}`, height: config.scrHeight/11}}/>
 
             </div>
             <div style={{...launch_styles.modalBody}}>
               {/* //, backgroundColor: colors.dark_green */}
 
               <div style={{...launch_styles.intro_container}}>
-                    <div style={{...launch_styles.section_heading, color: colors.text_white}}>
+                    <div style={{...launch_styles.title, color: colors.text_white}}>
                       {dateToday}
                     </div>
                     <div style={{...launch_styles.text, marginLeft: 15, color: colors.text_white}}>
@@ -91,13 +95,13 @@ class Launch extends Component {
 
               </div>
               <div style={{...launch_styles.button_container}}>
-                <div style={{...launch_styles.launchButton, backgroundColor: colors.dark_green}} onClick={() => this.launchPuzzle(0)}>
+                <div style={{...launch_styles.launchButton, backgroundColor: colors.dark_green}} onClick={() => this.launchPuzzle(3)}>
                   <img src={SmallPuzzle} alt={"Small Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/16}}/>
                 </div>
-                <div style={{...launch_styles.launchButton, backgroundColor: colors.dark_blue}} onClick={() => this.launchPuzzle(1)}>
+                <div style={{...launch_styles.launchButton, backgroundColor: colors.dark_blue}} onClick={() => this.launchPuzzle(4)}>
                   <img src={MediumPuzzle} alt={"Medium Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/14}}/>
                 </div>
-                <div style={{...launch_styles.launchButton, backgroundColor: colors.dark_red}} onClick={() => this.launchPuzzle(2)}>
+                <div style={{...launch_styles.launchButton, backgroundColor: colors.dark_red}} onClick={() => this.launchPuzzle(5)}>
                   <img src={LargePuzzle} alt={"Large Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/12}}/>
                 </div>
 

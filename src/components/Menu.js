@@ -32,7 +32,7 @@ class Menu extends Component {
     const { showMenu,  scrHeight, scrWidth } = this.props;//themeColor,
     const xInitial = pc?(scrWidth - scrHeight * 9/16)/2 - scrHeight * 0.26 : -scrHeight * 0.2;
     const xAnimate = pc?(scrWidth - scrHeight * 9/16)/2 -20 : -2;
-    const themeColor = colors.dark_blue;
+    const themeColor = colors.very_dark_blue;
 
     return (
       <AnimatePresence>

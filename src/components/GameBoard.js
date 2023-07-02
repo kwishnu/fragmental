@@ -9,9 +9,12 @@ import { generateArray, getFragments, removeLetters, getFragObj, transposeArray,
 const defaultChar = '.';
 const scrHeight = config.scrHeight;
 const scrWidth = config.scrWidth;
-const delays = [Math.random(), Math.random(), Math.random(), Math.random()];
+const delays = [Math.random(), Math.random(), Math.random(), Math.random(), Math.random()];
 const indices = [];
 const shadow = `3px 3px 8px ${colors.off_black}`;
+const backImage = require("../images/arrow_back.png");
+const tablet = config.isTablet;
+const pc = config.isPC;
 
 class GameBoard extends Component {
   constructor(props) {
@@ -24,7 +27,7 @@ class GameBoard extends Component {
       words: [],
       playedFragments: [],
       tileHeight: 0,
-      show: false,
+      showBackButton: false,
       loading: false
     }
     this.fragRefs = [];
@@ -34,9 +37,9 @@ class GameBoard extends Component {
   componentDidMount(){
     this.setState({ loading: true });
     setTimeout(() => {
-    const size = 3;
+    const size = this.props.count;
     const puzzleSet = generateArray(size);
-    console.log("whoe shebang:: " + JSON.stringify(puzzleSet));
+    console.log("whole shebang:: " + JSON.stringify(puzzleSet));
     console.log("puzzleSet: " + JSON.stringify(puzzleSet[0]));
     const puzzleArray = puzzleSet[0];
     console.log("words: " + JSON.stringify(puzzleSet[1]));
@@ -45,7 +48,7 @@ class GameBoard extends Component {
     let fragments = getFragments(puzzleArray, defaultChar, size);
     console.log("fragments: " + JSON.stringify(fragments));
 
-    for(let j = 0;j < fragments[0].length;j++){
+    for(let j = 0;j < size;j++){
       indices.push(j);
     }
 
@@ -185,7 +188,7 @@ class GameBoard extends Component {
     const topReducer = isDouble ? this.state.fragmentLetterObj.length / 2 : 0;
     const i = index - topReducer;
   
-    const bottomOffset = 30;
+    const bottomOffset = 40;
     const bottomPosition = scrHeight - bottomOffset;
   
     const tileSetTop = (puzzHeight + i) * th + th;
@@ -235,19 +238,20 @@ class GameBoard extends Component {
           this.state.fragmentLetterObj.map((obj, index) => this.renderTileSet(obj, index))
         }
       </div>
-      <div style={game_styles.button_container}>
-          <AnimatePresence>
-        {this.state.show &&          
+      <div style={{...game_styles.button_container, backgroundColor: this.props.gameBgColor}}>
+        <AnimatePresence>
+          {this.state.showBackButton &&          
             <motion.button
               initial={{ opacity: 0, y: 700 }}
               animate={{ opacity: 1, y: 150 }}
               transition={{ type: "spring", stiffness: 250, damping: 18, duration: 0.4 }}
               style={game_styles.button}
             >
-              <div onClick={() => this.reloadGame()} style={game_styles.button_text}>New Puzzle</div>
+              <img src={backImage} onClick={() => this.reloadGame()} alt={"Back"} />
+              {/* <div onClick={() => this.reloadGame()} style={game_styles.button_text}>New Puzzle</div> */}
             </motion.button>
           }
-          </AnimatePresence>
+        </AnimatePresence>
      </div> 
       </div>
     );
@@ -271,11 +275,22 @@ const game_styles = {
     boxShadow: shadow,
     borderColor: colors.off_black, borderWidth: 4, borderStyle: 'solid'
   },
-  button_container: {
+  back_button: {
+    width: tablet ? scrWidth / 6 : pc ? scrHeight / 14 : scrWidth / 4.8,
+    height: tablet ? scrWidth / 6 : pc ? scrHeight / 14 : scrWidth / 4.8,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: 'center',
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 50,
+    backgroundColor: colors.button_blue,
+    boxShadow: `10px 10px 28px ${colors.off_black}`,
+  },  button_container: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.gray_4,
+    // backgroundColor: colors.gray_4,
   },
   button: {
     display: 'flex',

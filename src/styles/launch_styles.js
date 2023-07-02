@@ -24,21 +24,20 @@ modalView: {
   display: 'flex',
   flexDirection: 'column',
   height: scrHeight,
-  width: config.isPC?scrHeight * 9/16:scrWidth * 0.85,
+  width: config.isPC?scrHeight * 9/16:scrWidth,
   borderRadius: 5,
   paddingLeft: 10,
   paddingRight: 10,
-  // marginTop: 200,
   alignItems: "center",
-  boxShadow: `10px 20px 30px ${colors.off_black}`,
   zIndex: 100
 },
 headerImageContainer: {
   display: "flex",
   alignItems: 'center',
   justifyContent: 'center',
-  height: scrHeight/7,
-  width: config.scrHeight * 9/16 - 50,
+  height: scrHeight/10,
+  width: config.scrHeight * 9/16,
+  marginBottom: 10,
 },
 modalBody: {
   display: 'flex',
@@ -57,11 +56,7 @@ modalBody: {
   backgroundColor: '#131313',
   backgroundSize: '20px 20px',
   borderRadius: 10,
-},
-title: {
-  fontSize: config.isPC?convertFont(32):convertFont(30),
-  fontFamily: "Acme",
-  userSelect: 'none'
+  boxShadow: "inset 4px 6px 10px #000000"
 },
 intro_container: {
   display: 'flex',
@@ -73,7 +68,8 @@ intro_container: {
   backgroundColor: colors.gray_3,
   padding: 20,
   borderRadius: 20,
-  marginBottom: 60
+  marginBottom: 60,
+  boxShadow: "inset 4px 6px 10px #000000"
 },
 button_container: {
   display: 'flex',
@@ -85,13 +81,8 @@ button_container: {
   backgroundColor: colors.gray_3,
   padding: 30,
   borderRadius: 20,
-  marginBottom: 60
-},
-section_heading: {
-  fontSize: config.isPC?convertFont(22):convertFont(24),
-  fontFamily: "Acme",
-  textDecorationLine: "underline",
-  userSelect: 'none'
+  marginBottom: 60,
+  boxShadow: "inset 4px 6px 10px #000000"
 },
 launchButton: {
   display: 'flex',
@@ -100,7 +91,7 @@ launchButton: {
   alignItems: "center",
   padding: 20,
   marginBottom: 15,
-  borderRadius: 5,
+  borderRadius: 15,
   boxShadow: `4px 8px 12px ${colors.gray_4}`,
 },
 button_text_white: {
@@ -112,8 +103,13 @@ button_text_white: {
   userSelect: 'none',
   whiteSpace: 'pre-line'
 },
+title: {
+  fontSize: config.isPC?convertFont(24):convertFont(22),
+  fontFamily: "Acme",
+  userSelect: 'none'
+},
 text: {
-  fontSize: config.isPC?convertFont(18):convertFont(20),
+  fontSize: config.isPC?convertFont(18):convertFont(16),
   fontFamily: "system-ui",
   userSelect: 'none'
 },
