@@ -34,7 +34,7 @@ class GameBoard extends Component {
   componentDidMount(){
     this.setState({ loading: true });
     setTimeout(() => {
-    const size = 5;
+    const size = 3;
     const puzzleSet = generateArray(size);
     console.log("whoe shebang:: " + JSON.stringify(puzzleSet));
     console.log("puzzleSet: " + JSON.stringify(puzzleSet[0]));
@@ -65,7 +65,7 @@ class GameBoard extends Component {
       words: puzzleSet[1],
       loading: false
     });
-  }, 200);
+  }, 1000);
  }
 
   handleTileStop(x, y, left, top, id, flipState){
@@ -266,7 +266,7 @@ const game_styles = {
   container: {
     position: "relative",
     backgroundColor: colors.gray_4,
-    marginTop: 60,
+    marginTop: 160,
     borderRadius: 5,
     boxShadow: shadow,
     borderColor: colors.off_black, borderWidth: 4, borderStyle: 'solid'

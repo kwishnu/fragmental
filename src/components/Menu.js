@@ -19,9 +19,11 @@ class Menu extends Component {
 
     };
   }
+
   closeMenu(){
-    this.props.closeMenu();
+    this.props.closeMenu(true);
   }
+
   showModal(which){
     this.props.showModal(which, true);
   }
@@ -31,7 +33,7 @@ class Menu extends Component {
     const xInitial = pc?(scrWidth - scrHeight * 9/16)/2 - scrHeight * 0.26 : -scrHeight * 0.2;
     const xAnimate = pc?(scrWidth - scrHeight * 9/16)/2 -20 : -2;
     const themeColor = colors.dark_blue;
-    
+
     return (
       <AnimatePresence>
         {showMenu && 
@@ -73,7 +75,7 @@ const menu_styles = {
     borderColor: colors.off_black, 
     borderStyle: 'solid',
     padding: 10,
-    zIndex: 99
+    zIndex: 1000
   },
   divider: {
     display: "flex",

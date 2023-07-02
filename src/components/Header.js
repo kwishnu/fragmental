@@ -12,7 +12,7 @@ function Header(props) {
   let isPC = props.deviceType === "pc"?true:false;
   let isTablet = props.deviceType === "tablet"?true:false;
   return(
-    <div style={{...headerStyles.container, width: props.scrWidth, backgroundColor: colors.dark_blue}}>
+    <div style={{...headerStyles.container, width: props.scrWidth, backgroundColor: colors.darker_blue}}>
       {/* global.bgColor */}
       <div style={headerStyles.left_div}>
       <img 
@@ -28,7 +28,7 @@ function Header(props) {
       </div>
       <div style={headerStyles.center_div}>
         <div style={headerStyles.titleText}>
-          FragMental          
+          {props.title}          
         </div>
       </div>
       <div style={headerStyles.right_div}>

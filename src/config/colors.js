@@ -4,6 +4,7 @@ export const colors = {
   accent_purple: '#FF007F',
   button_blue: '#4242FF',
   dark_blue: '#3737C9',
+  darker_blue: '#071767',
   red: '#FF0000',
   dark_red: '#980202',
   light_red: '#f0f0f0',

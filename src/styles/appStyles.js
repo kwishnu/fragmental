@@ -50,14 +50,6 @@ const appStyles = {
     borderWidth: 2,
     zIndex: 1000,
   },
-  headerImageContainer: {
-    display: "flex",
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: scrHeight/7,
-    width: config.scrHeight * 9/16 - 50,
-    // padding: 20,
-    },
   footer: {
     display: "flex",
     flexDirection: "column",
