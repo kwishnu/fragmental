@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#142392",
+  "background_color": "#1d1d1d",
   "orientation": "portrait"
 }

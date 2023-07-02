@@ -86,7 +86,7 @@ const headerStyles = {
   },
   titleText: {
     fontFamily: "Acme",
-    fontSize: 30,
+    fontSize: 24,
     color: colors.off_white,
     textAlign: "center",
     marginTop: 8,
