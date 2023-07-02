@@ -1,20 +1,22 @@
 {
   "files": {
     "main.css": "/fragmental/static/css/main.84335bb3.css",
-    "main.js": "/fragmental/static/js/main.aa197604.js",
+    "main.js": "/fragmental/static/js/main.e66f9e12.js",
     "screen-orientation-js.js": "/fragmental/static/js/screen-orientation-js.62a882c0.chunk.js",
     "static/js/787.9b2f7388.chunk.js": "/fragmental/static/js/787.9b2f7388.chunk.js",
     "static/media/fragmental3.png": "/fragmental/static/media/fragmental3.34d5abf368c808382003.png",
     "service-worker.js": "/fragmental/service-worker.js",
     "static/media/Acme.ttf": "/fragmental/static/media/Acme.f6db4c5c3282b4e95e85.ttf",
+    "static/media/large_puzzle.png": "/fragmental/static/media/large_puzzle.c735b3c0a44ccedf4cd0.png",
+    "static/media/medium_puzzle.png": "/fragmental/static/media/medium_puzzle.b2f37ea1344c0638555e.png",
     "index.html": "/fragmental/index.html",
     "main.84335bb3.css.map": "/fragmental/static/css/main.84335bb3.css.map",
-    "main.aa197604.js.map": "/fragmental/static/js/main.aa197604.js.map",
+    "main.e66f9e12.js.map": "/fragmental/static/js/main.e66f9e12.js.map",
     "screen-orientation-js.62a882c0.chunk.js.map": "/fragmental/static/js/screen-orientation-js.62a882c0.chunk.js.map",
     "787.9b2f7388.chunk.js.map": "/fragmental/static/js/787.9b2f7388.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.84335bb3.css",
-    "static/js/main.aa197604.js"
+    "static/js/main.e66f9e12.js"
   ]
 }
