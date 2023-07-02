@@ -142,7 +142,7 @@ class GameBoard extends Component {
 
   showSolved(){
     setTimeout(() => {
-      this.setState({show: true});
+      this.setState({showBackButton: true});
     }, 3000); 
 
     indices.forEach((index) => {

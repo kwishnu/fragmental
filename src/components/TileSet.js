@@ -21,7 +21,7 @@ class TileSet extends Component {
       flipState: this.props.flipState,
       flipping: false,
       beingDragged: false,
-      bgColor: colors.text_white,
+      bgColor: colors.transparent,
       zIndex: 0,
     };
     this.tileRefs = [];
@@ -175,6 +175,10 @@ class TileSet extends Component {
     this.setState({lastPositionY: y});
   }
 
+  changeTileSetBgColor(ref){
+    this.setState({bgColor: colors.translucent});
+  }
+
   renderTile(letter, i){
     const refPrefix = idPrefix + this.props.index + "|";
 
@@ -184,10 +188,9 @@ class TileSet extends Component {
         id={`${refPrefix}${i}`}
         letter={letter}
         ref={(ref) => this.tileRefs[`${refPrefix}${i}`] = ref}
-        myRef={`${refPrefix}${i}`}
         tileHeight={this.props.tileHeight}
-        // z={this.state.zIndex}
         delay={this.props.delay}
+        setBgColor={(tileRef) => {this.changeTileSetBgColor(tileRef)}}
       />
     )
   }
@@ -223,6 +226,7 @@ class TileSet extends Component {
               top: top, 
               left: left,
               zIndex: this.state.zIndex,
+              backgroundColor: this.state.bgColor,
               boxShadow: this.state.shadow
             }}>
             {
@@ -241,7 +245,6 @@ const styles = {
     marginTop: 2,
     marginLeft: 2,
     justifyContent: "space-around",
-    backgroundColor: colors.translucent,
   },
 }
 

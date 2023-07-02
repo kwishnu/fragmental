@@ -68,6 +68,7 @@ class Tile extends Component {
             animate={{ x: 0, y: 0 }}
             exit={{ boxShadow: null }}
             transition={{ type: "spring", stiffness: 250, damping: 18, duration: 0.4, delay: delay }}
+            onAnimationComplete={() => this.props.setBgColor()}
           >
             <div ref={(ref) => this.tileRefs[myRef] = ref} style={{display: "flex", position: "relative"}}>
               <div
