@@ -27,7 +27,7 @@ class GameBoard extends Component {
       words: [],
       playedFragments: [],
       tileHeight: 0,
-      showBackButton: false,
+      showBackButton: true,
       loading: false
     }
     this.fragRefs = [];
@@ -248,7 +248,6 @@ class GameBoard extends Component {
               style={game_styles.button}
             >
               <img src={backImage} onClick={() => this.reloadGame()} alt={"Back"} />
-              {/* <div onClick={() => this.reloadGame()} style={game_styles.button_text}>New Puzzle</div> */}
             </motion.button>
           }
         </AnimatePresence>
@@ -275,18 +274,7 @@ const game_styles = {
     boxShadow: shadow,
     borderColor: colors.off_black, borderWidth: 4, borderStyle: 'solid'
   },
-  back_button: {
-    width: tablet ? scrWidth / 6 : pc ? scrHeight / 14 : scrWidth / 4.8,
-    height: tablet ? scrWidth / 6 : pc ? scrHeight / 14 : scrWidth / 4.8,
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: 'center',
-    marginLeft: 20,
-    marginRight: 20,
-    marginTop: 50,
-    backgroundColor: colors.button_blue,
-    boxShadow: `10px 10px 28px ${colors.off_black}`,
-  },  button_container: {
+  button_container: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -297,7 +285,7 @@ const game_styles = {
     borderRadius: config.button_radius + 10,
     justifyContent: "center",
     backgroundColor: colors.button_blue,
-    boxShadow: `10px 20px 10px ${colors.off_black}`,
+    boxShadow: `4px 10px 16px ${colors.black}`,
     borderColor: colors.transparent,
     borderLeftWidth: 8,
     borderRightWidth: 8,
