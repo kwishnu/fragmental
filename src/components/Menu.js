@@ -8,7 +8,7 @@ import closeImage from '../images/close.png';
 import settingsImage from '../images/settings.png';
 import helpImage from '../images/question.png';
 import supportImage from '../images/heart.png';
-import gameImage from '../images/ravl_menu_icon.png';
+import homeImage from '../images/home.png';
 const pc = config.isPC;
 
 
@@ -32,7 +32,7 @@ class Menu extends Component {
     const { showMenu,  scrHeight, scrWidth } = this.props;//themeColor,
     const xInitial = pc?(scrWidth - scrHeight * 9/16)/2 - scrHeight * 0.26 : -scrHeight * 0.2;
     const xAnimate = pc?(scrWidth - scrHeight * 9/16)/2 -20 : -2;
-    const themeColor = colors.very_dark_blue;
+    const themeColor = colors.blue_gray;
 
     return (
       <AnimatePresence>
@@ -46,13 +46,13 @@ class Menu extends Component {
           >
             <div style={{...menu_styles.text, fontSize: 16, color: 'black'}}>
               <MenuHeader text={"FragMental"} imageUrl={closeImage} altText={"FragMental - Close Menu"} closeMenu={() => this.closeMenu()} bgC={themeColor}/>
-              <MenuItem text={"FragMental Start"} imageUrl={gameImage} altText={"FragMental Start"} showModal={(which) => this.showModal(which, true)} bgC={themeColor}/>
+              <MenuItem text={"Home"} imageUrl={homeImage} altText={"Home"} showModal={(which) => this.showModal(which, true)} bgC={themeColor}/>
               <div style={{...menu_styles.divider, width: scrHeight * 0.1, marginLeft: scrHeight * 0.08, borderColor: themeColor}}></div>
               <MenuItem text={"Settings"} imageUrl={settingsImage} altText={"Settings"} showModal={(which) => this.showModal(which, true)} bgC={themeColor}/>
               <MenuItem text={"Help"} imageUrl={helpImage} altText={"Help"} showModal={(which) => this.showModal(which, true)} bgC={themeColor}/>
               <MenuItem text={"Support"} imageUrl={supportImage} altText={"Support"} showModal={(which) => this.showModal(which, true)} bgC={themeColor}/>
               {/* {this.props.cgi === -1 && global.upgradeStatus &&
-                <MenuItem text={"Mega FragMental"} imageUrl={gameImage} altText={"Mega FragMental"} showModal={(which) => this.showModal(which, true)} bgC={themeColor}/>
+                <MenuItem text={"Mega FragMental"} imageUrl={homeImage} altText={"Mega FragMental"} showModal={(which) => this.showModal(which, true)} bgC={themeColor}/>
               } */}
             </div>
             </motion.div>

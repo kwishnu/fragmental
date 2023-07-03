@@ -519,7 +519,7 @@ export function getFragObj(arr, frags){
   const retObj = retArr.map((element, index) => ({
     id: element[0],
     letters: element[1],
-    state: element[2]
+    flipState: element[2]
   }));
   return retObj;
 }

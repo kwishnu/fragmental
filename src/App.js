@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PageVisibility from 'react-page-visibility';
 import ScreenOrientationReact from 'screen-orientation-react';
+import formatDate from 'date-fns/format';
 import colors from './config/colors';
 // import config from './config/config';
 import Menu from './components/Menu.js';
@@ -8,7 +9,10 @@ import Header from './components/Header.js';
 import GameBoard from './components/GameBoard';
 import Launch from "./screens/launch";
 import styles from './styles/appStyles.js';
-const sampleBlurb = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+import {getLaunchText, getPuzzles} from './data/dataHelper';
+// const sampleBlurb = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+let dateToday = "";
+let launchText = "";
 
 class App extends Component {
   constructor(props) {
@@ -22,12 +26,16 @@ class App extends Component {
       showGame3: false,
       showGame4: false,
       showGame5: false,
-      gameBgColor: colors.gray_4,
+      puzzlesObj: {},
       title: ""
     }
   }
 
   componentDidMount(){
+    dateToday = formatDate(new Date(), "MM-dd-yyyy");
+    launchText = getLaunchText(dateToday);
+    const puzzlesObj = getPuzzles(dateToday);
+    this.setState({puzzlesObj: puzzlesObj});
   }
 
   toggleMenu(respond) {
@@ -43,9 +51,12 @@ class App extends Component {
   toggleModal(which, open) {
     if (open) {
       switch (which) {
-        case "FragMental Start":
+        case "Home":
             this.toggleMenu(true);
-            this.setState({ showLaunch: true, gameBgColor: colors.gray_4, title: "" });
+            this.setState({ showLaunch: true, title: "" });
+            setTimeout(() => {
+              this.setState({showGame3: false, showGame4: false, showGame5: false});
+            }, 700);
           break;
         case "Settings":
           this.setState({ showSettingsModal: true });
@@ -85,13 +96,13 @@ class App extends Component {
     this.setState({title: "FragMental"});
     switch(which){
       case 3:
-        this.setState({showGame3: true, showGame4: false, showGame5: false, gameBgColor: colors.very_dark_green});
+        this.setState({showGame3: true, showGame4: false, showGame5: false});
       break;
       case 4:
-        this.setState({showGame4: true, showGame3: false, showGame5: false, gameBgColor: colors.very_dark_blue});
+        this.setState({showGame4: true, showGame3: false, showGame5: false});
       break;
       default:
-        this.setState({showGame5: true, showGame3: false, showGame4: false, gameBgColor: colors.very_dark_red});
+        this.setState({showGame5: true, showGame3: false, showGame4: false});
     }
   }
 
@@ -126,6 +137,7 @@ class App extends Component {
       fontSize: 3,
       message: "Please play FragMental in portrait mode"
     }
+    const selectedPattern = this.state.showGame3 ? patterns.bg3 : this.state.showGame4? patterns.bg4:this.state.showGame5?patterns.bg5:patterns.bg0;
 
     return (
       <PageVisibility onChange={isVisible => this.handleVisibilityChange(isVisible)}>
@@ -138,7 +150,7 @@ class App extends Component {
             scrHeight={this.state.scrHeight}
             scrWidth={this.state.scrWidth}
           />
-          <div style={{...styles.appContainer, backgroundColor: this.state.gameBgColor}} onClick={this.state.showMenu ? (respond) => this.toggleMenu(respond) : null}>
+          <div style={{...styles.appContainer, ...selectedPattern}} onClick={this.state.showMenu ? (respond) => this.toggleMenu(respond) : null}>
           <Header
             clickMenu={(respond) => this.toggleMenu(respond)}
             showModal={(which, open) => this.showModal(which, open)}
@@ -156,13 +168,34 @@ class App extends Component {
               style={{ ...styles.adBox, backgroundColor: colors.gray_3, borderRightColor: colors.off_black, left: 0 }}
             />
             {this.state.showGame3 &&
-              <GameBoard count={3} gameBgColor={this.state.gameBgColor}/>
+              <GameBoard 
+                count={3} 
+                words={this.state.puzzlesObj["3"].words} 
+                puzzleSet={this.state.puzzlesObj["3"].puzzleSet} 
+                fragments={this.state.puzzlesObj["3"].fragments} 
+                fragObj={this.state.puzzlesObj["3"].fragObj} 
+                freePlay={false}
+              />
             }
             {this.state.showGame4 &&
-              <GameBoard count={4} gameBgColor={this.state.gameBgColor}/>
+              <GameBoard 
+                count={4} 
+                words={this.state.puzzlesObj["4"].words} 
+                puzzleSet={this.state.puzzlesObj["4"].puzzleSet} 
+                fragments={this.state.puzzlesObj["4"].fragments} 
+                fragObj={this.state.puzzlesObj["4"].fragObj} 
+                freePlay={false}
+              />
             }
             {this.state.showGame5 &&
-              <GameBoard count={5} gameBgColor={this.state.gameBgColor}/>
+              <GameBoard 
+                count={5} 
+                words={this.state.puzzlesObj["5"].words} 
+                puzzleSet={this.state.puzzlesObj["5"].puzzleSet} 
+                fragments={this.state.puzzlesObj["5"].fragments} 
+                fragObj={this.state.puzzlesObj["5"].fragObj} 
+                freePlay={false}
+              />
             }
             <div 
               id="appRightBox"
@@ -171,7 +204,7 @@ class App extends Component {
           </div>
           <Launch
             isModalVisible={this.state.showLaunch}
-            introText={sampleBlurb}
+            introText={launchText}
             requestModalClose={(which, open) => { this.toggleModal(which, open) }}
             startGame={(which) => { this.startGame(which) }}
             requestMenuClose={() => { this.closeMenu()}}
@@ -180,6 +213,30 @@ class App extends Component {
         </div>
       </PageVisibility>
     );
+  }
+}
+
+const patterns = {
+  bg0: {
+    backgroundColor: colors.gray_4,
+  },
+  bg3: {
+    backgroundColor: '#000200',
+    opacity: 1,
+    backgroundImage: 'radial-gradient(ellipse farthest-corner at 9px 9px, #0e2701, #0e2701 50%, #000200 50%)',
+    backgroundSize: '9px 9px'
+  },
+  bg4: {
+    backgroundColor: '#01021f',
+    opacity: 1,
+    backgroundImage: 'radial-gradient(ellipse farthest-corner at 9px 9px, #02076a, #02076a 50%, #01021f 50%)',
+    backgroundSize: '9px 9px'
+  },
+  bg5: {
+    backgroundColor: '#210401',
+    opacity: 1,
+    backgroundImage: 'radial-gradient(ellipse farthest-corner at 9px 9px, #530c03, #530c03 50%, #210401 50%)',
+    backgroundSize: '9px 9px'
   }
 }
 

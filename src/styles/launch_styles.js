@@ -24,7 +24,7 @@ modalView: {
   display: 'flex',
   flexDirection: 'column',
   height: scrHeight,
-  width: config.isPC?scrHeight * 9/16:scrWidth,
+  width: config.isPC?scrHeight * 9/16:scrWidth * 1.1,
   borderRadius: 5,
   paddingLeft: 10,
   paddingRight: 10,
@@ -63,7 +63,7 @@ modalBody: {
   backgroundSize: "64px 128px",
 
   borderRadius: 10,
-  boxShadow: "inset 4px 6px 10px #000000"
+  boxShadow: "inset 0px 6px 10px #000000"
 },
 intro_container: {
   display: 'flex',

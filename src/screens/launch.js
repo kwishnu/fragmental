@@ -74,13 +74,13 @@ class Launch extends Component {
           animate={{ y: -2 }}
           exit={{ y: scrHeight }}
           style={{...launch_styles.containerView}}
-          transition={{ type: "spring", bounce: 0, duration: 0.4 }}
+          transition={{ type: "spring", bounce: 0, duration: 0.8 }}
         >
 
           <div style={{...launch_styles.modalView, backgroundColor: darkModeEnabled ? colors.gray_4:colors.gray_4}} onClick={() => this.closeMenu()}>
             <div style={launch_styles.headerImageContainer}>
-              <img src={MenuImage} alt={"Menu"} style={{boxShadow: `4px 4px 0px ${colors.off_black}`, height: config.scrHeight/11}}/>
-
+              <img src={MenuImage} alt={"Menu"} style={{height: config.scrHeight/11}}/>
+{/* boxShadow: `4px 4px 0px ${colors.off_black}` */}
             </div>
             <div style={{...launch_styles.modalBody}}>
               {/* //, backgroundColor: colors.dark_green */}

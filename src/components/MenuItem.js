@@ -32,11 +32,13 @@ const menu_item_styles = {
     width: scrHeight * 0.26,
     justifyContent: "center",
     alignItems: "flex-start",
-    marginBottom: 2,
-    borderColor: colors.off_black,
+    marginBottom: 8,
+    borderColor: colors.light_blue_gray,
     borderWidth: 2,
     borderStyle: 'solid',
     borderRadius: 6,
+    boxShadow: "inset 3px 3px 3px #000000"
+
   },
   image_div: {
     display: "flex",

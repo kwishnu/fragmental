@@ -13,8 +13,8 @@ const delays = [Math.random(), Math.random(), Math.random(), Math.random(), Math
 const indices = [];
 const shadow = `3px 3px 8px ${colors.off_black}`;
 const backImage = require("../images/arrow_back.png");
-const tablet = config.isTablet;
-const pc = config.isPC;
+// const tablet = config.isTablet;
+// const pc = config.isPC;
 
 class GameBoard extends Component {
   constructor(props) {
@@ -27,7 +27,7 @@ class GameBoard extends Component {
       words: [],
       playedFragments: [],
       tileHeight: 0,
-      showBackButton: true,
+      showBackButton: false,
       loading: false
     }
     this.fragRefs = [];
@@ -36,39 +36,68 @@ class GameBoard extends Component {
 
   componentDidMount(){
     this.setState({ loading: true });
-    setTimeout(() => {
     const size = this.props.count;
-    const puzzleSet = generateArray(size);
-    console.log("whole shebang:: " + JSON.stringify(puzzleSet));
-    console.log("puzzleSet: " + JSON.stringify(puzzleSet[0]));
-    const puzzleArray = puzzleSet[0];
-    console.log("words: " + JSON.stringify(puzzleSet[1]));
-
-    const dup = JSON.parse(JSON.stringify(puzzleArray));
-    let fragments = getFragments(puzzleArray, defaultChar, size);
-    console.log("fragments: " + JSON.stringify(fragments));
-
     for(let j = 0;j < size;j++){
       indices.push(j);
     }
-
-    const fragObj = getFragObj(puzzleArray, fragments);
-    console.log("fragObj: " + JSON.stringify(fragObj));
-    const filteredArray = removeLetters(puzzleArray, fragments[2]);
-    const ps = JSON.parse(JSON.stringify(filteredArray));
     let tHeight = (scrHeight * 9/16)/13;
     tHeight = tHeight >= 62?62:tHeight;
 
-    this.setState({
-      tileHeight: tHeight, 
-      puzzArrayDuplicate: dup, 
-      puzzleArray: filteredArray, 
-      puzzleSlate: ps, 
-      fragmentLetterObj: fragObj,
-      words: puzzleSet[1],
-      loading: false
-    });
-  }, 1000);
+    if(this.props.freePlay){
+      setTimeout(() => {
+      const puzzleSet = generateArray(size);
+      console.log("whole shebang:: " + JSON.stringify(puzzleSet));
+      console.log("puzzleSet: " + JSON.stringify(puzzleSet[0]));
+      const puzzleArray = puzzleSet[0];
+      console.log("words: " + JSON.stringify(puzzleSet[1]));
+
+      const dup = JSON.parse(JSON.stringify(puzzleArray));
+      let fragments = getFragments(puzzleArray, defaultChar, size);
+      console.log("fragments: " + JSON.stringify(fragments));
+
+
+      const fragObj = getFragObj(puzzleArray, fragments);
+      console.log("fragObj: " + JSON.stringify(fragObj));
+      const filteredArray = removeLetters(puzzleArray, fragments[2]);
+      const ps = JSON.parse(JSON.stringify(filteredArray));
+
+      this.setState({
+        tileHeight: tHeight, 
+        puzzArrayDuplicate: dup, 
+        puzzleArray: filteredArray, 
+        puzzleSlate: ps, 
+        fragmentLetterObj: fragObj,
+        words: puzzleSet[1],
+        loading: false
+      });
+    }, 1000);
+
+    }else{
+      const puzzleArray = this.props.puzzleSet;
+      console.log("puzzleSet: " + JSON.stringify(puzzleArray));
+      console.log("words: " + JSON.stringify(this.props.words));
+
+      const dup = JSON.parse(JSON.stringify(puzzleArray));
+      let fragments = this.props.fragments;
+      console.log("fragments: " + JSON.stringify(fragments));
+
+
+      const fragObj = this.props.fragObj;
+      console.log("fragObj: " + JSON.stringify(fragObj));
+      const filteredArray = removeLetters(puzzleArray, fragments[2]);
+      const ps = JSON.parse(JSON.stringify(filteredArray));
+
+      this.setState({
+        tileHeight: tHeight, 
+        puzzArrayDuplicate: dup, 
+        puzzleArray: filteredArray, 
+        puzzleSlate: ps, 
+        fragmentLetterObj: fragObj,
+        words: this.props.words,
+        loading: false
+      });
+
+    }
  }
 
   handleTileStop(x, y, left, top, id, flipState){
@@ -143,16 +172,18 @@ class GameBoard extends Component {
   showSolved(){
     setTimeout(() => {
       this.setState({showBackButton: true});
-    }, 3000); 
-
+    }, 2200); 
     indices.forEach((index) => {
-        this.fragRefs["d|" + index].showSolved("d|" + index);
-        this.fragRefs["t|" + index].showSolved("t|" + index);
-      })
-      for(let j = 0;j < this.state.puzzleArray.length;j++){
-        for(let k = 0;k < this.state.puzzleArray[0].length;k++){
-          const ref = `tile${j}|${k}`;
-          this.tileRefs[ref].showSolved(ref);
+      const dRef = "d|" + index;
+      const tRef = "t|" + index;
+
+      this.fragRefs[dRef].showSolved(dRef);
+      this.fragRefs[tRef].showSolved(tRef);
+    })
+    for(let j = 0;j < this.state.puzzleArray.length;j++){
+      for(let k = 0;k < this.state.puzzleArray[0].length;k++){
+        const ref = `tile${j}|${k}`;
+        this.tileRefs[ref].showSolved(ref);
       }
     }
   }
@@ -201,7 +232,7 @@ class GameBoard extends Component {
           index={i}
           id={refStr}
           letters={obj.letters}
-          flipState={obj.state}
+          flipState={obj.flipState}
           ref={(ref) => (this.fragRefs[refStr] = ref)}
           left={leftMultiplier * th}
           top={adjustedTop}
@@ -238,7 +269,7 @@ class GameBoard extends Component {
           this.state.fragmentLetterObj.map((obj, index) => this.renderTileSet(obj, index))
         }
       </div>
-      <div style={{...game_styles.button_container, backgroundColor: this.props.gameBgColor}}>
+      <div style={game_styles.button_container}>
         <AnimatePresence>
           {this.state.showBackButton &&          
             <motion.button
@@ -278,7 +309,8 @@ const game_styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: colors.gray_4,
+    height: 1,
+    backgroundColor: colors.transparent
   },
   button: {
     display: 'flex',
