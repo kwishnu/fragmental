@@ -81,7 +81,7 @@ intro_container: {
 button_container: {
   display: 'flex',
   height: "auto",
-  flexDirection: 'column',
+  flexDirection: 'row',
   justifyContent: "center",
   alignItems: "center",
   alignSelf: 'stretch',
@@ -93,13 +93,32 @@ button_container: {
 },
 launchButton: {
   display: 'flex',
-  width: scrHeight * 0.18,
+  width: scrHeight * 0.1,
+  height: scrHeight * 0.1,
   justifyContent: "center",
   alignItems: "center",
   padding: 20,
   marginBottom: 15,
-  borderRadius: 15,
   boxShadow: `4px 8px 12px ${colors.gray_4}`,
+},
+labelContainer: {
+  display: 'flex',
+  justifyContent: "flex-start",
+  alignItems: "flex-start",
+  alignSelf: 'stretch',
+  backgroundColor: colors.transparent,
+  marginBottom: 10
+},
+labelBackground: {
+  display: 'flex',
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: colors.blue_gray,
+  borderColor: colors.light_blue_gray, 
+  borderWidth: 2, 
+  borderStyle: 'solid',
+  borderRadius: 15,
+  padding:15
 },
 button_text_white: {
   fontFamily: "system-ui",
@@ -113,12 +132,14 @@ button_text_white: {
 title: {
   fontSize: config.isPC?convertFont(24):convertFont(22),
   fontFamily: "Acme",
-  userSelect: 'none'
+  userSelect: 'none',
+  color: colors.text_white
 },
 text: {
   fontSize: config.isPC?convertFont(18):convertFont(16),
   fontFamily: "system-ui",
-  userSelect: 'none'
+  userSelect: 'none',
+  color: colors.text_white
 },
 }
 

@@ -40,31 +40,21 @@ class Launch extends Component {
   }
 
   closeMenu(){
-    console.log("clicked");
     setTimeout(() => {
       this.props.requestMenuClose(this.state.closeMenuListener);
     }, 100);
   }
 
-  launchPuzzle(which){
+  launchPuzzle(which, daily){
     this.setState({toggleMenuListener: false});
-    switch(which){
-      case 3:
-        this.closeSelf();
-        this.props.startGame(3);
-      break;
-      case 4:
-        this.closeSelf();
-        this.props.startGame(4);
-      break;
-      default:
-        this.closeSelf();
-        this.props.startGame(5);
-    }
+    this.closeSelf();
+    this.props.startGame(which, daily);
   }
 
   render() {
     const { isModalVisible, darkModeEnabled, introText } = this.props;
+    const dailyPuzzlesText = "Daily Puzzles";
+    const playText = "Play";
 
     return(
       <AnimatePresence>
@@ -86,28 +76,49 @@ class Launch extends Component {
               {/* //, backgroundColor: colors.dark_green */}
 
               <div style={{...launch_styles.intro_container}}>
-                    <div style={{...launch_styles.title, color: colors.text_white}}>
+                    <div style={launch_styles.title}>
                       {dateToday}
                     </div>
-                    <div style={{...launch_styles.text, marginLeft: 15, color: colors.text_white}}>
+                    <div style={{...launch_styles.text, marginLeft: 15}}>
                       {introText}
                     </div>
-
+              </div>
+              <div style={launch_styles.labelContainer}>
+                <div style={launch_styles.labelBackground}>
+                  <div style={launch_styles.title}>
+                    {dailyPuzzlesText}
+                  </div>
+                </div>
               </div>
               <div style={{...launch_styles.button_container}}>
-                <div style={{...launch_styles.launchButton, backgroundColor: colors.dark_green}} onClick={() => this.launchPuzzle(3)}>
+                <div style={{...launch_styles.launchButton, backgroundColor: colors.dark_green, borderRadius: "15% 0 0 15%"}} onClick={() => this.launchPuzzle(3, true)}>
                   <img src={SmallPuzzle} alt={"Small Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/16}}/>
                 </div>
-                <div style={{...launch_styles.launchButton, backgroundColor: colors.dark_blue}} onClick={() => this.launchPuzzle(4)}>
+                <div style={{...launch_styles.launchButton, backgroundColor: colors.dark_blue}} onClick={() => this.launchPuzzle(3, true)}>
                   <img src={MediumPuzzle} alt={"Medium Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/14}}/>
                 </div>
-                <div style={{...launch_styles.launchButton, backgroundColor: colors.dark_red}} onClick={() => this.launchPuzzle(5)}>
+                <div style={{...launch_styles.launchButton, backgroundColor: colors.dark_red, borderRadius: "0 15% 15% 0"}} onClick={() => this.launchPuzzle(3, true)}>
                   <img src={LargePuzzle} alt={"Large Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/12}}/>
                 </div>
-
               </div>
-
-
+              <div style={launch_styles.labelContainer}>
+                <div style={launch_styles.labelBackground}>
+                  <div style={launch_styles.title}>
+                    {playText}
+                  </div>
+                </div>
+              </div>
+              <div style={{...launch_styles.button_container}}>
+                <div style={{...launch_styles.launchButton, margin: 10, backgroundColor: colors.dark_green, borderRadius: 15}} onClick={() => this.launchPuzzle(3, false)}>
+                  <img src={SmallPuzzle} alt={"Small Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/16}}/>
+                </div>
+                <div style={{...launch_styles.launchButton, margin: 10, backgroundColor: colors.dark_blue, borderRadius: 15}} onClick={() => this.launchPuzzle(4, false)}>
+                  <img src={MediumPuzzle} alt={"Medium Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/14}}/>
+                </div>
+                <div style={{...launch_styles.launchButton, margin: 10, backgroundColor: colors.dark_red, borderRadius: 15}} onClick={() => this.launchPuzzle(5, false)}>
+                  <img src={LargePuzzle} alt={"Large Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/12}}/>
+                </div>
+              </div>
             </div>
           </div>
         </motion.div>

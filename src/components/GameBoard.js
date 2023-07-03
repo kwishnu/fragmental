@@ -43,7 +43,7 @@ class GameBoard extends Component {
     let tHeight = (scrHeight * 9/16)/13;
     tHeight = tHeight >= 62?62:tHeight;
 
-    if(this.props.freePlay){
+    if(!this.props.freePlay){
       setTimeout(() => {
       const puzzleSet = generateArray(size);
       console.log("whole shebang:: " + JSON.stringify(puzzleSet));
@@ -70,8 +70,7 @@ class GameBoard extends Component {
         words: puzzleSet[1],
         loading: false
       });
-    }, 1000);
-
+      }, 1000);
     }else{
       const puzzleArray = this.props.puzzleSet;
       console.log("puzzleSet: " + JSON.stringify(puzzleArray));

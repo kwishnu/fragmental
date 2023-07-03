@@ -92,17 +92,17 @@ class App extends Component {
     this.toggleModal(which, open);
   }
 
-  startGame(which){
+  startGame(which, daily){
     this.setState({title: "FragMental"});
     switch(which){
       case 3:
-        this.setState({showGame3: true, showGame4: false, showGame5: false});
+        this.setState({freePlay: daily, showGame3: true, showGame4: false, showGame5: false});
       break;
       case 4:
-        this.setState({showGame4: true, showGame3: false, showGame5: false});
+        this.setState({freePlay: daily, showGame4: true, showGame3: false, showGame5: false});
       break;
       default:
-        this.setState({showGame5: true, showGame3: false, showGame4: false});
+        this.setState({freePlay: daily, showGame5: true, showGame3: false, showGame4: false});
     }
   }
 
@@ -174,7 +174,7 @@ class App extends Component {
                 puzzleSet={this.state.puzzlesObj["3"].puzzleSet} 
                 fragments={this.state.puzzlesObj["3"].fragments} 
                 fragObj={this.state.puzzlesObj["3"].fragObj} 
-                freePlay={false}
+                freePlay={this.state.freePlay}
               />
             }
             {this.state.showGame4 &&
@@ -184,7 +184,7 @@ class App extends Component {
                 puzzleSet={this.state.puzzlesObj["4"].puzzleSet} 
                 fragments={this.state.puzzlesObj["4"].fragments} 
                 fragObj={this.state.puzzlesObj["4"].fragObj} 
-                freePlay={false}
+                freePlay={this.state.freePlay}
               />
             }
             {this.state.showGame5 &&
@@ -194,7 +194,7 @@ class App extends Component {
                 puzzleSet={this.state.puzzlesObj["5"].puzzleSet} 
                 fragments={this.state.puzzlesObj["5"].fragments} 
                 fragObj={this.state.puzzlesObj["5"].fragObj} 
-                freePlay={false}
+                freePlay={this.state.freePlay}
               />
             }
             <div 
@@ -206,7 +206,7 @@ class App extends Component {
             isModalVisible={this.state.showLaunch}
             introText={launchText}
             requestModalClose={(which, open) => { this.toggleModal(which, open) }}
-            startGame={(which) => { this.startGame(which) }}
+            startGame={(which, daily) => { this.startGame(which, daily) }}
             requestMenuClose={() => { this.closeMenu()}}
             darkModeEnabled={this.state.darkModeEnabled}
           />
