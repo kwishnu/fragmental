@@ -18,7 +18,7 @@ containerView: {
   justifyContent: "center",
   alignItems: "center",
   backgroundColor: 'rgba(0, 0, 0, 0)',
-  zIndex: 100
+  zIndex: 100,
 },
 modalView: {
   display: 'flex',
@@ -29,21 +29,19 @@ modalView: {
   paddingLeft: 10,
   paddingRight: 10,
   alignItems: "center",
-  zIndex: 100
+  zIndex: 100,
 },
 headerImageContainer: {
   display: "flex",
   alignItems: 'center',
   justifyContent: 'center',
-  height: scrHeight/10,
+  height: scrHeight/11,
   width: config.scrHeight * 9/16,
-  marginBottom: 10,
 },
 modalBody: {
   display: 'flex',
   flex: 1,
   flexDirection: 'column',
-  justifyContent: "center",
   alignItems: "center",
   alignSelf: 'stretch',
   padding: 40,
@@ -75,7 +73,8 @@ intro_container: {
   backgroundColor: colors.gray_3,
   padding: 20,
   borderRadius: 20,
-  marginBottom: 60,
+  marginTop: 10,
+  marginBottom: 20,
   boxShadow: "inset 4px 6px 10px #000000"
 },
 button_container: {
@@ -86,15 +85,15 @@ button_container: {
   alignItems: "center",
   alignSelf: 'stretch',
   backgroundColor: colors.gray_3,
-  padding: 30,
+  padding: 20,
   borderRadius: 20,
-  marginBottom: 60,
+  marginBottom: 20,
   boxShadow: "inset 4px 6px 10px #000000"
 },
 launchButton: {
   display: 'flex',
-  width: scrHeight * 0.1,
-  height: scrHeight * 0.1,
+  width: scrHeight * 0.08,
+  height: scrHeight * 0.06,
   justifyContent: "center",
   alignItems: "center",
   padding: 20,
@@ -107,7 +106,7 @@ labelContainer: {
   alignItems: "flex-start",
   alignSelf: 'stretch',
   backgroundColor: colors.transparent,
-  marginBottom: 10
+  margin: 10
 },
 labelBackground: {
   display: 'flex',
@@ -118,7 +117,10 @@ labelBackground: {
   borderWidth: 2, 
   borderStyle: 'solid',
   borderRadius: 15,
-  padding:15
+  paddingLeft: 15,
+  paddingRight: 15,
+  paddingTop: 6,
+  paddingBottom: 6,
 },
 button_text_white: {
   fontFamily: "system-ui",

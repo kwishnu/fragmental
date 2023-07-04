@@ -1,6 +1,6 @@
 import React from 'react';
 import colors from '../config/colors';
-// import config from '../config/config';
+import config from '../config/config';
 import MenuImage from '../images/menu.png';
 import SupportImage from '../images/heart.png';
 import HelpImage from '../images/question.png';
@@ -20,8 +20,8 @@ function Header(props) {
         alt={"Menu"} 
         onClick={() => props.clickMenu("Menu")} 
         style={{
-          height: isPC || isTablet?props.scrHeight * 0.03:props.scrWidth * 0.08,
-          width: isPC || isTablet?props.scrHeight * 0.03:props.scrWidth * 0.08, 
+          height: config.isPhone?35:45,
+          width: config.isPhone?35:45, 
           marginLeft: isPC || isTablet?props.marLeftOrRight:10
         }} 
       />          
@@ -37,8 +37,9 @@ function Header(props) {
           alt={"Support"} 
           onClick={() => props.showModal("Support", true)} 
           style={{
-            height: isPC || isTablet?props.scrHeight * 0.03:props.scrWidth * 0.08,
-            width: isPC || isTablet?props.scrHeight * 0.03:props.scrWidth * 0.08
+            height: 35,
+            width: 35,
+            marginRight: 6
           }} 
         />          
         <img 
@@ -46,8 +47,8 @@ function Header(props) {
           alt={"Help"} 
           onClick={() => props.showModal("Help", true)} 
           style={{
-            height: isPC || isTablet?props.scrHeight * 0.03:props.scrWidth * 0.08,
-            width: isPC || isTablet?props.scrHeight * 0.03:props.scrWidth * 0.08,
+            height: 35,
+            width: 35,
             marginRight: isPC || isTablet?props.marLeftOrRight:10
           }} 
         />          
@@ -63,7 +64,7 @@ const headerStyles = {
     position: "absolute",
     top: 0,
     left: 0,
-    height: 60,
+    height: 50,
   },
   left_div: {
     display: "flex",
