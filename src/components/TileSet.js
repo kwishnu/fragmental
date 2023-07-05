@@ -14,6 +14,7 @@ class TileSet extends Component {
       lastPositionX: 0,
       lastPositionY: 0,
       overBoard: false,
+      moved: false,
       width: this.props.letters.length * this.props.tileHeight,
       height: this.props.tileHeight,
       letters: this.props.letters,
@@ -34,7 +35,7 @@ class TileSet extends Component {
   handleDrag(e, data){
     if(!this.state.beingDragged){
       this.resetBgColor(this.props.id);
-      this.setState({beingDragged: true, zIndex: 10, shadow: shadow});
+      this.setState({beingDragged: true, moved: true, zIndex: 10, shadow: shadow});
     }
   }
 
@@ -100,9 +101,10 @@ class TileSet extends Component {
         xPosition: this.state.xPosition + addToX, 
         yPosition: this.state.yPosition + addToY
       });
-    }else if(!this.state.flipping && this.state.overBoard){
+    }else if(!this.state.flipping && (this.state.overBoard || this.state.moved)){
       this.setState({
         flipping: true,
+        moved: true,
         flexDirection: this.state.flexDirection === "row"?"column":"row", 
         xPosition: this.state.flipState === 1 || this.state.flipState === 3? this.state.xPosition - th/2:this.state.xPosition + th/2, 
         yPosition: this.state.flipState === 1 || this.state.flipState === 3? this.state.yPosition + th * 0.5:this.state.yPosition - th * 0.5,

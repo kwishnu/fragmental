@@ -5,7 +5,15 @@ import colors from '../config/colors';
 import config from '../config/config';
 import TileSet from '../components/TileSet';
 import CrosswordTile from '../components/CrosswordTile';
-import { generateArray, getFragments, removeLetters, getFragObj, transposeArray, concatStringArrays, splitAndFilterStrings, arraysHaveSameElements } from '../config/functions';
+import words3 from '../data/3letter.js';
+import words4 from '../data/4letter.js';
+import words5 from '../data/5letter.js';
+import words6 from '../data/6letter.js';
+import words7 from '../data/7letter.js';
+import words8 from '../data/8letter.js';
+import words9 from '../data/9letter.js';
+import words10 from '../data/10letter.js';
+import { generateArray, getFragments, removeLetters, getFragObj, transposeArray, concatStringArrays, splitAndFilterStrings } from '../config/functions';//, arraysHaveSameElements
 const defaultChar = '.';
 const scrHeight = config.scrHeight;
 const scrWidth = config.scrWidth;
@@ -164,8 +172,14 @@ class GameBoard extends Component {
     const vertWords = splitAndFilterStrings(concatenatedVertical, defaultChar);
     const allWordsFromSplits = horWords.concat(vertWords);
     console.log(JSON.stringify(allWordsFromSplits));
+    let foundNonDictionaryWord = false;
+    const allWords = [...words3, ...words4, ...words5, ...words6, ...words7, ...words8, ...words9, ...words10];
 
-    if(arraysHaveSameElements(allWordsFromSplits, this.state.words))this.showSolved();
+    for(let m = 0;m < allWordsFromSplits.length;m++){
+      foundNonDictionaryWord = allWords.includes(allWordsFromSplits[m])?false:true;
+      if(foundNonDictionaryWord)break;
+    }
+    if(!foundNonDictionaryWord)this.showSolved();//arraysHaveSameElements(allWordsFromSplits, this.state.words)
   }
 
   showSolved(){

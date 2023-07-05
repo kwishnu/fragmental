@@ -235,9 +235,9 @@ const patterns = {
   bg5: {
     backgroundColor: '#210401',
     opacity: 1,
-    backgroundImage: 'radial-gradient(ellipse farthest-corner at 9px 9px, #530c03, #530c03 50%, #210401 50%)',
+    backgroundImage: 'radial-gradient(ellipse farthest-corner at 9px 9px, #440902, #440902 50%, #210401 50%)',
     backgroundSize: '9px 9px'
   }
 }
-
+//530c03
 export default App;
