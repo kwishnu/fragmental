@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/fragmental/static/css/main.84335bb3.css",
-    "main.js": "/fragmental/static/js/main.2e0038fd.js",
+    "main.js": "/fragmental/static/js/main.39cddf89.js",
     "screen-orientation-js.js": "/fragmental/static/js/screen-orientation-js.62a882c0.chunk.js",
     "static/js/787.9b2f7388.chunk.js": "/fragmental/static/js/787.9b2f7388.chunk.js",
-    "static/media/fragmental4.png": "/fragmental/static/media/fragmental4.52a55fb038b363ceb898.png",
+    "static/media/fragmental4.png": "/fragmental/static/media/fragmental4.033ffaf8abf311db744c.png",
     "service-worker.js": "/fragmental/service-worker.js",
     "static/media/Acme.ttf": "/fragmental/static/media/Acme.f6db4c5c3282b4e95e85.ttf",
     "static/media/large_puzzle.png": "/fragmental/static/media/large_puzzle.c735b3c0a44ccedf4cd0.png",
     "static/media/medium_puzzle.png": "/fragmental/static/media/medium_puzzle.b2f37ea1344c0638555e.png",
     "index.html": "/fragmental/index.html",
     "main.84335bb3.css.map": "/fragmental/static/css/main.84335bb3.css.map",
-    "main.2e0038fd.js.map": "/fragmental/static/js/main.2e0038fd.js.map",
+    "main.39cddf89.js.map": "/fragmental/static/js/main.39cddf89.js.map",
     "screen-orientation-js.62a882c0.chunk.js.map": "/fragmental/static/js/screen-orientation-js.62a882c0.chunk.js.map",
     "787.9b2f7388.chunk.js.map": "/fragmental/static/js/787.9b2f7388.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.84335bb3.css",
-    "static/js/main.2e0038fd.js"
+    "static/js/main.39cddf89.js"
   ]
 }
