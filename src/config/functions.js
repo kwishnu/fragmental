@@ -261,10 +261,8 @@ export function concatStringArrays(array) {
 
 export function splitAndFilterStrings(arr, splitStr) {
   let result = [];
-
   for (let i = 0; i < arr.length; i++) {
     const substrings = arr[i].split(splitStr);
-
     for (let j = 0; j < substrings.length; j++) {
       if (substrings[j] !== splitStr && substrings[j].length > 1) {
         result.push(substrings[j]);
@@ -273,6 +271,28 @@ export function splitAndFilterStrings(arr, splitStr) {
   }
   return result;
 }
+
+export function splitAndFilterWithIndex(arr, splitStr, horizontal) {
+  let result = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    const substrings = arr[i].split(splitStr);
+    let startIndex = 0;
+
+    for (let j = 0; j < substrings.length; j++) {
+      if (substrings[j] !== splitStr && substrings[j].length > 1) {
+        const posArray = horizontal?[startIndex, i]:[i, startIndex];
+        const substringWithIndex = [substrings[j], posArray, horizontal];
+        result.push(substringWithIndex);
+      }
+
+      startIndex += substrings[j].length + splitStr.length;
+    }
+  }
+
+  return result;
+}
+
 
 export function arraysHaveSameElements(arr1, arr2) {
   if (arr1.length !== arr2.length) {

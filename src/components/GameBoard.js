@@ -13,7 +13,7 @@ import words7 from '../data/7letter.js';
 import words8 from '../data/8letter.js';
 import words9 from '../data/9letter.js';
 import words10 from '../data/10letter.js';
-import { generateArray, getFragments, removeLetters, getFragObj, transposeArray, concatStringArrays, splitAndFilterStrings } from '../config/functions';//, arraysHaveSameElements
+import { generateArray, getFragments, removeLetters, getFragObj, transposeArray, concatStringArrays, splitAndFilterStrings, splitAndFilterWithIndex } from '../config/functions';//, arraysHaveSameElements
 const defaultChar = '.';
 const scrHeight = config.scrHeight;
 const scrWidth = config.scrWidth;
@@ -149,23 +149,8 @@ class GameBoard extends Component {
   }
 
   evaluateBoard(played, id){
-    let boardArr = JSON.parse(JSON.stringify(this.state.puzzleSlate));
-    for(let j = 0;j < played.length;j++){
-      const fragId = played[j].id;
-      const frag = this.state.fragmentLetterObj.find(fragment => fragment.id === fragId);
-      const fragLetters = frag.letters;
-      const horizontal = played[j].state === 0 || played[j].state === 2?true:false;
-      boardArr = horizontal?boardArr:transposeArray(boardArr);
-      const coordsToUse = horizontal?[played[j].origin[0], played[j].origin[1]]:[played[j].origin[1], played[j].origin[0]];
-      for(let k = 0;k < fragLetters.length;k++){
-        if(boardArr[coordsToUse[1]][coordsToUse[0] + k] !== "*" && frag.id === id){
-          this.fragRefs[id].indicateBadMove(id);
-          return;
-        }
-        boardArr[coordsToUse[1]][coordsToUse[0] + k] = fragLetters[k];
-      }
-      boardArr = played[j].state === 0 || played[j].state === 2?boardArr:transposeArray(boardArr);
-    }
+    const boardArr = this.getBoardArray(played, id);
+    console.log("id: " + JSON.stringify(id));
     const concatenatedHorizontal = concatStringArrays(boardArr);
     const concatenatedVertical = concatStringArrays(transposeArray(boardArr));
     const horWords = splitAndFilterStrings(concatenatedHorizontal, defaultChar);
@@ -179,7 +164,33 @@ class GameBoard extends Component {
       foundNonDictionaryWord = allWords.includes(allWordsFromSplits[m])?false:true;
       if(foundNonDictionaryWord)break;
     }
-    if(!foundNonDictionaryWord)this.showSolved();//arraysHaveSameElements(allWordsFromSplits, this.state.words)
+    if(!foundNonDictionaryWord){
+      this.showSolved();//arraysHaveSameElements(allWordsFromSplits, this.state.words)
+      return;
+    }
+    this.turnAllGreenOrDefault();
+  }
+
+  getBoardArray(played, id){
+    let bArray = JSON.parse(JSON.stringify(this.state.puzzleSlate));
+
+    for(let j = 0;j < played.length;j++){
+      const fragId = played[j].id;
+      const frag = this.state.fragmentLetterObj.find(fragment => fragment.id === fragId);
+      const fragLetters = frag.letters;
+      const horizontal = played[j].state === 0 || played[j].state === 2?true:false;
+      bArray = horizontal?bArray:transposeArray(bArray);
+      const coordsToUse = horizontal?[played[j].origin[0], played[j].origin[1]]:[played[j].origin[1], played[j].origin[0]];
+      for(let k = 0;k < fragLetters.length;k++){
+        if(bArray[coordsToUse[1]][coordsToUse[0] + k] !== "*" && frag.id === id){
+          this.fragRefs[id].indicateBadMove(id);
+          // return;
+        }
+        bArray[coordsToUse[1]][coordsToUse[0] + k] = fragLetters[k];
+      }
+      bArray = played[j].state === 0 || played[j].state === 2?bArray:transposeArray(bArray);
+    }
+    return bArray;
   }
 
   showSolved(){
@@ -201,6 +212,47 @@ class GameBoard extends Component {
     }
   }
 
+  turnAllGreenOrDefault(id){
+    if(id)this.removeFragment(id);
+
+    const boardArr = this.getBoardArray(this.state.playedFragments);
+    const concatenatedHorizontal = concatStringArrays(boardArr);
+    const concatenatedVertical = concatStringArrays(transposeArray(boardArr));
+    const horWords = splitAndFilterWithIndex(concatenatedHorizontal, defaultChar, true);
+    const vertWords = splitAndFilterWithIndex(concatenatedVertical, defaultChar, false);
+    const allWordsFromSplits = horWords.concat(vertWords);
+    let solvedCoords = [];
+
+    for(let n = 0;n < allWordsFromSplits.length;n++){
+      if(this.state.words.includes(allWordsFromSplits[n][0])){
+        const origCoord = allWordsFromSplits[n][1];
+        let coordsArray = [];
+        const horiz = allWordsFromSplits[n][2];
+        for(let nn = 0;nn < allWordsFromSplits[n][0].length;nn++){
+          const nextCoord = horiz?[origCoord[0] + nn, origCoord[1]]:[origCoord[0], origCoord[1] + nn];
+          coordsArray.push(nextCoord);
+        }
+        solvedCoords.push(coordsArray);
+      }
+    }
+
+    for(let j = 0;j < this.state.puzzleArray.length;j++){
+      for(let k = 0;k < this.state.puzzleArray[0].length;k++){
+        const ref = `tile${j}|${k}`;
+        this.tileRefs[ref].setBgColor();
+      }
+    }
+
+    if(solvedCoords.length){
+      for(let j = 0; j < solvedCoords.length; j++){
+        for(let k = 0; k < solvedCoords[j].length; k++){
+          const ref = `tile${solvedCoords[j][k][1]}|${solvedCoords[j][k][0]}`;
+          this.tileRefs[ref].setBgColor(colors.green);
+        }
+      }
+    }
+  }
+
   reloadGame(){
     window.location.reload();
   }
@@ -211,16 +263,14 @@ class GameBoard extends Component {
     return(
       <CrosswordTile
         key={`${index}-${i}`} 
-        id={i}
+        id={"tile" + i + "|" + index}
         letter={letter}
         ref={(ref) => this.tileRefs["tile" + index + "|" + i] = ref}
-        myRef={"tile" + index + "|" + i}
         left={i * th}
         top={index * th}
         tileHeight={th}
       />
     );
-
   }
 
   renderTileSet(obj, index) {
@@ -252,6 +302,7 @@ class GameBoard extends Component {
           tileHeight={th}
           delay={delays[i]}
           sendStopping={(x, y, left, top, id, state) => this.handleTileStop(x, y, left, top, id, state)}
+          requestGreenOrDefault={(id) => this.turnAllGreenOrDefault(id)}
         />
       </div>
     );

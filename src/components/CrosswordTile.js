@@ -5,7 +5,6 @@ import colors from '../config/colors';
 import { extractNumbersFromString } from '../config/functions';
 import '../styles/animations.css';
 import { getColor, getDarkColor } from '../config/functions';
-// const bevel = "inset 0.2em 0.2em 0.2em 0 rgba(255,255,255,0.5), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5)"
 const animateCSS = (element, animation, prefix = 'animate__') =>
   new Promise((resolve, reject) => {
     const animationName = `${prefix}${animation}`;
@@ -18,36 +17,31 @@ const animateCSS = (element, animation, prefix = 'animate__') =>
     element.addEventListener('animationend', handleAnimationEnd, {once: true});
   });
 
-
 class CrosswordTile extends Component {
   constructor(props) {
     super(props);
     this.state = {
       intervalID: 0,
+      coords: [],
       bgColor: getColor(),
+      storedColor: null,
       textColor: colors.text_white,
       boardTileColor: colors.gray_3,
       puzzleTileColor: colors.text_white,
       toColor: getDarkColor(),
-      tileKey: this.props.myRef,
-      tileKeyStored: this.props.myRef,
+      tileKey: this.props.id,
+      tileKeyStored: this.props.id,
       animDelay: Math.random(),
       bevel: "inset 0.2em 0.2em 0.2em 0 rgba(255,255,255,0.5), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5)"
-      // show: true,
-      // zIndex: 0
     };
     this.tileRefs = [];
   }
 
   componentDidMount(){
-    // const randColor = getColor();
-    const randColor2 = getColor();
-    // let tileColor = colors.text_white;
-    let tileColor2 = colors.text_white;
-    // tileColor = (this.props.letter === ".")?randColor:tileColor;
-    tileColor2 = (this.props.letter === ".")?randColor2:tileColor2;
-    this.setState({toColor: tileColor2});//bgColor: tileColor, 
-
+    const tileColor = this.props.letter === "."?getColor():colors.text_white;
+    const coords = extractNumbersFromString(this.props.id);
+    
+    this.setState({toColor: tileColor, storedColor: this.state.bgColor, coords: coords});
   }
 
   showSolved(ref){
@@ -74,21 +68,51 @@ class CrosswordTile extends Component {
 
   cycleBGColor(){
     if(this.state.tileKey !== this.state.tileKeyStored){
-    let initialColor = this.state.toColor;
-    let nextColor = getDarkColor();
-    if(this.props.letter === '.'){
-      this.setState({puzzleTileColor: initialColor, boardTileColor: initialColor, toColor: nextColor});
+      let initialColor = this.state.toColor;
+      let nextColor = getDarkColor();
+      if(this.props.letter === '.'){
+        this.setState({puzzleTileColor: initialColor, boardTileColor: initialColor, toColor: nextColor});
+      }
+      }else{
+      clearInterval(this.state.intervalID);
     }
-    }else{
-    clearInterval(this.state.intervalID);
   }
-  }
+
   startColorCycling(){
     if(this.state.intervalID === 0){
       this.setState({tileKey: this.state.tileKey + 1});
       this.cycleBGColor();
-      let intID = setInterval(() => {this.cycleBGColor()}, 1950);
+      let intID = setInterval(() => {this.cycleBGColor()}, 2000);
       this.setState({intervalID: intID});
+    }
+  }
+
+  setBgColor(color){
+    const newColor = color?color:this.state.storedColor;
+    this.setState({bgColor: newColor});
+  }
+
+  turnGreenIfSolved(solvedArr){
+    if(solvedArr.length){
+      console.log("solvedArr in tile: " + JSON.stringify(solvedArr));
+      for(let j = 0; j < solvedArr.length; j++){
+        for(let k = 0; k < solvedArr[j].length; k++){
+          if(solvedArr[j][k][0] === this.state.coords[0] && solvedArr[j][k][1] === this.state.coords[1]){
+      console.log("solvedArr[j][k]: " + solvedArr[j][k] + ", this.state.coords: " + this.state.coords + ", letter: " + this.props.letter);
+            
+            this.setState({bgColor: colors.green});
+          }
+          else{
+      console.log("solvedArr[j][k]: " + solvedArr[j][k] + ", this.state.coords: " + this.state.coords + ", letter: " + this.props.letter);
+            this.setState({bgColor: this.state.storedColor});
+          }
+        }
+      
+      }
+
+    }else{
+      console.log("no solved");
+      this.setState({bgColor: this.state.storedColor});
     }
   }
   toggleColorCycle(){
@@ -101,44 +125,38 @@ class CrosswordTile extends Component {
   }
 
   render() {
-    const { tileHeight, left, top, letter, myRef } = this.props;
+    const { tileHeight, left, top, letter, id } = this.props;
 
     return (
-      // <AnimatePresence>
-      //   {this.state.show && 
-          <motion.div 
-            ref={(ref) => this.tileRefs[myRef] = ref}
-            style=
-              {{
-                ...tile_styles.tile, 
-                backgroundColor: letter === "."?this.state.boardTileColor:letter === "*"?this.state.puzzleTileColor:this.state.bgColor, 
-                boxShadow: letter !== "." && letter !== "*"?this.state.bevel:null, 
-                height: tileHeight - 4, 
-                width: tileHeight - 4,
-                top: top,
-                left: left,
-              }}
-              animate={this.state.tileKey === this.state.tileKeyStored || (letter !== "*" && letter !== ".") ? 
-                {} 
-                : 
-                { backgroundColor: [this.state.boardTileColor, this.state.toColor] }
-              }
-              transition={this.state.tileKey === this.state.tileKeyStored || (letter !== "*" && letter !== ".") ? 
-                {}
-                :
-                { duration: 2, ease: "linear", repeat: Infinity }
-              }
-              // exit={{ y: 800, opacity: 0 }}
-            >
-            <div style={{...tile_styles.text, fontSize: tileHeight * 0.6, color: letter === "." || letter === "*"?colors.transparent:this.state.textColor}}>
-              {letter.toUpperCase()}
-            </div>
-          </motion.div>
-      //   }
-      // </AnimatePresence>
+      <motion.div 
+        ref={(ref) => this.tileRefs[id] = ref}
+        style=
+          {{
+            ...tile_styles.tile, 
+            backgroundColor: letter === "."?this.state.boardTileColor:letter === "*"?this.state.puzzleTileColor:this.state.bgColor, 
+            boxShadow: letter !== "." && letter !== "*"?this.state.bevel:null, 
+            height: tileHeight - 4, 
+            width: tileHeight - 4,
+            top: top,
+            left: left,
+          }}
+          animate={this.state.tileKey === this.state.tileKeyStored || (letter !== "*" && letter !== ".") ? 
+            {} 
+            : 
+            { backgroundColor: [this.state.boardTileColor, this.state.toColor] }
+          }
+          transition={this.state.tileKey === this.state.tileKeyStored || (letter !== "*" && letter !== ".") ? 
+            {}
+            :
+            { duration: 2, ease: "linear", repeat: Infinity }
+          }
+        >
+        <div style={{...tile_styles.text, fontSize: tileHeight * 0.6, color: letter === "." || letter === "*"?colors.transparent:this.state.textColor}}>
+          {letter.toUpperCase()}
+        </div>
+      </motion.div>
     );
   }
-
 }
 
 const tile_styles = {

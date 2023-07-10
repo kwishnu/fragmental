@@ -67,6 +67,7 @@ class TileSet extends Component {
     let letters = this.state.letters;
 
     if(this.state.flipping){
+      // console.log("case 1");
       this.setState({
         width: this.state.width === tiles * this.props.tileHeight?this.props.tileHeight:tiles * this.props.tileHeight,
         height: this.state.height === tiles * this.props.tileHeight?this.props.tileHeight:tiles * this.props.tileHeight,
@@ -102,6 +103,7 @@ class TileSet extends Component {
         yPosition: this.state.yPosition + addToY
       });
     }else if(!this.state.flipping && (this.state.overBoard || this.state.moved)){
+      // console.log("case 2");
       this.setState({
         flipping: true,
         moved: true,
@@ -116,6 +118,7 @@ class TileSet extends Component {
         zIndex: 10
       });
     }else{
+      // console.log("case 3");
       const addToDoublesX = this.props.letters.length === 2?th:0;
       this.setState({
         flipping: true,
@@ -147,7 +150,7 @@ class TileSet extends Component {
 
   showSolved(refPrefix){
     let index = 0;
-    this.state.letters.forEach(element => {
+    this.state.letters.forEach(() => {
       this.tileRefs[refPrefix + "|" + index].showSolved(refPrefix + "|" + index);
       index++;
     });
@@ -155,16 +158,16 @@ class TileSet extends Component {
 
   indicateBadMove(refPrefix){
     let index = 0;
-    this.state.letters.forEach(element => {
-      this.tileRefs[refPrefix + "|" + index].indicateBadMove(refPrefix + "|" + index);
+    this.state.letters.forEach(() => {
+      this.tileRefs[refPrefix + "|" + index].setBgColor(colors.dark_pink);
       index++;
     });
   }
 
   resetBgColor(refPrefix){
     let index = 0;
-    this.state.letters.forEach(element => {
-      this.tileRefs[refPrefix + "|" + index].resetBgColor(refPrefix + "|" + index);
+    this.state.letters.forEach(() => {
+      this.tileRefs[refPrefix + "|" + index].setBgColor(colors.text_white);
       index++;
     });
   }
@@ -181,6 +184,11 @@ class TileSet extends Component {
     this.setState({bgColor: colors.translucent});
   }
 
+  changeTileSetZIndex(val){
+    this.setState({zIndex: val});
+    this.props.requestGreenOrDefault(this.props.id);
+  }
+
   renderTile(letter, i){
     const refPrefix = idPrefix + this.props.index + "|";
 
@@ -193,6 +201,7 @@ class TileSet extends Component {
         tileHeight={this.props.tileHeight}
         delay={this.props.delay}
         setBgColor={(tileRef) => {this.changeTileSetBgColor(tileRef)}}
+        setZIndex={(tileRef) => {this.changeTileSetZIndex(tileRef)}}
       />
     )
   }

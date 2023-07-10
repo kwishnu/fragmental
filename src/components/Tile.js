@@ -24,18 +24,11 @@ class Tile extends Component {
       bgColor: colors.text_white,
       zIndex: 0,
       show: true,
-      shadow: null,
       boxShadow: "inset 0.14em 0.14em 0.14em 0 rgba(255,255,255,0.5), inset -0.14em -0.14em 0.14em 0 rgba(0,0,0,0.5)"
     };
     this.tileRefs = [];
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    // if (this.props.z !== prevProps.z) {
-    //   this.setState({zIndex: this.props.z});
-    // }
-  }
-  
   showSolved(ref){
     const coords = extractNumbersFromString(ref);
     const animElement = this.tileRefs[ref];
@@ -49,17 +42,13 @@ class Tile extends Component {
     }, 5000);
   }
 
-  indicateBadMove(){
-    this.setState({bgColor: colors.dark_pink});
-  }
-
-  resetBgColor(){
-    this.setState({bgColor: colors.text_white});
+  setBgColor(color){
+    this.setState({bgColor: color});
   }
 
   render() {
     const { letter, tileHeight, delay, id } = this.props;
-
+// console.log("coords for tile " + this.props.id + ": " + this.state.coords);
     return (
       <AnimatePresence>
         {this.state.show && 
@@ -71,14 +60,13 @@ class Tile extends Component {
             onAnimationComplete={() => this.props.setBgColor()}
           >
             <div ref={(ref) => this.tileRefs[id] = ref} style={{display: "flex", position: "relative"}}>
-              <div
+              <div onMouseDown={() => this.props.setZIndex(10)}
                 style=
                   {{
                     ...tile_styles.tile, 
                     backgroundColor: this.state.bgColor, 
                     height: tileHeight - 4, 
                     width: tileHeight - 4,
-                    // zIndex: this.props.z,
                     boxShadow: this.state.boxShadow
                   }}
               >
@@ -104,7 +92,7 @@ const tile_styles = {
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    boxShadow: "inset 0.2em 0.2em 0.2em 0 rgba(255,255,255,0.5), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5)"
+    // boxShadow: "inset 0.2em 0.2em 0.2em 0 rgba(255,255,255,0.5), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5)"
   },
   text: {
     fontFamily: 'system-ui',
