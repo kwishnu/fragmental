@@ -82,7 +82,7 @@ class CrosswordTile extends Component {
     if(this.state.intervalID === 0){
       this.setState({tileKey: this.state.tileKey + 1});
       this.cycleBGColor();
-      let intID = setInterval(() => {this.cycleBGColor()}, 2000);
+      let intID = setInterval(() => {this.cycleBGColor()}, (2000 - (Math.random() * 100)));
       this.setState({intervalID: intID});
     }
   }
@@ -92,29 +92,30 @@ class CrosswordTile extends Component {
     this.setState({bgColor: newColor});
   }
 
-  turnGreenIfSolved(solvedArr){
-    if(solvedArr.length){
-      console.log("solvedArr in tile: " + JSON.stringify(solvedArr));
-      for(let j = 0; j < solvedArr.length; j++){
-        for(let k = 0; k < solvedArr[j].length; k++){
-          if(solvedArr[j][k][0] === this.state.coords[0] && solvedArr[j][k][1] === this.state.coords[1]){
-      console.log("solvedArr[j][k]: " + solvedArr[j][k] + ", this.state.coords: " + this.state.coords + ", letter: " + this.props.letter);
+  // turnGreenIfSolved(solvedArr){
+  //   if(solvedArr.length){
+  //     console.log("solvedArr in tile: " + JSON.stringify(solvedArr));
+  //     for(let j = 0; j < solvedArr.length; j++){
+  //       for(let k = 0; k < solvedArr[j].length; k++){
+  //         if(solvedArr[j][k][0] === this.state.coords[0] && solvedArr[j][k][1] === this.state.coords[1]){
+  //     console.log("solvedArr[j][k]: " + solvedArr[j][k] + ", this.state.coords: " + this.state.coords + ", letter: " + this.props.letter);
             
-            this.setState({bgColor: colors.green});
-          }
-          else{
-      console.log("solvedArr[j][k]: " + solvedArr[j][k] + ", this.state.coords: " + this.state.coords + ", letter: " + this.props.letter);
-            this.setState({bgColor: this.state.storedColor});
-          }
-        }
+  //           this.setState({bgColor: colors.green});
+  //         }
+  //         else{
+  //     console.log("solvedArr[j][k]: " + solvedArr[j][k] + ", this.state.coords: " + this.state.coords + ", letter: " + this.props.letter);
+  //           this.setState({bgColor: this.state.storedColor});
+  //         }
+  //       }
       
-      }
+  //     }
 
-    }else{
-      console.log("no solved");
-      this.setState({bgColor: this.state.storedColor});
-    }
-  }
+  //   }else{
+  //     console.log("no solved");
+  //     this.setState({bgColor: this.state.storedColor});
+  //   }
+  // }
+
   toggleColorCycle(){
     if(this.state.intervalID !== 0){
       clearInterval(this.state.intervalID);

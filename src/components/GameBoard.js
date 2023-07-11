@@ -13,7 +13,7 @@ import words7 from '../data/7letter.js';
 import words8 from '../data/8letter.js';
 import words9 from '../data/9letter.js';
 import words10 from '../data/10letter.js';
-import { generateArray, getFragments, removeLetters, getFragObj, transposeArray, concatStringArrays, splitAndFilterStrings, splitAndFilterWithIndex } from '../config/functions';//, arraysHaveSameElements
+import { generateArray, getFragments, removeLetters, getFragObj, transposeArray, concatStringArrays, splitAndFilterStrings, splitAndFilterWithIndex, checkArrayInMultiDimensional } from '../config/functions';//, arraysHaveSameElements
 const defaultChar = '.';
 const scrHeight = config.scrHeight;
 const scrWidth = config.scrWidth;
@@ -54,18 +54,18 @@ class GameBoard extends Component {
     if(!this.props.freePlay){
       setTimeout(() => {
       const puzzleSet = generateArray(size);
-      console.log("whole shebang:: " + JSON.stringify(puzzleSet));
-      console.log("puzzleSet: " + JSON.stringify(puzzleSet[0]));
+      // console.log("whole shebang:: " + JSON.stringify(puzzleSet));
+      // console.log("puzzleSet: " + JSON.stringify(puzzleSet[0]));
       const puzzleArray = puzzleSet[0];
       console.log("words: " + JSON.stringify(puzzleSet[1]));
 
       const dup = JSON.parse(JSON.stringify(puzzleArray));
       let fragments = getFragments(puzzleArray, defaultChar, size);
-      console.log("fragments: " + JSON.stringify(fragments));
+      // console.log("fragments: " + JSON.stringify(fragments));
 
 
       const fragObj = getFragObj(puzzleArray, fragments);
-      console.log("fragObj: " + JSON.stringify(fragObj));
+      // console.log("fragObj: " + JSON.stringify(fragObj));
       const filteredArray = removeLetters(puzzleArray, fragments[2]);
       const ps = JSON.parse(JSON.stringify(filteredArray));
 
@@ -150,7 +150,7 @@ class GameBoard extends Component {
 
   evaluateBoard(played, id){
     const boardArr = this.getBoardArray(played, id);
-    console.log("id: " + JSON.stringify(id));
+
     const concatenatedHorizontal = concatStringArrays(boardArr);
     const concatenatedVertical = concatStringArrays(transposeArray(boardArr));
     const horWords = splitAndFilterStrings(concatenatedHorizontal, defaultChar);
@@ -183,7 +183,7 @@ class GameBoard extends Component {
       const coordsToUse = horizontal?[played[j].origin[0], played[j].origin[1]]:[played[j].origin[1], played[j].origin[0]];
       for(let k = 0;k < fragLetters.length;k++){
         if(bArray[coordsToUse[1]][coordsToUse[0] + k] !== "*" && frag.id === id){
-          this.fragRefs[id].indicateBadMove(id);
+          this.fragRefs[id].changeTilesetColor(id, colors.dark_pink, false);
           // return;
         }
         bArray[coordsToUse[1]][coordsToUse[0] + k] = fragLetters[k];
@@ -200,13 +200,14 @@ class GameBoard extends Component {
     indices.forEach((index) => {
       const dRef = "d|" + index;
       const tRef = "t|" + index;
-
+      this.fragRefs[dRef].changeTilesetColor(dRef, colors.text_white);
+      this.fragRefs[tRef].changeTilesetColor(tRef, colors.text_white);
       this.fragRefs[dRef].showSolved(dRef);
       this.fragRefs[tRef].showSolved(tRef);
     })
     for(let j = 0;j < this.state.puzzleArray.length;j++){
       for(let k = 0;k < this.state.puzzleArray[0].length;k++){
-        const ref = `tile${j}|${k}`;
+        const ref = `tile${k}|${j}`;
         this.tileRefs[ref].showSolved(ref);
       }
     }
@@ -235,21 +236,66 @@ class GameBoard extends Component {
         solvedCoords.push(coordsArray);
       }
     }
+    indices.forEach((index) => {
+      const dRef = "d|" + index;
+      const tRef = "t|" + index;
+
+      this.fragRefs[dRef].changeTilesetColor(dRef, colors.text_white);
+      this.fragRefs[tRef].changeTilesetColor(tRef, colors.text_white);
+    })
 
     for(let j = 0;j < this.state.puzzleArray.length;j++){
       for(let k = 0;k < this.state.puzzleArray[0].length;k++){
-        const ref = `tile${j}|${k}`;
+        const ref = `tile${k}|${j}`;
         this.tileRefs[ref].setBgColor();
       }
     }
 
+    let playedTileArray = [];
+
     if(solvedCoords.length){
       for(let j = 0; j < solvedCoords.length; j++){
         for(let k = 0; k < solvedCoords[j].length; k++){
-          const ref = `tile${solvedCoords[j][k][1]}|${solvedCoords[j][k][0]}`;
+          const ref = `tile${solvedCoords[j][k][0]}|${solvedCoords[j][k][1]}`;
           this.tileRefs[ref].setBgColor(colors.green);
         }
       }
+      
+      this.state.playedFragments.forEach(frag => {
+        const tileIndices = frag.id.substring(0, 1) === "d" ? [0, 1] : [0, 1, 2];
+        const horizontal = frag.state === 0 || frag.state === 2?true:false;
+        let oneTileSet = [];
+        let tileSetCoords = [];
+
+        for(let q = 0; q < tileIndices.length; q++){
+          const aCoord = horizontal?[frag.origin[0] + q, frag.origin[1]]:[frag.origin[0], frag.origin[1] + q];
+          tileSetCoords.push(aCoord);
+        }
+
+        oneTileSet.push(frag.id, tileSetCoords);
+        playedTileArray.push(oneTileSet);
+      });
+    }
+    let fragId, tilesToTurn;
+    let changeColorArr = [];
+
+    for(let w = 0; w < playedTileArray.length; w++){
+      fragId = null;
+      tilesToTurn = [];
+      for(let x = 0; x < playedTileArray[w][1].length; x++){
+        console.log("playedTileArray[w][1][x]: " + playedTileArray[w][1][x]);
+        const coordsFound = checkArrayInMultiDimensional(solvedCoords, playedTileArray[w][1][x]);
+        if(coordsFound){
+          console.log("found!");
+          fragId = playedTileArray[w][0];
+          tilesToTurn.push(x);
+        }
+      }
+      if(fragId)changeColorArr.push([fragId, tilesToTurn])
+    }
+
+    for(let y = 0; y < changeColorArr.length; y++){
+      this.fragRefs[changeColorArr[y][0]].changeTilesetColor(changeColorArr[y][0], colors.green, changeColorArr[y][1]);
     }
   }
 
@@ -259,13 +305,14 @@ class GameBoard extends Component {
 
   renderTile(letter, index, i){
     const th = this.state.tileHeight;
+    const tileName = "tile" + i + "|" + index;
 
     return(
       <CrosswordTile
         key={`${index}-${i}`} 
-        id={"tile" + i + "|" + index}
+        id={tileName}
         letter={letter}
-        ref={(ref) => this.tileRefs["tile" + index + "|" + i] = ref}
+        ref={(ref) => this.tileRefs[tileName] = ref}
         left={i * th}
         top={index * th}
         tileHeight={th}

@@ -22,6 +22,7 @@ class Tile extends Component {
     this.state = {
       beingDragged: false,
       bgColor: colors.text_white,
+      textColor: colors.off_black,
       zIndex: 0,
       show: true,
       boxShadow: "inset 0.14em 0.14em 0.14em 0 rgba(255,255,255,0.5), inset -0.14em -0.14em 0.14em 0 rgba(0,0,0,0.5)"
@@ -44,11 +45,20 @@ class Tile extends Component {
 
   setBgColor(color){
     this.setState({bgColor: color});
+    if(color === colors.green){
+      this.setState({textColor: colors.text_white});
+    }else{
+      this.setState({textColor: colors.off_black});
+    }
+  }
+
+  setTextColor(color){
+    this.setState({textColor: color});
   }
 
   render() {
     const { letter, tileHeight, delay, id } = this.props;
-// console.log("coords for tile " + this.props.id + ": " + this.state.coords);
+
     return (
       <AnimatePresence>
         {this.state.show && 
@@ -70,7 +80,7 @@ class Tile extends Component {
                     boxShadow: this.state.boxShadow
                   }}
               >
-              <div style={{...tile_styles.text, fontSize: tileHeight * 0.6, color: colors.off_black}}>
+              <div style={{...tile_styles.text, fontSize: tileHeight * 0.6, color: this.state.textColor}}>
                 {letter.toUpperCase()}
                 {/* {this.state.zIndex} */}
                 {/* {this.props.id} */}

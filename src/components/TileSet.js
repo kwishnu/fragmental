@@ -35,6 +35,7 @@ class TileSet extends Component {
   handleDrag(e, data){
     if(!this.state.beingDragged){
       this.resetBgColor(this.props.id);
+      this.props.requestGreenOrDefault(this.props.id);
       this.setState({beingDragged: true, moved: true, zIndex: 10, shadow: shadow});
     }
   }
@@ -156,13 +157,6 @@ class TileSet extends Component {
     });
   }
 
-  indicateBadMove(refPrefix){
-    let index = 0;
-    this.state.letters.forEach(() => {
-      this.tileRefs[refPrefix + "|" + index].setBgColor(colors.dark_pink);
-      index++;
-    });
-  }
 
   resetBgColor(refPrefix){
     let index = 0;
@@ -180,13 +174,27 @@ class TileSet extends Component {
     this.setState({lastPositionY: y});
   }
 
+  changeTilesetColor(refPrefix, color, tileArray){
+    if(tileArray){
+      tileArray.forEach((num) => {
+        this.tileRefs[refPrefix + "|" + num].setBgColor(color);
+      });
+    }else{
+      let index = 0;
+      this.state.letters.forEach(() => {
+        this.tileRefs[refPrefix + "|" + index].setBgColor(color);
+        index++;
+      });
+    }
+  }
+
   changeTileSetBgColor(ref){
     this.setState({bgColor: colors.translucent});
   }
 
   changeTileSetZIndex(val){
     this.setState({zIndex: val});
-    this.props.requestGreenOrDefault(this.props.id);
+    // this.props.requestGreenOrDefault(this.props.id);
   }
 
   renderTile(letter, i){

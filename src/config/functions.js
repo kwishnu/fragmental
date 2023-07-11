@@ -293,7 +293,6 @@ export function splitAndFilterWithIndex(arr, splitStr, horizontal) {
   return result;
 }
 
-
 export function arraysHaveSameElements(arr1, arr2) {
   if (arr1.length !== arr2.length) {
     return false;
@@ -555,3 +554,12 @@ export function extractNumbersFromString(inputString) {
   const numbers = matches.map(Number);
   return numbers;
 }
+
+export function checkArrayInMultiDimensional(multiDimensionalArray, subArray) {
+  return multiDimensionalArray.some((array) => {
+    return array.some((innerArray) => {
+      return JSON.stringify(innerArray) === JSON.stringify(subArray);
+    });
+  });
+}
+
