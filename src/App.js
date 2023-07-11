@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PageVisibility from 'react-page-visibility';
 import ScreenOrientationReact from 'screen-orientation-react';
+import { nanoid } from 'nanoid';
 import formatDate from 'date-fns/format';
 import colors from './config/colors';
 // import config from './config/config';
@@ -23,6 +24,7 @@ class App extends Component {
       scrHeight: window.innerHeight,
       scrWidth: window.innerWidth,
       showLaunch: true,
+      daily: false,
       showGame3: false,
       showGame4: false,
       showGame5: false,
@@ -47,6 +49,13 @@ class App extends Component {
   closeMenu() {
       this.setState({ showMenu: false });
   }
+
+  showLaunch(){
+    this.setState({ showLaunch: true, title: "" });
+    setTimeout(() => {
+      this.setState({showGame3: false, showGame4: false, showGame5: false});
+    }, 700);
+}
 
   toggleModal(which, open) {
     if (open) {
@@ -93,16 +102,19 @@ class App extends Component {
   }
 
   startGame(which, daily){
+    const keyIDFrag = nanoid();
+
     this.setState({title: "FragMental"});
+
     switch(which){
       case 3:
-        this.setState({freePlay: daily, showGame3: true, showGame4: false, showGame5: false});
+        this.setState({daily: daily, showGame3: true, showGame4: false, showGame5: false, keyIDFrag: keyIDFrag});
       break;
       case 4:
-        this.setState({freePlay: daily, showGame4: true, showGame3: false, showGame5: false});
+        this.setState({daily: daily, showGame4: true, showGame3: false, showGame5: false, keyIDFrag: keyIDFrag});
       break;
       default:
-        this.setState({freePlay: daily, showGame5: true, showGame3: false, showGame4: false});
+        this.setState({daily: daily, showGame5: true, showGame3: false, showGame4: false, keyIDFrag: keyIDFrag});
     }
   }
 
@@ -138,6 +150,7 @@ class App extends Component {
       message: "Please play FragMental in portrait mode"
     }
     const selectedPattern = this.state.showGame3 ? patterns.bg3 : this.state.showGame4? patterns.bg4:this.state.showGame5?patterns.bg5:patterns.bg0;
+    const {keyIDFrag} = this.state;
 
     return (
       <PageVisibility onChange={isVisible => this.handleVisibilityChange(isVisible)}>
@@ -174,9 +187,12 @@ class App extends Component {
                 puzzleSet={this.state.puzzlesObj["3"].puzzleSet} 
                 fragments={this.state.puzzlesObj["3"].fragments} 
                 fragObj={this.state.puzzlesObj["3"].fragObj} 
-                freePlay={this.state.freePlay}
-              />
-            }
+                daily={this.state.daily}
+                startGame={(which, daily) => { this.startGame(which, daily) }}
+                keyIDFragment={keyIDFrag}
+                showLaunch={() => { this.showLaunch() }}
+                />
+                  }
             {this.state.showGame4 &&
               <GameBoard 
                 count={4} 
@@ -184,9 +200,12 @@ class App extends Component {
                 puzzleSet={this.state.puzzlesObj["4"].puzzleSet} 
                 fragments={this.state.puzzlesObj["4"].fragments} 
                 fragObj={this.state.puzzlesObj["4"].fragObj} 
-                freePlay={this.state.freePlay}
-              />
-            }
+                daily={this.state.daily}
+                startGame={(which, daily) => { this.startGame(which, daily) }}
+                keyIDFragment={keyIDFrag}
+                showLaunch={() => { this.showLaunch() }}
+                />
+                  }
             {this.state.showGame5 &&
               <GameBoard 
                 count={5} 
@@ -194,9 +213,12 @@ class App extends Component {
                 puzzleSet={this.state.puzzlesObj["5"].puzzleSet} 
                 fragments={this.state.puzzlesObj["5"].fragments} 
                 fragObj={this.state.puzzlesObj["5"].fragObj} 
-                freePlay={this.state.freePlay}
-              />
-            }
+                daily={this.state.daily}
+                startGame={(which, daily) => { this.startGame(which, daily) }}
+                keyIDFragment={keyIDFrag}
+                showLaunch={() => { this.showLaunch() }}
+                />
+                  }
             <div 
               id="appRightBox"
               style={{ ...styles.adBox, backgroundColor:colors.gray_3, borderRightColor: colors.off_black, right: 0 }}

@@ -23,6 +23,7 @@ class TileSet extends Component {
       flipping: false,
       beingDragged: false,
       bgColor: colors.transparent,
+      disabled: false,
       zIndex: 0,
     };
     this.tileRefs = [];
@@ -161,6 +162,7 @@ class TileSet extends Component {
       this.tileRefs[refPrefix + "|" + index].showSolved(refPrefix + "|" + index);
       index++;
     });
+    this.setState({disabled: true});
   }
 
 
@@ -240,6 +242,7 @@ class TileSet extends Component {
             this.handleStop(e, data);
           }
         }}
+        disabled={this.state.disabled}
       > 
         <div 
           style=

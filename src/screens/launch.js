@@ -37,7 +37,7 @@ class Launch extends Component {
     // }).done();
   }
   closeSelf(){
-    this.props.requestModalClose("Launch", false);
+    this.props.requestModalClose("Home", false, true);
   }
 
   closeMenu(){
@@ -47,7 +47,7 @@ class Launch extends Component {
   }
 
   launchPuzzle(which, daily){
-    this.setState({toggleMenuListener: false});
+    this.setState({closeMenuListener: false});
     this.closeSelf();
     this.props.startGame(which, daily);
   }
@@ -73,15 +73,13 @@ class Launch extends Component {
               <img src={MenuImage} alt={"Menu"} style={{height: config.scrHeight/11}}/>
             </div>
             <div style={{...launch_styles.modalBody, justifyContent: isPhone?"flex-start":"center"}}>
-              {/* //, backgroundColor: colors.dark_green */}
-
               <div style={{...launch_styles.intro_container}}>
-                    <div style={launch_styles.title}>
-                      {dateToday}
-                    </div>
-                    <div style={{...launch_styles.text, marginLeft: 15}}>
-                      {introText}
-                    </div>
+                <div style={launch_styles.title}>
+                  {dateToday}
+                </div>
+                <div style={{...launch_styles.text, marginLeft: 15}}>
+                  {introText}
+                </div>
               </div>
               <div style={launch_styles.labelContainer}>
                 <div style={launch_styles.labelBackground}>
