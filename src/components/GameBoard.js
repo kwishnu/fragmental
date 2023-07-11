@@ -150,25 +150,26 @@ class GameBoard extends Component {
 
   evaluateBoard(played, id){
     const boardArr = this.getBoardArray(played, id);
+    if(boardArr){
+      const concatenatedHorizontal = concatStringArrays(boardArr);
+      const concatenatedVertical = concatStringArrays(transposeArray(boardArr));
+      const horWords = splitAndFilterStrings(concatenatedHorizontal, defaultChar);
+      const vertWords = splitAndFilterStrings(concatenatedVertical, defaultChar);
+      const allWordsFromSplits = horWords.concat(vertWords);
+      console.log(JSON.stringify(allWordsFromSplits));
+      let foundNonDictionaryWord = false;
+      const allWords = [...words3, ...words4, ...words5, ...words6, ...words7, ...words8, ...words9, ...words10];
 
-    const concatenatedHorizontal = concatStringArrays(boardArr);
-    const concatenatedVertical = concatStringArrays(transposeArray(boardArr));
-    const horWords = splitAndFilterStrings(concatenatedHorizontal, defaultChar);
-    const vertWords = splitAndFilterStrings(concatenatedVertical, defaultChar);
-    const allWordsFromSplits = horWords.concat(vertWords);
-    console.log(JSON.stringify(allWordsFromSplits));
-    let foundNonDictionaryWord = false;
-    const allWords = [...words3, ...words4, ...words5, ...words6, ...words7, ...words8, ...words9, ...words10];
-
-    for(let m = 0;m < allWordsFromSplits.length;m++){
-      foundNonDictionaryWord = allWords.includes(allWordsFromSplits[m])?false:true;
-      if(foundNonDictionaryWord)break;
+      for(let m = 0;m < allWordsFromSplits.length;m++){
+        foundNonDictionaryWord = allWords.includes(allWordsFromSplits[m])?false:true;
+        if(foundNonDictionaryWord)break;
+      }
+      if(!foundNonDictionaryWord){
+        this.showSolved();
+        return;
+      }
+      this.turnAllGreenOrDefault();
     }
-    if(!foundNonDictionaryWord){
-      this.showSolved();//arraysHaveSameElements(allWordsFromSplits, this.state.words)
-      return;
-    }
-    this.turnAllGreenOrDefault();
   }
 
   getBoardArray(played, id){
@@ -184,7 +185,7 @@ class GameBoard extends Component {
       for(let k = 0;k < fragLetters.length;k++){
         if(bArray[coordsToUse[1]][coordsToUse[0] + k] !== "*" && frag.id === id){
           this.fragRefs[id].changeTilesetColor(id, colors.dark_pink, false);
-          // return;
+          return false;
         }
         bArray[coordsToUse[1]][coordsToUse[0] + k] = fragLetters[k];
       }

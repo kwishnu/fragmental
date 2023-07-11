@@ -33,10 +33,15 @@ class TileSet extends Component {
   }
 
   handleDrag(e, data){
-    if(!this.state.beingDragged){
-      this.resetBgColor(this.props.id);
-      this.props.requestGreenOrDefault(this.props.id);
-      this.setState({beingDragged: true, moved: true, zIndex: 10, shadow: shadow});
+    const deltaX = Math.abs(Math.floor(data.x) - this.state.lastPositionX);
+    const deltaY = Math.abs(Math.floor(data.y) - this.state.lastPositionY);
+  
+    if (deltaX >= 5 || deltaY >= 5) {
+      if(!this.state.beingDragged){
+        this.resetBgColor(this.props.id);
+        this.props.requestGreenOrDefault(this.props.id);
+        this.setState({beingDragged: true, moved: true, zIndex: 10, shadow: shadow});
+      }
     }
   }
 
@@ -59,6 +64,7 @@ class TileSet extends Component {
 
   handleClick(){
     this.resetBgColor(this.props.id);
+    this.props.requestGreenOrDefault(this.props.id);
     const newFlipState = (this.state.flipState + 1)%4;
     const tiles = this.props.letters.length === 2?2:3;
     const th = this.props.tileHeight;
@@ -101,7 +107,7 @@ class TileSet extends Component {
       this.setState({
         flexDirection: dir, 
         xPosition: this.state.xPosition + addToX, 
-        yPosition: this.state.yPosition + addToY
+        yPosition: this.state.yPosition + addToY,
       });
     }else if(!this.state.flipping && (this.state.overBoard || this.state.moved)){
       // console.log("case 2");
@@ -116,7 +122,7 @@ class TileSet extends Component {
         height: this.state.height === tiles * th?th:tiles * th,
         flipState: newFlipState,
         letters: newFlipState === 1 || newFlipState === 3? letters:letters.reverse(),
-        zIndex: 10
+        zIndex: 10,
       });
     }else{
       // console.log("case 3");
@@ -131,7 +137,7 @@ class TileSet extends Component {
         height: this.state.height === tiles * th?th:tiles * th,
         flipState: newFlipState,
         letters: newFlipState === 1 || newFlipState === 3? letters:letters.reverse(),
-        zIndex: 10
+        zIndex: 10,
       });
     }
   }
