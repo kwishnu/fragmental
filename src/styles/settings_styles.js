@@ -19,7 +19,7 @@ containerView: {
   justifyContent: "center",
   alignItems: "center",
   backgroundColor: 'rgba(0, 0, 0, 0)',
-  zIndex: 100
+  zIndex: 1000
 },
 loading_container: {
   display: 'flex',

@@ -11,7 +11,7 @@ class Help extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      darkModeEnabled: false,
+      darkModeEnabled: true,
     };
   }
   componentDidMount() {
@@ -48,8 +48,9 @@ class Help extends Component {
     const row2Text52 = "...or the round will fail \n\n \u2605  Completing a game without using hints or failing as described will earn a star for your home screen!";
     const row3Text1 = "\u2022  Cost 5 points for the first, 10 thereafter";
     const row4Text1 = "\u2022  1 point earned for each letter in the word formed";
-    const closeImage = this.props.darkModeEnabled? require("../images/close.png"):require("../images/close_black.png");
-    const { isModalVisible, darkModeEnabled } = this.props;
+    const closeImage = this.state.darkModeEnabled? require("../images/close.png"):require("../images/close_black.png");
+    const { isModalVisible } = this.props;
+    const { darkModeEnabled } = this.state;
 
     return(
       <AnimatePresence>
@@ -68,11 +69,11 @@ class Help extends Component {
                 <div style={{...help_styles.title, color: darkModeEnabled ? colors.off_white:colors.off_black}}>How to Play</div>
               </div>
               <div style={help_styles.r_tile_container}>
-                <img
+                {/* <img
                   src={require("../images/r_ravl_tile.png")}
                   style={help_styles.r_tile_image}
                   alt={"Tile"}
-                />
+                /> */}
               </div>
               <div style={help_styles.closeButtonContainer}>
                 <img

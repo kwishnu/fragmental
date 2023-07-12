@@ -9,6 +9,9 @@ import Menu from './components/Menu.js';
 import Header from './components/Header.js';
 import GameBoard from './components/GameBoard';
 import Launch from "./screens/launch";
+import Help from "./screens/help";
+import Settings from "./screens/settings";
+import Support from "./screens/support";
 import styles from './styles/appStyles.js';
 import {getLaunchText, getPuzzles} from './data/dataHelper';
 // const sampleBlurb = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
@@ -28,6 +31,9 @@ class App extends Component {
       showGame3: false,
       showGame4: false,
       showGame5: false,
+      showHelpModal: false,
+      showSupportModal: false,
+      showSettingsModal: false,
       puzzlesObj: {},
       title: ""
     }
@@ -85,7 +91,7 @@ class App extends Component {
         showHelpModal: false,
         showSupportModal: false,
         showEndGameModal: false,
-        showLaunch: false,
+        // showLaunch: false,
       });
 
     }
@@ -231,6 +237,23 @@ class App extends Component {
             startGame={(which, daily) => { this.startGame(which, daily) }}
             requestMenuClose={() => { this.closeMenu()}}
             darkModeEnabled={this.state.darkModeEnabled}
+          />
+          <Settings
+            isModalVisible={this.state.showSettingsModal}
+            requestModalClose={() => { this.toggleModal(null, false) }}
+            sendValueToGame={(val) => { this.updateSettingsValue(val) }}
+            navigation={this.props.navigation}
+          />
+          <Help
+            isModalVisible={this.state.showHelpModal}
+            requestModalClose={(which, open) => { this.toggleModal(which, open) }}
+            darkModeEnabled={this.state.darkModeEnabled}
+          />
+          <Support
+            isModalVisible={this.state.showSupportModal}
+            requestModalClose={(which, open) => { this.toggleModal(which, open) }}
+            darkModeEnabled={this.state.darkModeEnabled}
+            startPurchaseInGame={(val) => { this.initiatePurchase(val) }}
           />
         </div>
       </PageVisibility>

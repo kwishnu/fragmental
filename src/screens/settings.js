@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Switch from "react-switch";
+// import Switch from "react-switch";
 import { motion, AnimatePresence } from "framer-motion"
-import tinycolor from 'tinycolor2';
-import ReactSimpleRange from "react-simple-range";
+// import tinycolor from 'tinycolor2';
+// import ReactSimpleRange from "react-simple-range";
 import { nanoid } from 'nanoid';
-import { ToastContainer, toast } from 'react-toastify';
+// import { ToastContainer, toast } from 'react-toastify';
 import settings_styles from "../styles/settings_styles";
 import colors from '../config/colors';
 import config from '../config/config';
@@ -109,16 +109,16 @@ class Settings extends Component {
     }
   }   
   showAlert(){
-    toast("Sorry, these features come with the premium upgrade! \u000D Please visit \u2764 Support", {
-      position: "bottom-center",
-      autoClose: 2400,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-    });
+    // toast("Sorry, these features come with the premium upgrade! \u000D Please visit \u2764 Support", {
+    //   position: "bottom-center",
+    //   autoClose: 2400,
+    //   hideProgressBar: true,
+    //   closeOnClick: false,
+    //   pauseOnHover: false,
+    //   draggable: false,
+    //   progress: undefined,
+    //   theme: "light",
+    // });
   }
   closeSelf(){
     this.props.requestModalClose("Settings", false);
@@ -176,46 +176,46 @@ class Settings extends Component {
     }
   }
   handleColorChange(sliderSetting) {
-    const colResult = tinycolor({ h: sliderSetting.value, s: 96, l: this.state.valSliderValue });
-    this.setState({swatchBG: colResult.toHexString()});
+    // const colResult = tinycolor({ h: sliderSetting.value, s: 96, l: this.state.valSliderValue });
+    // this.setState({swatchBG: colResult.toHexString()});
   }
   handleColorChangeComplete(sliderSetting){
-    const colResult = tinycolor({ h: sliderSetting.value, s: 96, l: this.state.valSliderValue }).toHexString();
-    this.setState({colorSliderValue: sliderSetting.value});
-    document.querySelector('meta[name="theme-color"]').setAttribute('content', colResult);
-    global.bgColor = colResult;
-    try {
-        window.localStorage.setItem(KEY_BGColorSliderValue, sliderSetting.value.toString());
-    } catch (error) {
-        window.alert('window.localStorage error: ' + error.message);
-    }
-    try {
-        window.localStorage.setItem(KEY_BGColorPref, colResult);
-    } catch (error) {
-        window.alert('window.localStorage error: ' + error.message);
-    }
-    this.setState({colorSliderValue: sliderSetting.value});
+    // const colResult = tinycolor({ h: sliderSetting.value, s: 96, l: this.state.valSliderValue }).toHexString();
+    // this.setState({colorSliderValue: sliderSetting.value});
+    // document.querySelector('meta[name="theme-color"]').setAttribute('content', colResult);
+    // global.bgColor = colResult;
+    // try {
+    //     window.localStorage.setItem(KEY_BGColorSliderValue, sliderSetting.value.toString());
+    // } catch (error) {
+    //     window.alert('window.localStorage error: ' + error.message);
+    // }
+    // try {
+    //     window.localStorage.setItem(KEY_BGColorPref, colResult);
+    // } catch (error) {
+    //     window.alert('window.localStorage error: ' + error.message);
+    // }
+    // this.setState({colorSliderValue: sliderSetting.value});
   }
   handleColorValChange(sliderSetting){
-    const colResult = tinycolor({ h: this.state.colorSliderValue, s: 96, l: sliderSetting.value });
-    this.setState({swatchBG: colResult.toHexString()});
+    // const colResult = tinycolor({ h: this.state.colorSliderValue, s: 96, l: sliderSetting.value });
+    // this.setState({swatchBG: colResult.toHexString()});
   }
   handleColorValChangeComplete(sliderSetting){
-    console.log("sliderSetting: " + sliderSetting.value);
-    const colResult = tinycolor({ h: this.state.colorSliderValue, s: 96, l: sliderSetting.value }).toHexString();
-    document.querySelector('meta[name="theme-color"]').setAttribute('content', colResult);
-    global.bgColor = colResult;
-    try {
-        window.localStorage.setItem(KEY_BGValSliderValue, sliderSetting.value.toString());
-    } catch (error) {
-        window.alert('window.localStorage error: ' + error.message);
-    }
-    try {
-        window.localStorage.setItem(KEY_BGColorPref, colResult);
-    } catch (error) {
-        window.alert('window.localStorage error: ' + error.message);
-    }
-    this.setState({valSliderValue: sliderSetting.value});
+    // console.log("sliderSetting: " + sliderSetting.value);
+    // const colResult = tinycolor({ h: this.state.colorSliderValue, s: 96, l: sliderSetting.value }).toHexString();
+    // document.querySelector('meta[name="theme-color"]').setAttribute('content', colResult);
+    // global.bgColor = colResult;
+    // try {
+    //     window.localStorage.setItem(KEY_BGValSliderValue, sliderSetting.value.toString());
+    // } catch (error) {
+    //     window.alert('window.localStorage error: ' + error.message);
+    // }
+    // try {
+    //     window.localStorage.setItem(KEY_BGColorPref, colResult);
+    // } catch (error) {
+    //     window.alert('window.localStorage error: ' + error.message);
+    // }
+    // this.setState({valSliderValue: sliderSetting.value});
   }
   restoreDefaults(){
     this.setState({
@@ -274,28 +274,28 @@ class Settings extends Component {
 render() {
   let { 
     darkModeSwitchEnabled, 
-    easyModeSwitchEnabled, 
+    // easyModeSwitchEnabled, 
     darkModeEnabled, 
-    leaveAnimationChecked,
-    spinAnimationChecked,
-    noneAnimationChecked
+    // leaveAnimationChecked,
+    // spinAnimationChecked,
+    // noneAnimationChecked
   } = this.state;
   const closeImage = darkModeEnabled? require("../images/close.png"):require("../images/close_black.png");
   const { isModalVisible } = this.props;
-  const leaveCheckImg = leaveAnimationChecked && !darkModeEnabled? require("../images/checkbox_checked.png") :
-                        leaveAnimationChecked && darkModeEnabled? require("../images/checkbox_checked_white.png") :
-                        !leaveAnimationChecked && !darkModeEnabled? require("../images/checkbox_unchecked.png") :
-                        require("../images/checkbox_unchecked_white.png");
-  const spinCheckImg = spinAnimationChecked && !darkModeEnabled? require("../images/checkbox_checked.png") :
-                        spinAnimationChecked && darkModeEnabled? require("../images/checkbox_checked_white.png") :
-                        !spinAnimationChecked && !darkModeEnabled? require("../images/checkbox_unchecked.png") :
-                        require("../images/checkbox_unchecked_white.png");
-  const noneCheckImg = noneAnimationChecked && !darkModeEnabled? require("../images/checkbox_checked.png") :
-                        noneAnimationChecked && darkModeEnabled? require("../images/checkbox_checked_white.png") :
-                        !noneAnimationChecked && !darkModeEnabled? require("../images/checkbox_unchecked.png") :
-                        require("../images/checkbox_unchecked_white.png");
-  const hueSliderImage = require("../images/rainbow_slider.png");
-  const valueSliderImage = require("../images/value_gradient.png");
+  // const leaveCheckImg = leaveAnimationChecked && !darkModeEnabled? require("../images/checkbox_checked.png") :
+  //                       leaveAnimationChecked && darkModeEnabled? require("../images/checkbox_checked_white.png") :
+  //                       !leaveAnimationChecked && !darkModeEnabled? require("../images/checkbox_unchecked.png") :
+  //                       require("../images/checkbox_unchecked_white.png");
+  // const spinCheckImg = spinAnimationChecked && !darkModeEnabled? require("../images/checkbox_checked.png") :
+  //                       spinAnimationChecked && darkModeEnabled? require("../images/checkbox_checked_white.png") :
+  //                       !spinAnimationChecked && !darkModeEnabled? require("../images/checkbox_unchecked.png") :
+  //                       require("../images/checkbox_unchecked_white.png");
+  // const noneCheckImg = noneAnimationChecked && !darkModeEnabled? require("../images/checkbox_checked.png") :
+  //                       noneAnimationChecked && darkModeEnabled? require("../images/checkbox_checked_white.png") :
+  //                       !noneAnimationChecked && !darkModeEnabled? require("../images/checkbox_unchecked.png") :
+  //                       require("../images/checkbox_unchecked_white.png");
+  // const hueSliderImage = require("../images/rainbow_slider.png");
+  // const valueSliderImage = require("../images/value_gradient.png");
   const onOrOffStr = this.state.darkModeEnabled ? "On" : "Off";
   const easyOnOrOffStr = this.state.easyModeSwitchEnabled ? "On" : "Off";
 
@@ -330,7 +330,7 @@ render() {
             </div>
             <div style={settings_styles.switchRow}>
               <div style={settings_styles.switchContainer}>
-                <Switch
+                {/* <Switch
                   height={20}
                   width={50}
                   handleDiameter={28}
@@ -342,7 +342,7 @@ render() {
                   checked={darkModeSwitchEnabled}
                   checkedIcon={false}
                   uncheckedIcon={false}
-                />
+                /> */}
               </div>
               <div style={settings_styles.switchTextContainer}>
                 <div style={{...settings_styles.text, color: this.state.darkModeEnabled ? colors.off_white:colors.off_black}}>DARK MODE</div>
@@ -355,7 +355,7 @@ render() {
             </div>
             <div style={settings_styles.switchRow}>
               <div style={settings_styles.switchContainer}>
-                <Switch
+                {/* <Switch
                   height={20}
                   width={50}
                   handleDiameter={28}
@@ -367,7 +367,7 @@ render() {
                   checked={easyModeSwitchEnabled}
                   checkedIcon={false}
                   uncheckedIcon={false}
-                />
+                /> */}
               </div>
               <div style={settings_styles.switchTextContainer}>
                 <div style={{...settings_styles.text, color: this.state.darkModeEnabled ? colors.off_white:colors.off_black}}>EASIER</div>
@@ -385,7 +385,7 @@ render() {
                 <img
                   onClick={() => this.handleAnimationRadio("Leave")}
                   style = {settings_styles.radioImage}
-                  src = {leaveCheckImg}
+                  // src = {leaveCheckImg}
                   alt = {"Leave Animation"}
                 />
               </div>
@@ -399,7 +399,7 @@ render() {
                 <img 
                   onClick={() => this.handleAnimationRadio("Spin")}
                   style = {settings_styles.radioImage}
-                  src = {spinCheckImg}
+                  // src = {spinCheckImg}
                   alt = {"Spin Animation"}
                 />
               </div>
@@ -413,7 +413,7 @@ render() {
                 <img 
                   onClick={() => this.handleAnimationRadio("None")}
                   style = {settings_styles.radioImage}
-                  src = {noneCheckImg}
+                  // src = {noneCheckImg}
                   alt = {"No Animation"}
                 />
               </div>
@@ -427,8 +427,8 @@ render() {
             </div>
               <div style={{...settings_styles.sliderContainer, pointerEvents: !global.upgradeStatus? "none":null}}>
                 <div style={settings_styles.slider1View}>
-                  <img style={settings_styles.colorPickerImage} src={hueSliderImage} alt = {"Hue Selection"}/>
-                  <ReactSimpleRange
+                  {/* <img style={settings_styles.colorPickerImage} src={hueSliderImage} alt = {"Hue Selection"}/> */}
+                  {/* <ReactSimpleRange
                     key={this.state.colorSliderKey}
                     onChangeComplete={(value) => this.handleColorChangeComplete(value)}
                     onChange={(value) => this.handleColorChange(value)}
@@ -438,11 +438,11 @@ render() {
                     trackColor={!global.upgradeStatus ? colors.transparent: darkModeEnabled ? colors.gray_3:colors.off_white2}
                     sliderColor={!global.upgradeStatus ? colors.transparent: darkModeEnabled ? colors.gray_3:colors.off_white2}
                     customThumb={<div style={settings_styles.custom_thumb}></div>}                    
-                  />
+                  /> */}
                 </div>
                 <div style={settings_styles.slider2View}>
-                  <img style={settings_styles.valuePickerImage} src={valueSliderImage} alt = {"Value Selection"}/>
-                  <ReactSimpleRange
+                  {/* <img style={settings_styles.valuePickerImage} src={valueSliderImage} alt = {"Value Selection"}/> */}
+                  {/* <ReactSimpleRange
                     key={this.state.valueSliderKey}
                     onChangeComplete={(value) => this.handleColorValChangeComplete(value)}
                     onChange={(value) => this.handleColorValChange(value)}
@@ -452,7 +452,7 @@ render() {
                     trackColor={!global.upgradeStatus ? colors.transparent: darkModeEnabled ? colors.gray_3:colors.off_white2}
                     sliderColor={!global.upgradeStatus ? colors.transparent: darkModeEnabled ? colors.gray_3:colors.off_white2}
                     customThumb={<div style={settings_styles.custom_thumb}></div>}                    
-                  />
+                  /> */}
                 </div>
               </div>
                 <div style={settings_styles.swatchContainer}>
@@ -468,7 +468,7 @@ render() {
               </div>
             </div>
           </div>
-          <ToastContainer
+          {/* <ToastContainer
             position="bottom-center"
             style={{ width: isPC?scrHeight/4.5:scrWidth*0.7 }}
             autoClose={2400}
@@ -480,7 +480,7 @@ render() {
             draggable
             pauseOnHover
             theme="light"
-          />
+          /> */}
         </div>
       </motion.div>
       }
