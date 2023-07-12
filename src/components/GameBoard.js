@@ -206,8 +206,8 @@ class GameBoard extends Component {
     indices.forEach((index) => {
       const dRef = "d|" + index;
       const tRef = "t|" + index;
-      this.fragRefs[dRef].changeTilesetColor(dRef, colors.text_white);
-      this.fragRefs[tRef].changeTilesetColor(tRef, colors.text_white);
+      this.fragRefs[dRef].changeTilesetColor(dRef, colors.text_white, false);
+      this.fragRefs[tRef].changeTilesetColor(tRef, colors.text_white, false);
       this.fragRefs[dRef].showSolved(dRef);
       this.fragRefs[tRef].showSolved(tRef);
     })
@@ -246,8 +246,8 @@ class GameBoard extends Component {
       const dRef = "d|" + index;
       const tRef = "t|" + index;
 
-      this.fragRefs[dRef].changeTilesetColor(dRef, colors.text_white);
-      this.fragRefs[tRef].changeTilesetColor(tRef, colors.text_white);
+      this.fragRefs[dRef].changeTilesetColor(dRef, colors.text_white, false);
+      this.fragRefs[tRef].changeTilesetColor(tRef, colors.text_white, false);
     })
 
     for(let j = 0;j < this.state.puzzleArray.length;j++){

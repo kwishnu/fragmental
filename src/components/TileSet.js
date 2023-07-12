@@ -22,6 +22,7 @@ class TileSet extends Component {
       flipState: this.props.flipState,
       flipping: false,
       beingDragged: false,
+      positionInvalid: false,
       bgColor: colors.transparent,
       disabled: false,
       zIndex: 0,
@@ -33,6 +34,10 @@ class TileSet extends Component {
     this.setState({xPosition: this.props.tileHeight * 0.4 + this.props.index * 20, yPosition: 3 * this.props.tileHeight + this.props.index * 10});
   }
 
+  componentWillUnmount() {
+    clearTimeout(this.dragEndTimeout);
+  }
+
   handleDrag(e, data){
     const deltaX = Math.abs(Math.floor(data.x) - this.state.lastPositionX);
     const deltaY = Math.abs(Math.floor(data.y) - this.state.lastPositionY);
@@ -41,13 +46,18 @@ class TileSet extends Component {
       if(!this.state.beingDragged){
         this.resetBgColor(this.props.id);
         this.props.requestGreenOrDefault(this.props.id);
-        this.setState({beingDragged: true, moved: true, zIndex: 10, shadow: shadow});
+        this.setState({beingDragged: true, moved: true, positionInvalid: false, zIndex: 10, shadow: shadow});
       }
     }
+
+    clearTimeout(this.dragEndTimeout);
+    this.dragEndTimeout = setTimeout(() => {
+      this.setState({ beingDragged: false });
+    }, 100);
   }
 
   handleStop(e, data){
-    if(!this.state.beingDragged)return;
+    // if(!this.state.beingDragged)return;
 
     setTimeout(() => {
       this.setState({beingDragged: false});
@@ -167,6 +177,7 @@ class TileSet extends Component {
 
 
   resetBgColor(refPrefix){
+    console.log("id: " + this.props.id + ", beingDragged: " + this.state.beingDragged + ", color: " + this.state.bgColor);
     let index = 0;
     this.state.letters.forEach(() => {
       this.tileRefs[refPrefix + "|" + index].setBgColor(colors.text_white);
@@ -187,22 +198,23 @@ class TileSet extends Component {
       tileArray.forEach((num) => {
         this.tileRefs[refPrefix + "|" + num].setBgColor(color);
       });
-    }else{
+    }else if(!this.state.positionInvalid){
       let index = 0;
       this.state.letters.forEach(() => {
         this.tileRefs[refPrefix + "|" + index].setBgColor(color);
         index++;
+        const posInvalid = color === colors.dark_pink?true:false;
+        this.setState({positionInvalid: posInvalid});
       });
     }
   }
 
-  changeTileSetBgColor(ref){
-    this.setState({bgColor: colors.translucent});
+  changeTileSetBgColor(color){
+    this.setState({bgColor: color});
   }
 
   changeTileSetZIndex(val){
     this.setState({zIndex: val});
-    // this.props.requestGreenOrDefault(this.props.id);
   }
 
   renderTile(letter, i){
@@ -216,7 +228,7 @@ class TileSet extends Component {
         ref={(ref) => this.tileRefs[`${refPrefix}${i}`] = ref}
         tileHeight={this.props.tileHeight}
         delay={this.props.delay}
-        setBgColor={(tileRef) => {this.changeTileSetBgColor(tileRef)}}
+        setBgColor={() => {this.changeTileSetBgColor(colors.translucent)}}
         setZIndex={(tileRef) => {this.changeTileSetZIndex(tileRef)}}
       />
     )
