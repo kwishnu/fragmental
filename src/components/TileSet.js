@@ -177,7 +177,6 @@ class TileSet extends Component {
 
 
   resetBgColor(refPrefix){
-    console.log("id: " + this.props.id + ", beingDragged: " + this.state.beingDragged + ", color: " + this.state.bgColor);
     let index = 0;
     this.state.letters.forEach(() => {
       this.tileRefs[refPrefix + "|" + index].setBgColor(colors.text_white);

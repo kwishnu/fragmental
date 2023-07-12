@@ -44,6 +44,10 @@ class CrosswordTile extends Component {
     this.setState({toColor: tileColor, storedColor: this.state.bgColor, coords: coords});
   }
 
+  componentWillUnmount() {
+    clearTimeout(this.state.intervalID);
+  }
+
   showSolved(ref){
     if(this.props.letter !== "*")this.startColorCycling();
     // if(this.props.letter !== "*" && this.props.letter !== ".")this.setState({bgColor: colors.off_white});
