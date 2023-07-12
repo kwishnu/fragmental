@@ -63,7 +63,7 @@ class App extends Component {
     }, 700);
 }
 
-  toggleModal(which, open) {
+  toggleModal(which, open, startingGame) {
     if (open) {
       switch (which) {
         case "Home":
@@ -85,6 +85,8 @@ class App extends Component {
         default:
           console.log("No default case...");
       }
+    } else if(startingGame){
+      this.setState({showLaunch: false});
     } else {
       this.setState({
         showSettingsModal: false,
@@ -233,7 +235,7 @@ class App extends Component {
           <Launch
             isModalVisible={this.state.showLaunch}
             introText={launchText}
-            requestModalClose={(which, open) => { this.toggleModal(which, open) }}
+            requestModalClose={(which, open, startingGame) => { this.toggleModal(which, open, startingGame) }}
             startGame={(which, daily) => { this.startGame(which, daily) }}
             requestMenuClose={() => { this.closeMenu()}}
             darkModeEnabled={this.state.darkModeEnabled}
