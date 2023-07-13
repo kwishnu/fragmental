@@ -18,6 +18,7 @@ const appStyles = {
     padding: 0,
     alignItems: 'center',
     justifyContent: 'flex-start',
+    overflow: "hidden",
     zIndex: -1
   },
   adBox: {

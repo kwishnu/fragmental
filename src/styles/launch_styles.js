@@ -102,11 +102,11 @@ launchButton: {
 },
 labelContainer: {
   display: 'flex',
-  justifyContent: "flex-start",
-  alignItems: "flex-start",
+  justifyContent: "space-between",
+  alignItems: "center",
   alignSelf: 'stretch',
   backgroundColor: colors.transparent,
-  margin: 10
+  margin: 10,
 },
 labelBackground: {
   display: 'flex',
@@ -121,6 +121,39 @@ labelBackground: {
   paddingRight: 15,
   paddingTop: 6,
   paddingBottom: 6,
+},
+streak_cell: {
+  flexDirection: 'row',
+  alignItems: 'flex-end',
+  justifyContent: 'flex-end',
+},
+streak_text_bubble: {
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: colors.off_black,
+  borderColor: colors.gray_2,
+  borderWidth: 1,
+  borderRadius: 20,
+  marginTop: 6,
+},
+streak_number_text: {
+  fontSize: convertFont(20),
+  color: colors.bright_green,
+},
+streak_text_div: {
+  display: "flex", 
+  flexDirection: "row", 
+  alignContent: 'flex-end',
+},
+streak_text: {
+  margin: '5px 14px 5px 14px', 
+  padding: '0px 6px 0px 6px', 
+  color: colors.text_white,
+  backgroundColor: colors.blue_gray,
+  alignSelf: 'flex-end',
+  fontSize: 16,
+  fontFamily: "system-ui",
+  userSelect: 'none',
 },
 button_text_white: {
   fontFamily: "system-ui",

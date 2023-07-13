@@ -3,6 +3,7 @@ import PageVisibility from 'react-page-visibility';
 import ScreenOrientationReact from 'screen-orientation-react';
 import { nanoid } from 'nanoid';
 import formatDate from 'date-fns/format';
+import { differenceInMinutes } from 'date-fns';
 import colors from './config/colors';
 // import config from './config/config';
 import Menu from './components/Menu.js';
@@ -14,7 +15,10 @@ import Settings from "./screens/settings";
 import Support from "./screens/support";
 import styles from './styles/appStyles.js';
 import {getLaunchText, getPuzzles} from './data/dataHelper';
-// const sampleBlurb = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+const KEY_LastOpenedDate = 'lastOpenedKey';
+const KEY_ShowedTutorial = 'showedTutKey';
+const KEY_PlayedFirstGame = 'playedGameKey';
+const KEY_LastVisibleTime = 'lastVisibleTime';
 let dateToday = "";
 let launchText = "";
 
@@ -28,6 +32,8 @@ class App extends Component {
       scrWidth: window.innerWidth,
       showLaunch: true,
       daily: false,
+      dailyPuzzleCompleted: false,
+      puzzleStreak: 3,
       showGame3: false,
       showGame4: false,
       showGame5: false,
@@ -35,6 +41,8 @@ class App extends Component {
       showSupportModal: false,
       showSettingsModal: false,
       puzzlesObj: {},
+      visible: true,
+      lastVisibleTime: localStorage.getItem(KEY_LastVisibleTime) || new Date(),
       title: ""
     }
   }
@@ -44,6 +52,50 @@ class App extends Component {
     launchText = getLaunchText(dateToday);
     const puzzlesObj = getPuzzles(dateToday);
     this.setState({puzzlesObj: puzzlesObj});
+
+    const showed = window.localStorage.getItem(KEY_ShowedTutorial);
+    if (showed !== null) {
+      const showedBool = (showed === 'true') ? true : false;
+      this.setState({ showedTutScreen1: showedBool, showTutScreen1: !showedBool });
+    } else {
+      try {
+        window.localStorage.setItem(KEY_ShowedTutorial, 'false');
+        this.setState({ showedTutScreen1: false });
+      } catch (error) {
+        window.alert('window.localStorage error: ' + error.message);
+      }
+    }
+
+    const played = window.localStorage.getItem(KEY_PlayedFirstGame);
+    if (played !== null) {
+      const playedBool = (played === 'true') ? true : false;
+      this.setState({ playedGameOnce: playedBool });
+    } else {
+      try {
+        window.localStorage.setItem(KEY_PlayedFirstGame, 'false');
+        this.setState({ playedGameOnce: false });
+      } catch (error) {
+        window.alert('window.localStorage error: ' + error.message);
+      }
+    }
+
+    const lastOpened = window.localStorage.getItem(KEY_LastOpenedDate);
+    if (lastOpened !== null) {
+      const loDateStr = lastOpened;
+      this.setState({ lastOpenedDate: loDateStr });
+      try {
+        window.localStorage.setItem(KEY_LastOpenedDate, dateToday);
+      } catch (error) {
+        window.alert('window.localStorage error: ' + error.message);
+      }
+    } else {
+      try {
+        window.localStorage.setItem(KEY_LastOpenedDate, dateToday);
+      } catch (error) {
+        window.alert('window.localStorage error: ' + error.message);
+      }
+    }
+
   }
 
   toggleMenu(respond) {
@@ -126,32 +178,47 @@ class App extends Component {
     }
   }
 
+  reloadGame(){
+    window.location.reload();
+  }
+
   handleVisibilityChange(visible) {
     if (visible) {
-      // dateToday = formatDate(new Date(), "MM-dd-yyyy");
-      // const openedStr = window.localStorage.getItem(KEY_LastOpenedDate);
-      // if (openedStr !== null) {
-      //   if (dateToday !== openedStr) {
-      //     title = puzzTitle(dateToday);
-      //     description = puzzDescription(dateToday);
-      //     dailyPuzzlesArr = puzzles(dateToday);
-      //     this.setState({ clearedLevel: true, dailyPuzzleCompleted: false });
-      //     setTimeout(() => {
-      //       this.nextGame(true);
-      //     }, 200);
-      //   }
-      // }
-      // try {
-      //   window.localStorage.setItem(KEY_LastOpenedDate, dateToday);
-      // } catch (error) {
-      //   window.alert('window.localStorage error: ' + error.message);
-      // }
+      const currentTime = new Date();
+      const minutesSinceVisible = differenceInMinutes(currentTime, new Date(this.state.lastVisibleTime));
+
+      if (!this.state.visible && minutesSinceVisible >= 15) {
+        window.location.reload(); // Reload the page
+      }
+
+      this.setState({ visible: true, lastVisibleTime: currentTime });
+      localStorage.setItem(KEY_LastVisibleTime, currentTime);
+      dateToday = formatDate(new Date(), "MM-dd-yyyy");
+      const openedStr = window.localStorage.getItem(KEY_LastOpenedDate);
+      if (openedStr !== null) {
+        if (dateToday !== openedStr) {
+          launchText = getLaunchText(dateToday);
+          const puzzlesObj = getPuzzles(dateToday);
+          this.setState({puzzlesObj: puzzlesObj});
+                this.setState({ dailyPuzzleCompleted: false });
+          setTimeout(() => {
+            this.reloadGame();
+          }, 200);
+        }
+      }
+      try {
+        window.localStorage.setItem(KEY_LastOpenedDate, dateToday);
+      } catch (error) {
+        window.alert('window.localStorage error: ' + error.message);
+      }
+    }else{
+      this.setState({ visible: false });
     }
   }
 
   render() {
     const orientationMessageOptions = {
-      color: colors.text_white,
+      color: colors.off_black,
       bgColor: global.bgColor,
       animation: false,
       fontSize: 3,
@@ -235,6 +302,7 @@ class App extends Component {
           <Launch
             isModalVisible={this.state.showLaunch}
             introText={launchText}
+            puzzleStreak={this.state.puzzleStreak}
             requestModalClose={(which, open, startingGame) => { this.toggleModal(which, open, startingGame) }}
             startGame={(which, daily) => { this.startGame(which, daily) }}
             requestMenuClose={() => { this.closeMenu()}}

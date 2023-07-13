@@ -53,7 +53,7 @@ class Launch extends Component {
   }
 
   render() {
-    const { isModalVisible, introText } = this.props;
+    const { isModalVisible, introText, puzzleStreak } = this.props;
     const dailyPuzzlesText = "Daily Puzzles";
     const playText = "Play";
 
@@ -87,6 +87,24 @@ class Launch extends Component {
                     {dailyPuzzlesText}
                   </div>
                 </div>
+                <div style={launch_styles.streak_cell}>
+              {(parseInt(puzzleStreak) !== 0 && puzzleStreak !== '0,01-01-2001') &&
+                <div  style={launch_styles.streak_text_div}>
+                  <div style={launch_styles.streak_text}>
+                    Streak:
+                  </div>
+                  <div style={{...launch_styles.streak_text_bubble, paddingLeft: parseInt(puzzleStreak) > 2?8:12, paddingRight: parseInt(puzzleStreak) > 2?8:14}}>
+                    <div style={{...launch_styles.streak_number_text, fontSize: 16}}>
+                      {
+                        (parseInt(puzzleStreak) > 2)?'🔥 ' + puzzleStreak:
+                        puzzleStreak
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+          </div>
+
               </div>
               <div style={{...launch_styles.button_container}}>
                 <div style={{...launch_styles.launchButton, marginTop: 10, marginBottom: 10, backgroundColor: colors.dark_green, borderRadius: "15% 0 0 15%"}} onClick={() => this.launchPuzzle(3, true)}>

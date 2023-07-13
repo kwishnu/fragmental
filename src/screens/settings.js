@@ -9,8 +9,8 @@ import settings_styles from "../styles/settings_styles";
 import colors from '../config/colors';
 import config from '../config/config';
 const scrHeight = config.scrHeight;
-const scrWidth = config.scrWidth;
-const isPC = config.isPC;
+// const scrWidth = config.scrWidth;
+// const isPC = config.isPC;
 const KEY_BGColorPref = 'bgColorPrefKey';
 const KEY_ModePref = 'modePrefKey';
 const KEY_EasyModePref = 'easyModePrefKey';
@@ -273,7 +273,7 @@ class Settings extends Component {
 
 render() {
   let { 
-    darkModeSwitchEnabled, 
+    // darkModeSwitchEnabled, 
     // easyModeSwitchEnabled, 
     darkModeEnabled, 
     // leaveAnimationChecked,
