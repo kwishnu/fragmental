@@ -3,7 +3,8 @@ import PageVisibility from 'react-page-visibility';
 import ScreenOrientationReact from 'screen-orientation-react';
 import { nanoid } from 'nanoid';
 import formatDate from 'date-fns/format';
-import { differenceInMinutes } from 'date-fns';
+import parse from 'date-fns/parse';
+import { differenceInMinutes, differenceInDays } from 'date-fns';
 import colors from './config/colors';
 // import config from './config/config';
 import Menu from './components/Menu.js';
@@ -19,6 +20,7 @@ const KEY_LastOpenedDate = 'lastOpenedKey';
 const KEY_ShowedTutorial = 'showedTutKey';
 const KEY_PlayedFirstGame = 'playedGameKey';
 const KEY_LastVisibleTime = 'lastVisibleTime';
+const KEY_PuzzleStreakDays = 'puzzleStreakKey';
 let dateToday = "";
 let launchText = "";
 
@@ -33,7 +35,8 @@ class App extends Component {
       showLaunch: true,
       daily: false,
       dailyPuzzleCompleted: false,
-      puzzleStreak: 3,
+      puzzleStreak: "0,01-01-2001",
+      lastPuzzleDay: "01-01-2001",
       showGame3: false,
       showGame4: false,
       showGame5: false,
@@ -96,6 +99,31 @@ class App extends Component {
       }
     }
 
+    this.updatePuzzleStreak();
+  }
+
+  updatePuzzleStreak(){
+    const puzzStreak = window.localStorage.getItem(KEY_PuzzleStreakDays);
+    if (puzzStreak !== null) {
+      console.log("puzzStreak from App: " + puzzStreak);
+      const ps = puzzStreak;
+      const numPuzzStreakDays = ps.split(",")[0];
+      const lastPuzzDay = ps.split(",")[1];
+      let today = new Date();
+      const dateFromLPD = parse(lastPuzzDay, 'MM-dd-yyyy', new Date());
+      const diff = differenceInDays(today, dateFromLPD);
+      const numStr = (numPuzzStreakDays === '0' || diff > 1) ? '0' : numPuzzStreakDays;
+      const newPuzzDateStr = numStr + "," + dateToday;
+      console.log(diff, numStr, newPuzzDateStr);
+      this.setState({ puzzleStreak: newPuzzDateStr, lastPuzzleDay: lastPuzzDay });
+    } else {
+      try {
+        window.localStorage.setItem(KEY_PuzzleStreakDays, '0,01-01-2001');
+      } catch (error) {
+        window.alert('window.localStorage error: ' + error.message);
+      }
+    }
+
   }
 
   toggleMenu(respond) {
@@ -119,11 +147,12 @@ class App extends Component {
     if (open) {
       switch (which) {
         case "Home":
-            this.toggleMenu(true);
-            this.setState({ showLaunch: true, title: "" });
-            setTimeout(() => {
-              this.setState({showGame3: false, showGame4: false, showGame5: false});
-            }, 700);
+          this.updatePuzzleStreak();
+          this.toggleMenu(true);
+          this.setState({ showLaunch: true, title: "" });
+          setTimeout(() => {
+            this.setState({showGame3: false, showGame4: false, showGame5: false});
+          }, 700);
           break;
         case "Settings":
           this.setState({ showSettingsModal: true });
@@ -263,6 +292,7 @@ class App extends Component {
                 fragments={this.state.puzzlesObj["3"].fragments} 
                 fragObj={this.state.puzzlesObj["3"].fragObj} 
                 daily={this.state.daily}
+                puzzleStreak={this.state.puzzleStreak}
                 startGame={(which, daily) => { this.startGame(which, daily) }}
                 keyIDFragment={keyIDFrag}
                 showLaunch={() => { this.showLaunch() }}
@@ -276,6 +306,7 @@ class App extends Component {
                 fragments={this.state.puzzlesObj["4"].fragments} 
                 fragObj={this.state.puzzlesObj["4"].fragObj} 
                 daily={this.state.daily}
+                puzzleStreak={this.state.puzzleStreak}
                 startGame={(which, daily) => { this.startGame(which, daily) }}
                 keyIDFragment={keyIDFrag}
                 showLaunch={() => { this.showLaunch() }}
@@ -289,6 +320,7 @@ class App extends Component {
                 fragments={this.state.puzzlesObj["5"].fragments} 
                 fragObj={this.state.puzzlesObj["5"].fragObj} 
                 daily={this.state.daily}
+                puzzleStreak={this.state.puzzleStreak}
                 startGame={(which, daily) => { this.startGame(which, daily) }}
                 keyIDFragment={keyIDFrag}
                 showLaunch={() => { this.showLaunch() }}

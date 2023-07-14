@@ -56,6 +56,7 @@ class Launch extends Component {
     const { isModalVisible, introText, puzzleStreak } = this.props;
     const dailyPuzzlesText = "Daily Puzzles";
     const playText = "Play";
+    const numPuzzStreakDays = puzzleStreak.split(",")[0];
 
     return(
       <AnimatePresence>
@@ -88,7 +89,7 @@ class Launch extends Component {
                   </div>
                 </div>
                 <div style={launch_styles.streak_cell}>
-              {(parseInt(puzzleStreak) !== 0 && puzzleStreak !== '0,01-01-2001') &&
+              {(parseInt(numPuzzStreakDays) !== 0 && puzzleStreak !== '0,01-01-2001') &&
                 <div  style={launch_styles.streak_text_div}>
                   <div style={launch_styles.streak_text}>
                     Streak:
@@ -96,8 +97,8 @@ class Launch extends Component {
                   <div style={{...launch_styles.streak_text_bubble, paddingLeft: parseInt(puzzleStreak) > 2?8:12, paddingRight: parseInt(puzzleStreak) > 2?8:14}}>
                     <div style={{...launch_styles.streak_number_text, fontSize: 16}}>
                       {
-                        (parseInt(puzzleStreak) > 2)?'🔥 ' + puzzleStreak:
-                        puzzleStreak
+                        (parseInt(numPuzzStreakDays) > 2)?'🔥 ' + numPuzzStreakDays:
+                        numPuzzStreakDays
                       }
                     </div>
                   </div>

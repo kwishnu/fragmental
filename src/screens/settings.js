@@ -11,7 +11,7 @@ import config from '../config/config';
 const scrHeight = config.scrHeight;
 // const scrWidth = config.scrWidth;
 // const isPC = config.isPC;
-const KEY_BGColorPref = 'bgColorPrefKey';
+// const KEY_BGColorPref = 'bgColorPrefKey';
 const KEY_ModePref = 'modePrefKey';
 const KEY_EasyModePref = 'easyModePrefKey';
 const KEY_AnimationPref = 'animationPrefKey';
@@ -88,11 +88,11 @@ class Settings extends Component {
       this.setState({colorSliderValue: bgCVInt});
     }else{
       this.setState({colorSliderValue: 276});
-      try {
-        window.localStorage.setItem(KEY_BGColorSliderValue, '276');
-      } catch (error) {
-          window.alert('localStorage error: ' + error.message);
-      }
+      // try {
+      //   window.localStorage.setItem(KEY_BGColorSliderValue, '276');
+      // } catch (error) {
+      //     window.alert('localStorage error: ' + error.message);
+      // }
     }
     const bgValValue =  window.localStorage.getItem(KEY_BGValSliderValue);
     if (bgValValue !== null) {
@@ -101,11 +101,11 @@ class Settings extends Component {
       this.setState({valSliderValue: bgVInt});
     }else{
       this.setState({valSliderValue: 15});
-      try {
-        window.localStorage.setItem(KEY_BGValSliderValue, '15');
-      } catch (error) {
-          window.alert('localStorage error: ' + error.message);
-      }
+      // try {
+      //   window.localStorage.setItem(KEY_BGValSliderValue, '15');
+      // } catch (error) {
+      //     window.alert('localStorage error: ' + error.message);
+      // }
     }
   }   
   showAlert(){
@@ -124,27 +124,27 @@ class Settings extends Component {
     this.props.requestModalClose("Settings", false);
   }
   toggleDarkMode(){
-    const newBool = !this.state.darkModeSwitchEnabled;
-    const newBoolStr = newBool ? "true":"false";
-    this.props.sendValueToGame(["Dark Mode", newBool]);
-    this.setState({darkModeEnabled: newBool, darkModeSwitchEnabled: newBool});
-    try {
-        window.localStorage.setItem(KEY_ModePref, newBoolStr);
-    } catch (error) {
-        window.alert('window.localStorage error: ' + error.message);
-    }
+    // const newBool = !this.state.darkModeSwitchEnabled;
+    // const newBoolStr = newBool ? "true":"false";
+    // this.props.sendValueToGame(["Dark Mode", newBool]);
+    // this.setState({darkModeEnabled: newBool, darkModeSwitchEnabled: newBool});
+    // try {
+    //     window.localStorage.setItem(KEY_ModePref, newBoolStr);
+    // } catch (error) {
+    //     window.alert('window.localStorage error: ' + error.message);
+    // }
   }
   toggleEasyMode(){
     if(!global.upgradeStatus)return;
     const newBool = !this.state.easyModeSwitchEnabled;
-    const newBoolStr = newBool ? "true":"false";
+    // const newBoolStr = newBool ? "true":"false";
     this.props.sendValueToGame(["Easy Mode", newBool]);
     this.setState({easyModeSwitchEnabled: newBool});
-    try {
-        window.localStorage.setItem(KEY_EasyModePref, newBoolStr);
-    } catch (error) {
-        window.alert('window.localStorage error: ' + error.message);
-    }
+    // try {
+    //     window.localStorage.setItem(KEY_EasyModePref, newBoolStr);
+    // } catch (error) {
+    //     window.alert('window.localStorage error: ' + error.message);
+    // }
   }
   handleAnimationRadio(mode){
     if( (this.state.leaveAnimationChecked && mode === "Leave") ||
@@ -169,11 +169,11 @@ class Settings extends Component {
       }
     this.props.sendValueToGame(["Animation Style", mode]);
     this.setState({leaveAnimationChecked: leaveBool, spinAnimationChecked: spinBool, noneAnimationChecked: noneBool});
-    try {
-        window.localStorage.setItem(KEY_AnimationPref, mode);
-    } catch (error) {
-        window.alert('window.localStorage error: ' + error.message);
-    }
+    // try {
+    //     window.localStorage.setItem(KEY_AnimationPref, mode);
+    // } catch (error) {
+    //     window.alert('window.localStorage error: ' + error.message);
+    // }
   }
   handleColorChange(sliderSetting) {
     // const colResult = tinycolor({ h: sliderSetting.value, s: 96, l: this.state.valSliderValue });
@@ -240,26 +240,26 @@ class Settings extends Component {
     this.props.sendValueToGame(["Dark Mode", false]);
     this.props.sendValueToGame(["Animation Style", "Leave"]);
     document.querySelector('meta[name="theme-color"]').setAttribute('content', colors.dark_purple);
-    try {
-        window.localStorage.setItem(KEY_BGColorSliderValue, '276');
-    } catch (error) {
-        window.alert('window.localStorage error: ' + error.message);
-    }
-    try {
-        window.localStorage.setItem(KEY_BGValSliderValue, '15');
-    } catch (error) {
-        window.alert('window.localStorage error: ' + error.message);
-    }
-    try {
-        window.localStorage.setItem(KEY_BGColorPref, '#142392');
-    } catch (error) {
-        window.alert('window.localStorage error: ' + error.message);
-    }
-    try {
-        window.localStorage.setItem(KEY_AnimationPref, 'Leave');
-    } catch (error) {
-        window.alert('window.localStorage error: ' + error.message);
-    }
+    // try {
+    //     window.localStorage.setItem(KEY_BGColorSliderValue, '276');
+    // } catch (error) {
+    //     window.alert('window.localStorage error: ' + error.message);
+    // }
+    // try {
+    //     window.localStorage.setItem(KEY_BGValSliderValue, '15');
+    // } catch (error) {
+    //     window.alert('window.localStorage error: ' + error.message);
+    // }
+    // try {
+    //     window.localStorage.setItem(KEY_BGColorPref, '#142392');
+    // } catch (error) {
+    //     window.alert('window.localStorage error: ' + error.message);
+    // }
+    // try {
+    //     window.localStorage.setItem(KEY_AnimationPref, 'Leave');
+    // } catch (error) {
+    //     window.alert('window.localStorage error: ' + error.message);
+    // }
   }
   displayPremiumBlock(){
     if(this.state.modalContainerHeight > 0){  

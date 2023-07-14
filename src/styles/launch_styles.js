@@ -133,12 +133,13 @@ streak_text_bubble: {
   backgroundColor: colors.off_black,
   borderColor: colors.gray_2,
   borderWidth: 1,
-  borderRadius: 20,
+  borderRadius: 5,
   marginTop: 6,
 },
 streak_number_text: {
   fontSize: convertFont(20),
   color: colors.bright_green,
+  margin: '4px 0px 4px 0px', 
 },
 streak_text_div: {
   display: "flex", 

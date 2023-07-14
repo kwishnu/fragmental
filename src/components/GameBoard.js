@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { CircularProgress } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
+import formatDate from 'date-fns/format';
 import colors from '../config/colors';
 import config from '../config/config';
 import TileSet from '../components/TileSet';
@@ -13,7 +14,17 @@ import words7 from '../data/7letter.js';
 import words8 from '../data/8letter.js';
 import words9 from '../data/9letter.js';
 import words10 from '../data/10letter.js';
-import { generateArray, getFragments, removeLetters, getFragObj, transposeArray, concatStringArrays, splitAndFilterStrings, splitAndFilterWithIndex, checkArrayInMultiDimensional } from '../config/functions';//, arraysHaveSameElements
+import { 
+  generateArray, 
+  getFragments, 
+  removeLetters, 
+  getFragObj, 
+  transposeArray, 
+  concatStringArrays, 
+  splitAndFilterStrings, 
+  splitAndFilterWithIndex, 
+  checkArrayInMultiDimensional 
+} from '../config/functions';
 const defaultChar = '.';
 const scrHeight = config.scrHeight;
 const scrWidth = config.scrWidth;
@@ -22,6 +33,8 @@ const indices = [];
 const shadow = `3px 3px 8px ${colors.off_black}`;
 const homeImage = require("../images/home.png");
 const nextImage = require("../images/arrow_forward.png");
+const KEY_PuzzleStreakDays = 'puzzleStreakKey';
+
 // const tablet = config.isTablet;
 // const pc = config.isPC;
 
@@ -170,10 +183,32 @@ class GameBoard extends Component {
         if(foundNonDictionaryWord)break;
       }
       if(!foundNonDictionaryWord){
+        this.storeOnGameComplete(this.props.daily)
         this.showSolved();
         return;
       }
       this.turnAllGreenOrDefault();
+    }
+  }
+
+  storeOnGameComplete(daily) {
+    if(!daily)return;
+    const dateToday = formatDate(new Date(), "MM-dd-yyyy");
+    const ps = this.props.puzzleStreak;
+    const numPuzzStreakDays = ps.split(",")[0];
+    const lastPuzzDay = ps.split(",")[1];
+
+    console.log("this.props.puzzleStreak: " + this.props.puzzleStreak);
+    let psInt = parseInt(numPuzzStreakDays);
+    if (dateToday !== lastPuzzDay) psInt++;
+    let incrPsStr = psInt + "";
+    let streakDateStr = incrPsStr + "," + dateToday;
+    console.log("incrPsStr: " + incrPsStr);
+
+    try {
+      window.localStorage.setItem(KEY_PuzzleStreakDays, streakDateStr);
+    } catch (error) {
+      window.alert('window.localStorage error: ' + error.message);
     }
   }
 
