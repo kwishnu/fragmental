@@ -105,7 +105,6 @@ class App extends Component {
   updatePuzzleStreak(){
     const puzzStreak = window.localStorage.getItem(KEY_PuzzleStreakDays);
     if (puzzStreak !== null) {
-      console.log("puzzStreak from App: " + puzzStreak);
       const ps = puzzStreak;
       const numPuzzStreakDays = ps.split(",")[0];
       const lastPuzzDay = ps.split(",")[1];
@@ -114,7 +113,7 @@ class App extends Component {
       const diff = differenceInDays(today, dateFromLPD);
       const numStr = (numPuzzStreakDays === '0' || diff > 1) ? '0' : numPuzzStreakDays;
       const newPuzzDateStr = numStr + "," + dateToday;
-      console.log(diff, numStr, newPuzzDateStr);
+
       this.setState({ puzzleStreak: newPuzzDateStr, lastPuzzleDay: lastPuzzDay });
     } else {
       try {
@@ -137,11 +136,12 @@ class App extends Component {
   }
 
   showLaunch(){
+    this.updatePuzzleStreak();
     this.setState({ showLaunch: true, title: "" });
     setTimeout(() => {
       this.setState({showGame3: false, showGame4: false, showGame5: false});
     }, 700);
-}
+  }
 
   toggleModal(which, open, startingGame) {
     if (open) {
@@ -207,9 +207,9 @@ class App extends Component {
     }
   }
 
-  reloadGame(){
-    window.location.reload();
-  }
+  // reloadGame(){
+  //   window.location.reload();
+  // }
 
   handleVisibilityChange(visible) {
     if (visible) {
@@ -338,7 +338,7 @@ class App extends Component {
             requestModalClose={(which, open, startingGame) => { this.toggleModal(which, open, startingGame) }}
             startGame={(which, daily) => { this.startGame(which, daily) }}
             requestMenuClose={() => { this.closeMenu()}}
-            darkModeEnabled={this.state.darkModeEnabled}
+            // darkModeEnabled={this.state.darkModeEnabled}
           />
           <Settings
             isModalVisible={this.state.showSettingsModal}
@@ -349,13 +349,13 @@ class App extends Component {
           <Help
             isModalVisible={this.state.showHelpModal}
             requestModalClose={(which, open) => { this.toggleModal(which, open) }}
-            darkModeEnabled={this.state.darkModeEnabled}
+            // darkModeEnabled={this.state.darkModeEnabled}
           />
           <Support
             isModalVisible={this.state.showSupportModal}
             requestModalClose={(which, open) => { this.toggleModal(which, open) }}
-            darkModeEnabled={this.state.darkModeEnabled}
             startPurchaseInGame={(val) => { this.initiatePurchase(val) }}
+            // darkModeEnabled={this.state.darkModeEnabled}
           />
         </div>
       </PageVisibility>

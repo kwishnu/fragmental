@@ -29,14 +29,10 @@ const defaultChar = '.';
 const scrHeight = config.scrHeight;
 const scrWidth = config.scrWidth;
 const delays = [Math.random(), Math.random(), Math.random(), Math.random(), Math.random()];
-const indices = [];
 const shadow = `3px 3px 8px ${colors.off_black}`;
 const homeImage = require("../images/home.png");
 const nextImage = require("../images/arrow_forward.png");
 const KEY_PuzzleStreakDays = 'puzzleStreakKey';
-
-// const tablet = config.isTablet;
-// const pc = config.isPC;
 
 class GameBoard extends Component {
   constructor(props) {
@@ -50,8 +46,9 @@ class GameBoard extends Component {
       playedFragments: [],
       tileHeight: 0,
       showButtons: false,
-      nextGameIndex: this.props.daily?this.props.count + 1:this.props.count,
+      nextGameIndex: this.props.count,
       daily: this.props.daily,
+      dailyCompleted: false,
       keyIDFragment: "",
       loading: false
     }
@@ -66,9 +63,6 @@ class GameBoard extends Component {
  init(){
   this.setState({ loading: true });
   const size = this.props.count;
-  for(let j = 0;j < size;j++){
-    indices.push(j);
-  }
   let tHeight = (scrHeight * 9/16)/13;
   tHeight = tHeight >= 62?62:tHeight;
 
@@ -198,12 +192,10 @@ class GameBoard extends Component {
     const numPuzzStreakDays = ps.split(",")[0];
     const lastPuzzDay = ps.split(",")[1];
 
-    console.log("this.props.puzzleStreak: " + this.props.puzzleStreak);
     let psInt = parseInt(numPuzzStreakDays);
     if (dateToday !== lastPuzzDay) psInt++;
     let incrPsStr = psInt + "";
     let streakDateStr = incrPsStr + "," + dateToday;
-    console.log("incrPsStr: " + incrPsStr);
 
     try {
       window.localStorage.setItem(KEY_PuzzleStreakDays, streakDateStr);
@@ -235,8 +227,20 @@ class GameBoard extends Component {
   }
 
   showSolved(){
+    const indices = Array.from(Array(this.props.count), (_, index) => index);
+    if (this.state.daily) {
+      this.setState((prevState) => {
+        let newIndex = prevState.nextGameIndex;
+        do {
+          newIndex = (newIndex + 1) % 6;
+        } while (newIndex < 3);
+        return {
+          nextGameIndex: newIndex,
+        };
+      });
+    }    
     setTimeout(() => {
-      this.setState({showButtons: true});//, nextGameIndex: this.state.nextGameIndex + 1
+      this.setState({showButtons: true});
     }, 2200); 
     indices.forEach((index) => {
       const dRef = "d|" + index;
@@ -255,6 +259,7 @@ class GameBoard extends Component {
   }
 
   turnAllGreenOrDefault(id){
+    const indices = Array.from(Array(this.props.count), (_, index) => index);
     if(id)this.removeFragment(id);
 
     const boardArr = this.getBoardArray(this.state.playedFragments);
@@ -338,9 +343,8 @@ class GameBoard extends Component {
     }
   }
 
-  reloadGame(){
+  closeGame(){
     this.props.showLaunch();
-    //window.location.reload();
   }
 
   nextGame(){
@@ -433,20 +437,48 @@ class GameBoard extends Component {
               <motion.button
                 initial={{ opacity: 0, y: 700 }}
                 animate={{ opacity: 1, y: 150 }}
-                transition={{ type: "spring", stiffness: 250, damping: 18, duration: 0.4 }}
-                style={game_styles.button}
+                transition={{ type: "spring", stiffness: 250, damping: 18, duration: 0.8, delay: 0.3 }}
+                style={{...game_styles.button, backgroundColor: colors.button_blue}}
               >
-                <img src={homeImage} onClick={() => this.reloadGame()} alt={"Home"} />
+                <img style={game_styles.img} src={homeImage} onClick={() => this.closeGame()} alt={"Home"} />
               </motion.button>
-            {(this.state.nextGameIndex < 6 || !this.state.daily) &&    
+            {(this.state.daily) &&    
               <motion.button
                 initial={{ opacity: 0, y: 700 }}
                 animate={{ opacity: 1, y: 150 }}
                 transition={{ type: "spring", stiffness: 250, damping: 18, duration: 0.6 }}
-                style={game_styles.button}
+                style={{...game_styles.button, backgroundColor: colors.button_blue}}
               >
-                <img src={nextImage} onClick={() => this.nextGame()} alt={"Next Game"} />
+                <img style={game_styles.img} src={nextImage} onClick={() => this.nextGame()} alt={"Next Game"} />
               </motion.button>
+            }
+            {!this.state.daily &&  
+            <div style={game_styles.nextGame_button_container}>  
+              <motion.button
+                initial={{ opacity: 0, y: 700 }}
+                animate={{ opacity: 1, y: 150 }}
+                transition={{ type: "spring", stiffness: 250, damping: 18, duration: 0.6 }}
+                style={{...game_styles.button, backgroundColor: colors.dark_green}}
+              >
+                <img style={game_styles.img} src={nextImage} onClick={() => this.nextGame(3, false)} alt={"Next Game"} />
+              </motion.button>
+              <motion.button
+                initial={{ opacity: 0, y: 700 }}
+                animate={{ opacity: 1, y: 150 }}
+                transition={{ type: "spring", stiffness: 250, damping: 18, duration: 0.6 }}
+                style={{...game_styles.button, backgroundColor: colors.dark_blue}}
+              >
+                <img style={game_styles.img} src={nextImage} onClick={() => this.nextGame(4, false)} alt={"Next Game"} />
+              </motion.button>
+              <motion.button
+                initial={{ opacity: 0, y: 700 }}
+                animate={{ opacity: 1, y: 150 }}
+                transition={{ type: "spring", stiffness: 250, damping: 18, duration: 0.6 }}
+                style={{...game_styles.button, backgroundColor: colors.dark_red}}
+              >
+                <img style={game_styles.img} src={nextImage} onClick={() => this.nextGame(5, false)} alt={"Next Game"} />
+              </motion.button>
+              </div>
             }
             </div> 
           }
@@ -478,20 +510,32 @@ const game_styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 1,
+    height: 80,
+    backgroundColor: colors.transparent,
+  },
+  nextGame_button_container: {
+    display: 'flex',
+    flexDirection: "column",
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 80,
     backgroundColor: colors.transparent,
   },
   button: {
     display: 'flex',
     borderRadius: config.button_radius + 10,
     justifyContent: "center",
-    backgroundColor: colors.button_blue,
     boxShadow: `4px 10px 16px ${colors.black}`,
     borderColor: colors.transparent,
     borderLeftWidth: 8,
     borderRightWidth: 8,
     padding: 15,
     margin: 6
+  },
+  img: {
+    height: 35, 
+    width: 35,
+    alignSelf: "center"
   },
   button_text: {
     fontSize: 22,

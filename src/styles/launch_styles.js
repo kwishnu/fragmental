@@ -131,9 +131,10 @@ streak_text_bubble: {
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: colors.off_black,
-  borderColor: colors.gray_2,
-  borderWidth: 1,
-  borderRadius: 5,
+  borderColor: colors.light_blue_gray,
+  borderStyle: 'solid',
+  borderWidth: 2,
+  borderRadius: 7,
   marginTop: 6,
 },
 streak_number_text: {

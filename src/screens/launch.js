@@ -108,13 +108,14 @@ class Launch extends Component {
 
               </div>
               <div style={{...launch_styles.button_container}}>
-                <div style={{...launch_styles.launchButton, marginTop: 10, marginBottom: 10, backgroundColor: colors.dark_green, borderRadius: "15% 0 0 15%"}} onClick={() => this.launchPuzzle(3, true)}>
+                {/* <div style={{...launch_styles.launchButton, marginTop: 10, marginBottom: 10, backgroundColor: colors.dark_green, borderRadius: "15% 0 0 15%"}} onClick={() => this.launchPuzzle(3, true)}> */}
+                <div style={{...launch_styles.launchButton, margin: 10, backgroundColor: colors.dark_green, borderRadius: 15}} onClick={() => this.launchPuzzle(3, true)}>
                   <img src={SmallPuzzle} alt={"Small Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/22}}/>
                 </div>
-                <div style={{...launch_styles.launchButton, marginTop: 10, marginBottom: 10, backgroundColor: colors.dark_blue}} onClick={() => this.launchPuzzle(3, true)}>
+                <div style={{...launch_styles.launchButton, margin: 10, backgroundColor: colors.dark_blue, borderRadius: 15}} onClick={() => this.launchPuzzle(4, true)}>
                   <img src={MediumPuzzle} alt={"Medium Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/18}}/>
                 </div>
-                <div style={{...launch_styles.launchButton, marginTop: 10, marginBottom: 10, backgroundColor: colors.dark_red, borderRadius: "0 15% 15% 0"}} onClick={() => this.launchPuzzle(3, true)}>
+                <div style={{...launch_styles.launchButton, margin: 10, backgroundColor: colors.dark_red, borderRadius: 15}} onClick={() => this.launchPuzzle(5, true)}>
                   <img src={LargePuzzle} alt={"Large Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/15}}/>
                 </div>
               </div>
