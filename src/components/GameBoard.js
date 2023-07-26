@@ -48,7 +48,6 @@ class GameBoard extends Component {
       showButtons: false,
       nextGameIndex: this.props.count,
       daily: this.props.daily,
-      dailyCompleted: false,
       keyIDFragment: "",
       loading: false
     }
@@ -196,7 +195,7 @@ class GameBoard extends Component {
     if (dateToday !== lastPuzzDay) psInt++;
     let incrPsStr = psInt + "";
     let streakDateStr = incrPsStr + "," + dateToday;
-
+console.log("streakDateStr: " + streakDateStr);
     try {
       window.localStorage.setItem(KEY_PuzzleStreakDays, streakDateStr);
     } catch (error) {
@@ -347,9 +346,10 @@ class GameBoard extends Component {
     this.props.showLaunch();
   }
 
-  nextGame(){
+  nextGame(which){
+    const nextIndex = which?which: this.state.nextGameIndex;
     this.setState({showButtons: false});
-    this.props.startGame(this.state.nextGameIndex, this.state.daily);
+    this.props.startGame(nextIndex, this.state.daily);
     this.init();
   }
 

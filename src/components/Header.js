@@ -11,6 +11,7 @@ import HelpImage from '../images/question.png';
 function Header(props) {
   let isPC = props.deviceType === "pc"?true:false;
   let isTablet = props.deviceType === "tablet"?true:false;
+  let isPhone = props.deviceType === "phone"?true:false;
   return(
     <div style={{...headerStyles.container, width: props.scrWidth, backgroundColor: colors.very_dark_gray}}>
       {/* global.bgColor */}
@@ -37,8 +38,8 @@ function Header(props) {
           alt={"Support"} 
           onClick={() => props.showModal("Support", true)} 
           style={{
-            height: 35,
-            width: 35,
+            height: isPhone?31:35,
+            width: isPhone?31:35,
             marginRight: 6
           }} 
         />          

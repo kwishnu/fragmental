@@ -135,28 +135,62 @@ export function generateArray(size) {
         }
 
         const allWords = getRandomWordArray(len);
-        const words = [];
+        let word = "";
+        let checkThisWord;
 
-        // eslint-disable-next-line no-loop-func
-        allWords.forEach((checkThisWord) => {
-          if(isHorizontal){
-            if(checkThisWord.charAt(yIndex - newYIndex) === currentWord.charAt(newXIndex - xIndex)){
-              words.push(checkThisWord);
+        const randomIndex = getRandomIndex(allWords.length);
+        for (var i = randomIndex; i < allWords.length; i++) {
+            checkThisWord = allWords[i];
+            if (isHorizontal) {
+                if (
+                    checkThisWord.charAt(yIndex - newYIndex) ===
+                    currentWord.charAt(newXIndex - xIndex)
+                ) {
+                    word = checkThisWord;
+                    break;
+                }
+            } else {
+                if (
+                    checkThisWord.charAt(xIndex - newXIndex) ===
+                    currentWord.charAt(newYIndex - yIndex)
+                ) {
+                    word = checkThisWord;
+                    break;
+                }
             }
-          }else{
-            if(checkThisWord.charAt(xIndex - newXIndex) === currentWord.charAt(newYIndex - yIndex)){
-              words.push(checkThisWord);
+        }
+
+        if (word === "") {
+            for (var ii = 0; ii < randomIndex; ii++) {
+                checkThisWord = allWords[ii];
+                if (isHorizontal) {
+                    if (
+                        checkThisWord.charAt(yIndex - newYIndex) ===
+                        currentWord.charAt(newXIndex - xIndex)
+                    ) {
+                        word = checkThisWord;
+                        break;
+                    }
+                } else {
+                    if (
+                        checkThisWord.charAt(xIndex - newXIndex) ===
+                        currentWord.charAt(newYIndex - yIndex)
+                    ) {
+                        word = checkThisWord;
+                        break;
+                    }
+                }
             }
-          }
-        })
+
+        }
         counter++;
-        if(words.length > 0 || counter > 100){
+        if(word !== "" || counter > 100){
           if(counter > 100){
             return false;
           }
           
           placed = true;
-          wordToPlace = getRandomWord(words);
+          wordToPlace = word;
         }
       }
 
@@ -180,7 +214,6 @@ export function generateArray(size) {
       return arr;
     }
 
-    // Create the array of arrays filled with defaultChar
     array = Array.from({ length: arraySize }, () =>
       Array.from({ length: arraySize }, () => defaultChar)
     );
@@ -215,6 +248,10 @@ export function generateArray(size) {
     if(!tooTallOrWide && !hasAdjacentHorizontalWords && !hasAdjacentVerticalWords && containsNoRepeats && containSameWords && (totalCharacters === numLetters))goodGameArray = true;
   }
   return [truncArray, wordCollection];
+}
+
+function getRandomIndex(maxIndex) {
+  return Math.floor(Math.random() * maxIndex);
 }
 
 function getHorizontalOrVertical(){
