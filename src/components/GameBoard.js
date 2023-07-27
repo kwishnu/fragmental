@@ -212,7 +212,7 @@ class GameBoard extends Component {
     const lastPuzzDay = ps.split(",")[1];
 
     let psInt = parseInt(numPuzzStreakDays);
-    if (dateToday !== lastPuzzDay) psInt++;
+    if (dateToday !== lastPuzzDay || psInt === 0) psInt++;
     let incrPsStr = psInt + "";
     let streakDateStr = incrPsStr + "," + dateToday;
 
