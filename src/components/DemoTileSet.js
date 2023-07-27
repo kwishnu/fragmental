@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import Tile from '../components/Tile';
+import DemoTile from './DemoTile';
 import Draggable from "react-draggable";
 import colors from '../config/colors';
 const shadow = `0px 0px 26px ${colors.off_black}`;
 let idPrefix = "";
 
-class TileSet extends Component {
+class DemoTileSet extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,7 +31,7 @@ class TileSet extends Component {
   }
 
   componentDidMount(){
-    this.setState({xPosition: this.props.tileHeight * 0.4 + this.props.index * 20, yPosition: 3 * this.props.tileHeight + this.props.index * 10});
+    // this.setState({xPosition: this.props.tileHeight * 0.4, yPosition: 3 * this.props.tileHeight + this.props.index * 10});
   }
 
   componentWillUnmount() {
@@ -39,43 +39,15 @@ class TileSet extends Component {
   }
 
   handleDrag(e, data){
-    const deltaX = Math.abs(Math.floor(data.x) - this.state.lastPositionX);
-    const deltaY = Math.abs(Math.floor(data.y) - this.state.lastPositionY);
-  
-    if (deltaX >= 5 || deltaY >= 5) {
-      if(!this.state.beingDragged){
-        this.resetBgColor(this.props.id);
-        this.props.requestGreenOrDefault(this.props.id);
-        this.setState({beingDragged: true, moved: true, positionInvalid: false, zIndex: 10, shadow: shadow});
-      }
-    }
-
-    clearTimeout(this.dragEndTimeout);
-    this.dragEndTimeout = setTimeout(() => {
-      this.setState({ beingDragged: false });
-    }, 100);
   }
 
   handleStop(e, data){
-    // if(!this.state.beingDragged)return;
-
-    setTimeout(() => {
-      this.setState({beingDragged: false});
-      if(!this.state.flipping)this.setState({zIndex: 0}); 
-    }, 200);    
-    this.props.sendStopping(
-      data.x, 
-      data.y, 
-      this.props.left, 
-      this.props.top, 
-      this.props.id, 
-      this.state.flipState 
-    );
+    // console.log("clicked");
   }
 
   handleClick(){
-    this.resetBgColor(this.props.id);
-    this.props.requestGreenOrDefault(this.props.id);
+    this.setState({xPosition: this.state.xPosition + 60});
+
     const newFlipState = (this.state.flipState + 1)%4;
     const tiles = this.props.letters.length === 2?2:3;
     const th = this.props.tileHeight;
@@ -141,8 +113,8 @@ class TileSet extends Component {
       this.setState({
         flipping: true,
         flexDirection: this.state.flexDirection === "row"?"column":"row", 
-        xPosition: th * 1.5 + addToDoublesX + this.props.index * 4, 
-        yPosition: -(th/2 + this.props.index * th) + this.props.index * 4,
+        xPosition: th * 1.5 + addToDoublesX, 
+        yPosition: -(th/2),
         shadow: shadow,
         width: this.state.width === tiles * th?th:tiles * th,
         height: this.state.height === tiles * th?th:tiles * th,
@@ -153,37 +125,6 @@ class TileSet extends Component {
     }
   }
 
-  updatePosition(x, y, overBoard){
-    const th = this.props.tileHeight;
-    let modX = x;
-    let modY = y;
-
-    if(overBoard){
-      modX = Math.round(x/th) * th;
-      modY = Math.round(y/th) * th;
-    }
-
-    this.setState({xPosition:  modX, yPosition: modY, shadow: null, flipping: false, overBoard: overBoard}); 
-  }
-
-  showSolved(refPrefix){
-    let index = 0;
-    this.state.letters.forEach(() => {
-      this.tileRefs[refPrefix + "|" + index].showSolved(refPrefix + "|" + index);
-      index++;
-    });
-    this.setState({disabled: true});
-  }
-
-
-  resetBgColor(refPrefix){
-    let index = 0;
-    this.state.letters.forEach(() => {
-      this.tileRefs[refPrefix + "|" + index].setBgColor(colors.text_white);
-      index++;
-    });
-  }
-
   setLastPositionX(x){
     this.setState({lastPositionX: x});
   }
@@ -192,43 +133,16 @@ class TileSet extends Component {
     this.setState({lastPositionY: y});
   }
 
-  changeTilesetColor(refPrefix, color, tileArray){
-    if(tileArray){
-      tileArray.forEach((num) => {
-        this.tileRefs[refPrefix + "|" + num].setBgColor(color);
-      });
-    }else if(!this.state.positionInvalid){
-      let index = 0;
-      this.state.letters.forEach(() => {
-        this.tileRefs[refPrefix + "|" + index].setBgColor(color);
-        index++;
-        const posInvalid = color === colors.dark_pink?true:false;
-        this.setState({positionInvalid: posInvalid});
-      });
-    }
-  }
-
-  changeTileSetBgColor(color){
-    this.setState({bgColor: color});
-  }
-
-  changeTileSetZIndex(val){
-    this.setState({zIndex: val});
-  }
-
   renderTile(letter, i){
     const refPrefix = idPrefix + this.props.index + "|";
 
     return (
-      <Tile
+      <DemoTile
         key={`${refPrefix}${i}`}
         id={`${refPrefix}${i}`}
         letter={letter}
         ref={(ref) => this.tileRefs[`${refPrefix}${i}`] = ref}
         tileHeight={this.props.tileHeight}
-        delay={this.props.delay}
-        setBgColor={() => {this.changeTileSetBgColor(colors.translucent)}}
-        setZIndex={(tileRef) => {this.changeTileSetZIndex(tileRef)}}
       />
     )
   }
@@ -241,7 +155,6 @@ class TileSet extends Component {
       <Draggable 
         position={{x: this.state.xPosition, y: this.state.yPosition}}
         onStart={(e, data) => {
-          console.log(data);
           this.setLastPositionX(Math.floor(data.x));
           this.setLastPositionY(Math.floor(data.y));
         }}
@@ -254,7 +167,7 @@ class TileSet extends Component {
             this.handleStop(e, data);
           }
         }}
-        disabled={this.state.disabled}
+        disabled={false}
       > 
         <div 
           style=
@@ -288,4 +201,4 @@ const styles = {
   },
 }
 
-export default TileSet;
+export default DemoTileSet;

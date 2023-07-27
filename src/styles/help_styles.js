@@ -29,6 +29,9 @@ modalView: {
   padding: 10,
   alignItems: "center",
   boxShadow: `10px 20px 30px ${colors.off_black}`,
+  borderTopColor: colors.off_black, 
+  borderWidth: "5px 0px 0px 0px", 
+  borderStyle: 'solid',
   zIndex: 100
 },
 modalHeader: {
@@ -68,13 +71,14 @@ modalBody: {
   display: 'flex',
   flex: 1,
   flexDirection: 'column',
+  height: "auto",
   justifyContent: "flex-start",
   alignItems: "flex-start",
-  alignSelf: 'stretch',
   padding: 12,
+  paddingTop: 20,
+
   //width: config.isPC?scrHeight * 9/16 - 30:scrWidth * 0.9,
   borderRadius: 10,
-
 },
 sectionHeading: {
   display: 'flex',

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { motion, AnimatePresence } from "framer-motion"
+import DemoTileSet from '../components/DemoTileSet';
 import help_styles from "../styles/help_styles";
 import colors from '../config/colors';
 import config from '../config/config';
@@ -32,22 +33,10 @@ class Help extends Component {
     this.props.requestModalClose("Help", false);
   }
    render() {
-    const row1Text1 = "\u2022  Find the hidden ";
-    const row1Text2 = "horizontal ";
-    const row1Text3 = "words of full puzzle width";
-    const row1Text31 = "\u2022  Form words by moving the columns of letters";
-    const row1Text4 = " up and down";
-    const row1Text5 = " to align words going";
-    const row1Text6 = "  across";
-    const row2Text1 = "\u2022  Make sure that the red RavL tile is in a word formed with your ";
-    const row2Text2 = "last move!";
-    const row2Text3 = "Incidental words earn points, but only the puzzle words will ";
-    const row2Text4 = "clear the board";
-    const row2Text5 = "\u2022  Form a word with the RavL tile early, or";
-    const row2Text51 = "\u2022  Run out of points (1 point for each move that doesn't form a word)" ;  
-    const row2Text52 = "...or the round will fail \n\n \u2605  Completing a game without using hints or failing as described will earn a star for your home screen!";
-    const row3Text1 = "\u2022  Cost 5 points for the first, 10 thereafter";
-    const row4Text1 = "\u2022  1 point earned for each letter in the word formed";
+    const row1Text = "\u2003  Tap or click the fragments to rotate a full 360 degrees. Note that this can reverse the letters. Try it out:";
+    const row2Text = "\u2003  The fragment will turn pink if dropped in an illegal position:";
+    const row3Text = "\u2003  ...whereas correct puzzle words will turn green when formed. Be aware, however, that they may not be in the right location in the puzzle!";
+    // const row1Text2 = "horizontal ";
     const closeImage = this.state.darkModeEnabled? require("../images/close.png"):require("../images/close_black.png");
     const { isModalVisible } = this.props;
     const { darkModeEnabled } = this.state;
@@ -68,13 +57,6 @@ class Help extends Component {
               <div style={help_styles.titleContainer}>
                 <div style={{...help_styles.title, color: darkModeEnabled ? colors.off_white:colors.off_black}}>How to Play</div>
               </div>
-              <div style={help_styles.r_tile_container}>
-                {/* <img
-                  src={require("../images/r_ravl_tile.png")}
-                  style={help_styles.r_tile_image}
-                  alt={"Tile"}
-                /> */}
-              </div>
               <div style={help_styles.closeButtonContainer}>
                 <img
                   style = {help_styles.close_image}
@@ -85,73 +67,48 @@ class Help extends Component {
               </div>
             </div>
             <div style={{...help_styles.modalBody, backgroundColor: darkModeEnabled ? colors.gray_3:colors.off_white2}}>
-              <div style={{...help_styles.sectionHeading, backgroundColor: darkModeEnabled ? colors.gray_3:colors.off_white2}}>
-                  <div style={{...help_styles.section_heading, color: darkModeEnabled ? colors.off_white:colors.off_black}}>
-                    Do:
-                  </div>
-              </div>
-              <div style={{...help_styles.section1_container}}>
-                <div style={{...help_styles.text, color: darkModeEnabled ? colors.off_white:colors.off_black}}>
-                  {row1Text1}
-                <span style={{...help_styles.text, fontWeight: "bold", color: darkModeEnabled ? colors.off_white:colors.off_black}}>
-                  {row1Text2}
-                </span>
-                  {row1Text3}
-                </div>
-                <div style={{...help_styles.text, color: darkModeEnabled ? colors.off_white:colors.off_black}}>
-                  {row1Text31}
-                <span style={{...help_styles.text, fontWeight: "bold", color: darkModeEnabled ? colors.off_white:colors.off_black}}>
-                  {row1Text4}
-                </span>
-                  {row1Text5}
-                <span style={{...help_styles.text, fontWeight: "bold", color: darkModeEnabled ? colors.off_white:colors.off_black}}>
-                  {row1Text6}
-                </span>
-                <div style={{...help_styles.text, color: darkModeEnabled ? colors.off_white:colors.off_black}}>
-                  {row2Text1}
-                <span style={{...help_styles.text, fontWeight: "bold", color: darkModeEnabled ? colors.off_white:colors.off_black}}>
-                  {row2Text2}
-                </span>
-                </div><br/>
-                  {row2Text3}
-                <span style={{...help_styles.text, fontWeight: "bold", color: darkModeEnabled ? colors.off_white:colors.off_black}}>
-                {row2Text4}
-                </span>
-                </div>
-              </div>
-              <div style={{...help_styles.sectionHeading}}>
+              <div style={demo_styles.sectionContainer}>
                 <div style={{...help_styles.section_heading, color: darkModeEnabled ? colors.off_white:colors.off_black}}>
-                  Do Not:
-                </div>
-              </div>
-              <div style={{...help_styles.section2_container}}>
-                <div style={{...help_styles.text, color: darkModeEnabled ? colors.off_white:colors.off_black}}>
-                {row2Text5}
+                  Tap to Rotate:
                 </div>
                 <div style={{...help_styles.text, color: darkModeEnabled ? colors.off_white:colors.off_black}}>
-                {row2Text51}
+                  {row1Text}
+
                 </div>
-                <div style={{...help_styles.text, whiteSpace: 'pre-line', color: darkModeEnabled ? colors.off_white:colors.off_black}}>
-                {row2Text52}
+
+                <div style={demo_styles.tilesContainer}>
+                  <DemoTileSet
+                    letters={["a", "b", "c"]}
+                    flipState={0}
+                    left={160}
+                    top={100}
+                    tileHeight={50}
+                  />
                 </div>
-                {/* <div style={{...help_styles.text, color: darkModeEnabled ? colors.off_white:colors.off_black}}>
-                {row2Text53}
-                </div> */}
               </div>
-              <div style={{...help_styles.sectionHeading}}>
-                <div style={{...help_styles.section_heading, color: darkModeEnabled ? colors.off_white:colors.off_black}}>Hints:</div>
-              </div>
-              <div style={{...help_styles.section3_container}}>
+              <div style={demo_styles.sectionContainer}>
+                <div style={{...help_styles.section_heading, color: darkModeEnabled ? colors.off_white:colors.off_black}}>
+                  Drag and Drop!
+                </div>
                 <div style={{...help_styles.text, color: darkModeEnabled ? colors.off_white:colors.off_black}}>
-                {row3Text1}
+                  {row2Text}
                 </div>
-              </div>
-              <div style={{...help_styles.sectionHeading}}>
-                <div style={{...help_styles.section_heading, color: darkModeEnabled ? colors.off_white:colors.off_black}}>Points:</div>
-              </div>
-              <div style={{...help_styles.section4_container}}>
+                <div style={demo_styles.boardImageContainer}>
+                  <img
+                    src={require("../images/incorrect_move.png")}
+                    style={demo_styles.boardImage}
+                    alt={"Incorrect move example"}
+                  />
+                </div>
                 <div style={{...help_styles.text, color: darkModeEnabled ? colors.off_white:colors.off_black}}>
-                {row4Text1}
+                  {row3Text}
+                </div>
+                <div style={demo_styles.boardImageContainer}>
+                  <img
+                    src={require("../images/correct_move.png")}
+                    style={demo_styles.boardImage}
+                    alt={"Correct move example"}
+                  />
                 </div>
               </div>
             </div>
@@ -163,4 +120,29 @@ class Help extends Component {
   }
 }
 
+const demo_styles = {
+  sectionContainer: {
+    display: 'flex', 
+    flexDirection: "column", 
+    position: "relative", 
+    height: "auto", 
+    alignSelf: "stretch", 
+  },
+  tilesContainer: {
+    height: 160,
+  },
+  boardImageContainer: {
+    display: 'flex', 
+    justifyContent: "center",
+    alignItems: "center",
+    height: 140,
+    alignSelf: "stretch", 
+    backgroundColor: colors.off_black,
+    margin: 20
+  },
+  boardImage: {
+    height: 100,
+    width: 100,
+  }
+}
 export default Help;
