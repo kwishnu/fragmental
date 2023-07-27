@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
-import formatDate from 'date-fns/format';
+// import formatDate from 'date-fns/format';
 import launch_styles from "../styles/launch_styles";
 import colors from '../config/colors';
 import config from '../config/config';
@@ -10,7 +10,6 @@ import MediumPuzzle from '../images/medium_puzzle.png';
 import LargePuzzle from '../images/large_puzzle.png';
 const scrHeight = config.scrHeight;
 const isPhone = config.isPhone;
-let dateToday = formatDate(new Date(), "EEEE, MMM d");
 
 // const KEY_ModePref = 'modePrefKey';
 
@@ -53,7 +52,9 @@ class Launch extends Component {
   }
 
   render() {
-    const { isModalVisible, introText, puzzleStreak } = this.props;
+    const { isModalVisible, dateToday, introText, puzzleStreak } = this.props;
+    // const date = formatDate(dateToday, "EEEE, MMM d");
+
     const dailyPuzzlesText = "Daily Puzzles";
     const playText = "Play";
     const numPuzzStreakDays = puzzleStreak.split(",")[0];

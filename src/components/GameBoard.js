@@ -6,14 +6,14 @@ import colors from '../config/colors';
 import config from '../config/config';
 import TileSet from '../components/TileSet';
 import CrosswordTile from '../components/CrosswordTile';
-import words3 from '../data/3letter.js';
-import words4 from '../data/4letter.js';
-import words5 from '../data/5letter.js';
-import words6 from '../data/6letter.js';
-import words7 from '../data/7letter.js';
-import words8 from '../data/8letter.js';
-import words9 from '../data/9letter.js';
-import words10 from '../data/10letter.js';
+// import words3 from '../data/3letter.js';
+// import words4 from '../data/4letter.js';
+// import words5 from '../data/5letter.js';
+// import words6 from '../data/6letter.js';
+// import words7 from '../data/7letter.js';
+// import words8 from '../data/8letter.js';
+// import words9 from '../data/9letter.js';
+// import words10 from '../data/10letter.js';
 import { 
   generateArray, 
   getFragments, 
@@ -33,6 +33,7 @@ const shadow = `3px 3px 8px ${colors.off_black}`;
 const homeImage = require("../images/home.png");
 const nextImage = require("../images/arrow_forward.png");
 const KEY_PuzzleStreakDays = 'puzzleStreakKey';
+const KEY_DailySolvedArray = 'dailySolvedKey';
 
 class GameBoard extends Component {
   constructor(props) {
@@ -48,6 +49,7 @@ class GameBoard extends Component {
       showButtons: false,
       nextGameIndex: this.props.count,
       daily: this.props.daily,
+      dailyComplete: false,
       keyIDFragment: "",
       loading: false
     }
@@ -168,16 +170,16 @@ class GameBoard extends Component {
       const horWords = splitAndFilterStrings(concatenatedHorizontal, defaultChar);
       const vertWords = splitAndFilterStrings(concatenatedVertical, defaultChar);
       const allWordsFromSplits = horWords.concat(vertWords);
-      let foundNonDictionaryWord = false;
-      const allWords = [...words3, ...words4, ...words5, ...words6, ...words7, ...words8, ...words9, ...words10];
+      let foundIncorrectWord = false;
+      //const allWords = [...words3, ...words4, ...words5, ...words6, ...words7, ...words8, ...words9, ...words10];
 
       for(let m = 0;m < allWordsFromSplits.length;m++){
-        foundNonDictionaryWord = allWords.includes(allWordsFromSplits[m])?false:true;
-        foundNonDictionaryWord = this.state.words.includes(allWordsFromSplits[m])?false:true;
+        //foundIncorrectWord = allWords.includes(allWordsFromSplits[m])?false:true;
+        foundIncorrectWord = this.state.words.includes(allWordsFromSplits[m])?false:true;
         //console.log("words: " + JSON.stringify(this.state.words));
-        if(foundNonDictionaryWord)break;
+        if(foundIncorrectWord)break;
       }
-      if(!foundNonDictionaryWord){
+      if(!foundIncorrectWord){
         this.storeOnGameComplete(this.props.daily)
         this.showSolved();
         return;
@@ -188,6 +190,22 @@ class GameBoard extends Component {
 
   storeOnGameComplete(daily) {
     if(!daily)return;
+
+    let dailySolvedArray = JSON.parse(window.localStorage.getItem(KEY_DailySolvedArray));
+    if(dailySolvedArray.length > 1){
+      dailySolvedArray.length = 0;
+      this.setState({dailyComplete: true});
+    }else{
+      if(!dailySolvedArray.includes(this.props.count)){
+        dailySolvedArray.push(this.props.count);
+      }
+    }
+    try {
+      window.localStorage.setItem(KEY_DailySolvedArray, JSON.stringify(dailySolvedArray));
+    } catch (error) {
+      window.alert('window.localStorage error: ' + error.message);
+    }
+
     const dateToday = formatDate(new Date(), "MM-dd-yyyy");
     const ps = this.props.puzzleStreak;
     const numPuzzStreakDays = ps.split(",")[0];
@@ -197,7 +215,7 @@ class GameBoard extends Component {
     if (dateToday !== lastPuzzDay) psInt++;
     let incrPsStr = psInt + "";
     let streakDateStr = incrPsStr + "," + dateToday;
-console.log("streakDateStr: " + streakDateStr);
+
     try {
       window.localStorage.setItem(KEY_PuzzleStreakDays, streakDateStr);
     } catch (error) {
@@ -444,7 +462,7 @@ console.log("streakDateStr: " + streakDateStr);
               >
                 <img style={game_styles.img} src={homeImage} onClick={() => this.closeGame()} alt={"Home"} />
               </motion.button>
-            {(this.state.daily) &&    
+            {(this.state.daily && !this.state.dailyComplete) &&    
               <motion.button
                 initial={{ opacity: 0, y: 700 }}
                 animate={{ opacity: 1, y: 150 }}
@@ -462,7 +480,7 @@ console.log("streakDateStr: " + streakDateStr);
                 transition={{ type: "spring", stiffness: 250, damping: 18, duration: 0.6 }}
                 style={{...game_styles.button, backgroundColor: colors.dark_green}}
               >
-                <img style={game_styles.img} src={nextImage} onClick={() => this.nextGame(3, false)} alt={"Next Game"} />
+                <img style={game_styles.img} src={nextImage} onClick={() => this.nextGame(3)} alt={"Next Game"} />
               </motion.button>
               <motion.button
                 initial={{ opacity: 0, y: 700 }}
@@ -470,7 +488,7 @@ console.log("streakDateStr: " + streakDateStr);
                 transition={{ type: "spring", stiffness: 250, damping: 18, duration: 0.6 }}
                 style={{...game_styles.button, backgroundColor: colors.dark_blue}}
               >
-                <img style={game_styles.img} src={nextImage} onClick={() => this.nextGame(4, false)} alt={"Next Game"} />
+                <img style={game_styles.img} src={nextImage} onClick={() => this.nextGame(4)} alt={"Next Game"} />
               </motion.button>
               <motion.button
                 initial={{ opacity: 0, y: 700 }}
@@ -478,7 +496,7 @@ console.log("streakDateStr: " + streakDateStr);
                 transition={{ type: "spring", stiffness: 250, damping: 18, duration: 0.6 }}
                 style={{...game_styles.button, backgroundColor: colors.dark_red}}
               >
-                <img style={game_styles.img} src={nextImage} onClick={() => this.nextGame(5, false)} alt={"Next Game"} />
+                <img style={game_styles.img} src={nextImage} onClick={() => this.nextGame(5)} alt={"Next Game"} />
               </motion.button>
               </div>
             }

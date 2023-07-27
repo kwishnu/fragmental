@@ -6,7 +6,6 @@ import formatDate from 'date-fns/format';
 import parse from 'date-fns/parse';
 import { differenceInMinutes, differenceInDays } from 'date-fns';
 import colors from './config/colors';
-// import config from './config/config';
 import Menu from './components/Menu.js';
 import Header from './components/Header.js';
 import GameBoard from './components/GameBoard';
@@ -21,7 +20,9 @@ const KEY_ShowedTutorial = 'showedTutKey';
 const KEY_PlayedFirstGame = 'playedGameKey';
 const KEY_LastVisibleTime = 'lastVisibleTime';
 const KEY_PuzzleStreakDays = 'puzzleStreakKey';
+const KEY_DailySolvedArray = 'dailySolvedKey';
 let dateToday = "";
+let prettyDate = "";
 let launchText = "";
 
 class App extends Component {
@@ -52,6 +53,7 @@ class App extends Component {
 
   componentDidMount(){
     dateToday = formatDate(new Date(), "MM-dd-yyyy");
+    prettyDate = formatDate(new Date(), "EEEE, MMMM d");
     launchText = getLaunchText(dateToday);
     const puzzlesObj = getPuzzles(dateToday);
     this.setState({puzzlesObj: puzzlesObj});
@@ -82,6 +84,7 @@ class App extends Component {
       }
     }
 
+
     const lastOpened = window.localStorage.getItem(KEY_LastOpenedDate);
     if (lastOpened !== null) {
       const loDateStr = lastOpened;
@@ -99,6 +102,11 @@ class App extends Component {
       }
     }
 
+    try {
+      window.localStorage.setItem(KEY_DailySolvedArray, JSON.stringify([]));
+    } catch (error) {
+      window.alert('window.localStorage error: ' + error.message);
+    }
     this.updatePuzzleStreak();
   }
 
@@ -223,6 +231,7 @@ class App extends Component {
       this.setState({ visible: true, lastVisibleTime: currentTime });
       localStorage.setItem(KEY_LastVisibleTime, currentTime);
       dateToday = formatDate(new Date(), "MM-dd-yyyy");
+      prettyDate = formatDate(new Date(), "EEEE, MMMM d");
       const openedStr = window.localStorage.getItem(KEY_LastOpenedDate);
       if (openedStr !== null) {
         if (dateToday !== openedStr) {
@@ -334,6 +343,7 @@ class App extends Component {
           <Launch
             isModalVisible={this.state.showLaunch}
             introText={launchText}
+            dateToday={prettyDate}
             puzzleStreak={this.state.puzzleStreak}
             requestModalClose={(which, open, startingGame) => { this.toggleModal(which, open, startingGame) }}
             startGame={(which, daily) => { this.startGame(which, daily) }}
