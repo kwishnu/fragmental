@@ -173,6 +173,8 @@ class GameBoard extends Component {
 
       for(let m = 0;m < allWordsFromSplits.length;m++){
         foundNonDictionaryWord = allWords.includes(allWordsFromSplits[m])?false:true;
+        foundNonDictionaryWord = this.state.words.includes(allWordsFromSplits[m])?false:true;
+        //console.log("words: " + JSON.stringify(this.state.words));
         if(foundNonDictionaryWord)break;
       }
       if(!foundNonDictionaryWord){
