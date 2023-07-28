@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/fragmental/static/css/main.84335bb3.css",
-    "main.js": "/fragmental/static/js/main.4f9c442b.js",
-    "screen-orientation-js.js": "/fragmental/static/js/screen-orientation-js.62a882c0.chunk.js",
+    "main.js": "/fragmental/static/js/main.d7df0ce7.js",
+    "screen-orientation-js.js": "/fragmental/static/js/screen-orientation-js.7342dc68.chunk.js",
     "static/js/787.9b2f7388.chunk.js": "/fragmental/static/js/787.9b2f7388.chunk.js",
     "static/media/fragmental4.png": "/fragmental/static/media/fragmental4.033ffaf8abf311db744c.png",
     "service-worker.js": "/fragmental/service-worker.js",
@@ -14,12 +14,12 @@
     "static/media/medium_puzzle.png": "/fragmental/static/media/medium_puzzle.b2f37ea1344c0638555e.png",
     "index.html": "/fragmental/index.html",
     "main.84335bb3.css.map": "/fragmental/static/css/main.84335bb3.css.map",
-    "main.4f9c442b.js.map": "/fragmental/static/js/main.4f9c442b.js.map",
-    "screen-orientation-js.62a882c0.chunk.js.map": "/fragmental/static/js/screen-orientation-js.62a882c0.chunk.js.map",
+    "main.d7df0ce7.js.map": "/fragmental/static/js/main.d7df0ce7.js.map",
+    "screen-orientation-js.7342dc68.chunk.js.map": "/fragmental/static/js/screen-orientation-js.7342dc68.chunk.js.map",
     "787.9b2f7388.chunk.js.map": "/fragmental/static/js/787.9b2f7388.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.84335bb3.css",
-    "static/js/main.4f9c442b.js"
+    "static/js/main.d7df0ce7.js"
   ]
 }
