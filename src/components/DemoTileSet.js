@@ -42,7 +42,7 @@ class DemoTileSet extends Component {
   }
 
   handleStop(e, data){
-    // console.log("clicked");
+    this.setState({xPosition: data.x, yPosition: data.y});
   }
 
   handleClick(){

@@ -37,7 +37,7 @@ class App extends Component {
       daily: false,
       dailyPuzzleCompleted: false,
       puzzleStreak: "0,01-01-2001",
-      lastPuzzleDay: "01-01-2001",
+      // lastPuzzleDay: "01-01-2001",
       showGame3: false,
       showGame4: false,
       showGame5: false,
@@ -119,10 +119,21 @@ class App extends Component {
       let today = new Date();
       const dateFromLPD = parse(lastPuzzDay, 'MM-dd-yyyy', new Date());
       const diff = differenceInDays(today, dateFromLPD);
+      console.log("diff: " + diff);
       const numStr = (numPuzzStreakDays === '0' || diff > 1) ? '0' : numPuzzStreakDays;
       const newPuzzDateStr = numStr + "," + dateToday;
 
-      this.setState({ puzzleStreak: newPuzzDateStr, lastPuzzleDay: lastPuzzDay });
+    //   if(!this.state.didit){
+
+    //   try {
+    //     window.localStorage.setItem(KEY_PuzzleStreakDays, '1,07-27-2023');
+    //   } catch (error) {
+    //     window.alert('window.localStorage error: ' + error.message);
+    //   }
+    //   this.setState({ puzzleStreak: '1,07-27-2023', didit: true });
+    // }else{
+      this.setState({ puzzleStreak: newPuzzDateStr });
+    // }
     } else {
       try {
         window.localStorage.setItem(KEY_PuzzleStreakDays, '0,01-01-2001');

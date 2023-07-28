@@ -28,7 +28,7 @@ modalView: {
   borderRadius: 5,
   padding: 10,
   alignItems: "center",
-  boxShadow: `10px 20px 30px ${colors.off_black}`,
+  boxShadow: `10px 20px 30px ${colors.black}`,
   borderTopColor: colors.off_black, 
   borderWidth: "5px 0px 0px 0px", 
   borderStyle: 'solid',
@@ -49,17 +49,6 @@ titleContainer: {
   justifyContent: "flex-start",
   alignItems: "flex-start",
 },
-r_tile_container: {
-  display: 'flex',
-  flex: 1,
-  zIndex: 100
-},
-r_tile_image: {
-  height: 80,
-  width: 80,
-  marginTop: 15,
-  marginRight: 30
-},
 closeButtonContainer: {
   display: 'flex',
   flex: 2,
@@ -75,7 +64,7 @@ modalBody: {
   justifyContent: "flex-start",
   alignItems: "flex-start",
   padding: 12,
-  paddingTop: 20,
+  paddingTop: 15,
 
   //width: config.isPC?scrHeight * 9/16 - 30:scrWidth * 0.9,
   borderRadius: 10,
@@ -133,14 +122,15 @@ title: {
   userSelect: 'none'
 },
 section_heading: {
-  fontSize: config.isPC?convertFont(23):convertFont(26),
+  fontSize: config.isPC?convertFont(23):convertFont(23),
   fontFamily: "Acme",
   textDecorationLine: "underline",
   userSelect: 'none'
 },
 text: {
-  fontSize: config.isPC?convertFont(15):convertFont(18),
+  fontSize: config.isPC?convertFont(15):convertFont(17),
   fontFamily: "system-ui",
+  marginTop: 6,
   userSelect: 'none'
 },
 

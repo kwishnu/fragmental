@@ -82,7 +82,7 @@ class Help extends Component {
                     flipState={0}
                     left={160}
                     top={100}
-                    tileHeight={50}
+                    tileHeight={48}
                   />
                 </div>
               </div>
@@ -129,20 +129,20 @@ const demo_styles = {
     alignSelf: "stretch", 
   },
   tilesContainer: {
-    height: 160,
+    height: 100,
   },
   boardImageContainer: {
     display: 'flex', 
     justifyContent: "center",
     alignItems: "center",
-    height: 140,
+    height: 120,
     alignSelf: "stretch", 
     backgroundColor: colors.off_black,
     margin: 20
   },
   boardImage: {
-    height: 100,
-    width: 100,
+    height: 95,
+    width: 95,
   }
 }
 export default Help;

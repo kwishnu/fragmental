@@ -241,7 +241,6 @@ class TileSet extends Component {
       <Draggable 
         position={{x: this.state.xPosition, y: this.state.yPosition}}
         onStart={(e, data) => {
-          console.log(data);
           this.setLastPositionX(Math.floor(data.x));
           this.setLastPositionY(Math.floor(data.y));
         }}

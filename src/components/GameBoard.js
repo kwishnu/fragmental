@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { CircularProgress } from '@mui/material';
+import Confetti from '../components/Confetti.js';
 import { motion, AnimatePresence } from 'framer-motion';
 import formatDate from 'date-fns/format';
 import colors from '../config/colors';
@@ -210,7 +211,6 @@ class GameBoard extends Component {
     const ps = this.props.puzzleStreak;
     const numPuzzStreakDays = ps.split(",")[0];
     const lastPuzzDay = ps.split(",")[1];
-
     let psInt = parseInt(numPuzzStreakDays);
     if (dateToday !== lastPuzzDay || psInt === 0) psInt++;
     let incrPsStr = psInt + "";
@@ -438,6 +438,10 @@ class GameBoard extends Component {
 
     return (
       <div>
+        {this.state.dailyComplete &&
+          <Confetti />
+        }          
+
       <div id="parentContainer" style={{...game_styles.container, width: this.state.puzzleArray[0].length * th, height: (this.state.puzzleArray.length) * th}}>
         {this.state.puzzleArray.map((array, outerIndex) => (
           <div key={outerIndex}>
