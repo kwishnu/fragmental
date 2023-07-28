@@ -198,6 +198,7 @@ const styles = {
     marginTop: 2,
     marginLeft: 2,
     justifyContent: "space-around",
+    zIndex: 100
   },
 }
 

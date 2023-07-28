@@ -73,9 +73,7 @@ class Help extends Component {
                 </div>
                 <div style={{...help_styles.text, color: darkModeEnabled ? colors.off_white:colors.off_black}}>
                   {row1Text}
-
                 </div>
-
                 <div style={demo_styles.tilesContainer}>
                   <DemoTileSet
                     letters={["a", "b", "c"]}
@@ -129,7 +127,7 @@ const demo_styles = {
     alignSelf: "stretch", 
   },
   tilesContainer: {
-    height: 100,
+    height: 80,
   },
   boardImageContainer: {
     display: 'flex', 
@@ -142,7 +140,7 @@ const demo_styles = {
   },
   boardImage: {
     height: 95,
-    width: 95,
+    width: 130,
   }
 }
 export default Help;

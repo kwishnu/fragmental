@@ -39,7 +39,7 @@ modalHeader: {
   flexDirection: 'row',
   justifyContent: "flex-start",
   alignItems: "center",
-  height: 74,
+  height: "auto",
   alignSelf: "stretch",
   paddingLeft: tablet?scrWidth * 0.01:0,
 },
@@ -65,8 +65,6 @@ modalBody: {
   alignItems: "flex-start",
   padding: 12,
   paddingTop: 15,
-
-  //width: config.isPC?scrHeight * 9/16 - 30:scrWidth * 0.9,
   borderRadius: 10,
 },
 sectionHeading: {
@@ -76,40 +74,6 @@ sectionHeading: {
   justifyContent: "flex-start",
   alignItems: "flex-start",
   marginTop: 4,
-},
-section1_container: {
-  display: 'flex',
-  height: "auto",
-  flexDirection: 'column',
-  justifyContent: "flex-start",
-  alignItems: "flex-start",
-  alignSelf: 'stretch',
-  // height: line * 10,
-},
-section2_container: {
-  display: 'flex',
-  height: "auto",
-  flexDirection: 'column',
-  justifyContent: "flex-start",
-  alignItems: "flex-start",
-  // height: line * 8,
-},
-section3_container: {
-  display: 'flex',
-  height: "auto",
-  flexDirection: 'column',
-  justifyContent: "flex-start",
-  alignItems: "flex-start",
-  // height: line * 1,
-},
-section4_container: {
-  display: 'flex',
-  height: "auto",
-  flexDirection: 'column',
-  justifyContent: "flex-start",
-  alignItems: "flex-start",
-  marginBottom: 10
-  // height: line * 2,
 },
 close_image: {
   height: 35,
@@ -132,8 +96,7 @@ text: {
   fontFamily: "system-ui",
   marginTop: 6,
   userSelect: 'none'
-},
-
+}
 }
 
 export default help_styles;
