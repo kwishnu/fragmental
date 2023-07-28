@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { CircularProgress } from '@mui/material';
 import Confetti from '../components/Confetti.js';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import formatDate from 'date-fns/format';
 import colors from '../config/colors';
@@ -35,6 +37,16 @@ const homeImage = require("../images/home.png");
 const nextImage = require("../images/arrow_forward.png");
 const KEY_PuzzleStreakDays = 'puzzleStreakKey';
 const KEY_DailySolvedArray = 'dailySolvedKey';
+const toastParams = {
+  position: toast.POSITION.BOTTOM_CENTER,
+  autoClose: 2400,
+  hideProgressBar: true,
+  closeOnClick: false,
+  pauseOnHover: false,
+  draggable: false,
+  progress: undefined,
+  theme: "light",
+}
 
 class GameBoard extends Component {
   constructor(props) {
@@ -194,8 +206,14 @@ class GameBoard extends Component {
 
     let dailySolvedArray = JSON.parse(window.localStorage.getItem(KEY_DailySolvedArray));
     if(dailySolvedArray.length > 1){
+      toast.success("\u2605 Daily puzzles complete...\r\nWoo hoo! \u2605", {toastParams});
       dailySolvedArray.length = 0;
       this.setState({dailyComplete: true});
+    }else if(dailySolvedArray.length === 0){
+      toast.success("\u2605 Daily streak extended \u2605", {toastParams});
+      if(!dailySolvedArray.includes(this.props.count)){
+        dailySolvedArray.push(this.props.count);
+      }
     }else{
       if(!dailySolvedArray.includes(this.props.count)){
         dailySolvedArray.push(this.props.count);
@@ -508,6 +526,20 @@ class GameBoard extends Component {
           }
         </AnimatePresence>
      </div> 
+     <ToastContainer
+              position="bottom-center"
+              style={{ width: config.isPC ? scrHeight / 4.5 : scrWidth * 0.7 }}
+              autoClose={2400}
+              hideProgressBar
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
+
       </div>
     );
   }
