@@ -82,7 +82,7 @@ class Support extends Component {
               <div style={support_styles.section}>
                 <div style={{...support_styles.text, whiteSpace: 'pre-line', color: darkModeEnabled ? colors.off_white:colors.off_black}}>
                 {"Thank you for playing FragMental! If you would like to support my little game, please upgrade for the cost of a coffee \u2014 special benefits include:" +
-                "\n\n\u2022 UNLIMITED PLAY \u2014 get a FragMental fix any time you like, outside of the daily games\n\u2022 NO ADs ever \u2014 no unsightly interruptions to your FragMental play (future)" +
+                "\n\n\u2022 UNLIMITED PLAY \u2014 get a FragMental fix any time you like, outside of the daily games (currently unlimited in beta version 1.2.2)\n\u2022 NO ADs ever \u2014 no unsightly interruptions to your FragMental play (future)" +
                 "\n\nSo please, poke away at the coffee button below and make the jump!"
                 }
                 </div>

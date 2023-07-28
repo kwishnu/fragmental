@@ -5,7 +5,7 @@ import config from '../config/config';
 import MenuHeader from '../components/MenuHeader';
 import MenuItem from '../components/MenuItem';
 import closeImage from '../images/close.png';
-import settingsImage from '../images/settings.png';
+// import settingsImage from '../images/settings.png';
 import helpImage from '../images/question.png';
 import supportImage from '../images/heart.png';
 import homeImage from '../images/home.png';
@@ -48,7 +48,7 @@ class Menu extends Component {
               <MenuHeader text={"FragMental"} imageUrl={closeImage} altText={"FragMental - Close Menu"} closeMenu={() => this.closeMenu()} bgC={themeColor}/>
               <MenuItem text={"Home"} imageUrl={homeImage} altText={"Home"} showModal={(which) => this.showModal(which, true)} bgC={themeColor}/>
               <div style={{...menu_styles.divider, width: scrHeight * 0.1, marginLeft: scrHeight * 0.08, borderColor: themeColor}}></div>
-              <MenuItem text={"Settings"} imageUrl={settingsImage} altText={"Settings"} showModal={(which) => this.showModal(which, true)} bgC={themeColor}/>
+              {/* <MenuItem text={"Settings"} imageUrl={settingsImage} altText={"Settings"} showModal={(which) => this.showModal(which, true)} bgC={themeColor}/> */}
               <MenuItem text={"Help"} imageUrl={helpImage} altText={"Help"} showModal={(which) => this.showModal(which, true)} bgC={themeColor}/>
               <MenuItem text={"Support"} imageUrl={supportImage} altText={"Support"} showModal={(which) => this.showModal(which, true)} bgC={themeColor}/>
               {/* {this.props.cgi === -1 && global.upgradeStatus &&
