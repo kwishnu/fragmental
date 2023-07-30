@@ -37,6 +37,7 @@ const homeImage = require("../images/home.png");
 const nextImage = require("../images/arrow_forward.png");
 const KEY_PuzzleStreakDays = 'puzzleStreakKey';
 const KEY_DailySolvedArray = 'dailySolvedKey';
+const KEY_PlayedFirstGame = 'playedGameKey';
 const toastParams = {
   position: toast.POSITION.BOTTOM_CENTER,
   autoClose: 2400,
@@ -203,13 +204,20 @@ class GameBoard extends Component {
 
   storeOnGameComplete(daily) {
     if(!daily)return;
-
+    let playedBool = false;
+    const played = window.localStorage.getItem(KEY_PlayedFirstGame);
+    if (played !== null) {
+      playedBool = true;
+    }else{
+      playedBool = false;
+      window.localStorage.setItem(KEY_PlayedFirstGame, 'true');
+    }
     let dailySolvedArray = JSON.parse(window.localStorage.getItem(KEY_DailySolvedArray));
     if(dailySolvedArray.length > 1){
       toast.success("\u2605 Daily puzzles complete...\r\nWoo hoo! \u2605", {toastParams});
       dailySolvedArray.length = 0;
       this.setState({dailyComplete: true});
-    }else if(dailySolvedArray.length === 0){
+    }else if(dailySolvedArray.length === 0 && playedBool){
       toast.success("\u2605 Daily streak extended \u2605", {toastParams});
       if(!dailySolvedArray.includes(this.props.count)){
         dailySolvedArray.push(this.props.count);
@@ -225,15 +233,17 @@ class GameBoard extends Component {
       window.alert('window.localStorage error: ' + error.message);
     }
 
-    const dateToday = formatDate(new Date(), "MM-dd-yyyy");
-    const ps = this.props.puzzleStreak;
-    const numPuzzStreakDays = ps.split(",")[0];
-    const lastPuzzDay = ps.split(",")[1];
-    let psInt = parseInt(numPuzzStreakDays);
-    if (dateToday !== lastPuzzDay || psInt === 0) psInt++;
-    let incrPsStr = psInt + "";
-    let streakDateStr = incrPsStr + "," + dateToday;
-
+    const puzzStreak = window.localStorage.getItem(KEY_PuzzleStreakDays);
+    let streakDateStr;
+    if (puzzStreak !== null) {
+      const dateToday = formatDate(new Date(), "MM-dd-yyyy");
+      const numPuzzStreakDays = puzzStreak.split(",")[0];
+      const lastPuzzDay = puzzStreak.split(",")[1];
+      let psInt = parseInt(numPuzzStreakDays);
+      if (dateToday !== lastPuzzDay || psInt === 0) psInt++;
+      let incrPsStr = psInt + "";
+      streakDateStr = incrPsStr + "," + dateToday;
+    }
     try {
       window.localStorage.setItem(KEY_PuzzleStreakDays, streakDateStr);
     } catch (error) {

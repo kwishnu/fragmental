@@ -3,8 +3,7 @@ import PageVisibility from 'react-page-visibility';
 import ScreenOrientationReact from 'screen-orientation-react';
 import { nanoid } from 'nanoid';
 import formatDate from 'date-fns/format';
-import parse from 'date-fns/parse';
-import { differenceInMinutes, differenceInDays } from 'date-fns';
+import { differenceInMinutes } from 'date-fns';
 import colors from './config/colors';
 import Menu from './components/Menu.js';
 import Header from './components/Header.js';
@@ -16,8 +15,6 @@ import Support from "./screens/support";
 import styles from './styles/appStyles.js';
 import {getLaunchText, getPuzzles} from './data/dataHelper';
 const KEY_LastOpenedDate = 'lastOpenedKey';
-const KEY_ShowedTutorial = 'showedTutKey';
-const KEY_PlayedFirstGame = 'playedGameKey';
 const KEY_LastVisibleTime = 'lastVisibleTime';
 const KEY_PuzzleStreakDays = 'puzzleStreakKey';
 const KEY_DailySolvedArray = 'dailySolvedKey';
@@ -37,7 +34,6 @@ class App extends Component {
       daily: false,
       dailyPuzzleCompleted: false,
       puzzleStreak: "0,01-01-2001",
-      // lastPuzzleDay: "01-01-2001",
       showGame3: false,
       showGame4: false,
       showGame5: false,
@@ -58,50 +54,6 @@ class App extends Component {
     const puzzlesObj = getPuzzles(dateToday);
     this.setState({puzzlesObj: puzzlesObj});
 
-    const showed = window.localStorage.getItem(KEY_ShowedTutorial);
-    if (showed !== null) {
-      const showedBool = (showed === 'true') ? true : false;
-      this.setState({ showedTutScreen1: showedBool, showTutScreen1: !showedBool });
-    } else {
-      try {
-        window.localStorage.setItem(KEY_ShowedTutorial, 'false');
-        this.setState({ showedTutScreen1: false });
-      } catch (error) {
-        window.alert('window.localStorage error: ' + error.message);
-      }
-    }
-
-    const played = window.localStorage.getItem(KEY_PlayedFirstGame);
-    if (played !== null) {
-      const playedBool = (played === 'true') ? true : false;
-      this.setState({ playedGameOnce: playedBool });
-    } else {
-      try {
-        window.localStorage.setItem(KEY_PlayedFirstGame, 'false');
-        this.setState({ playedGameOnce: false });
-      } catch (error) {
-        window.alert('window.localStorage error: ' + error.message);
-      }
-    }
-
-
-    const lastOpened = window.localStorage.getItem(KEY_LastOpenedDate);
-    if (lastOpened !== null) {
-      const loDateStr = lastOpened;
-      this.setState({ lastOpenedDate: loDateStr });
-      try {
-        window.localStorage.setItem(KEY_LastOpenedDate, dateToday);
-      } catch (error) {
-        window.alert('window.localStorage error: ' + error.message);
-      }
-    } else {
-      try {
-        window.localStorage.setItem(KEY_LastOpenedDate, dateToday);
-      } catch (error) {
-        window.alert('window.localStorage error: ' + error.message);
-      }
-    }
-
     try {
       window.localStorage.setItem(KEY_DailySolvedArray, JSON.stringify([]));
     } catch (error) {
@@ -113,35 +65,14 @@ class App extends Component {
   updatePuzzleStreak(){
     const puzzStreak = window.localStorage.getItem(KEY_PuzzleStreakDays);
     if (puzzStreak !== null) {
-      const ps = puzzStreak;
-      const numPuzzStreakDays = ps.split(",")[0];
-      const lastPuzzDay = ps.split(",")[1];
-      let today = new Date();
-      const dateFromLPD = parse(lastPuzzDay, 'MM-dd-yyyy', new Date());
-      const diff = differenceInDays(today, dateFromLPD);
-      console.log("diff: " + diff);
-      const numStr = (numPuzzStreakDays === '0' || diff > 1) ? '0' : numPuzzStreakDays;
-      const newPuzzDateStr = numStr + "," + dateToday;
-
-    //   if(!this.state.didit){
-
-    //   try {
-    //     window.localStorage.setItem(KEY_PuzzleStreakDays, '1,07-27-2023');
-    //   } catch (error) {
-    //     window.alert('window.localStorage error: ' + error.message);
-    //   }
-    //   this.setState({ puzzleStreak: '1,07-27-2023', didit: true });
-    // }else{
-      this.setState({ puzzleStreak: newPuzzDateStr });
-    // }
-    } else {
+      this.setState({puzzleStreak: puzzStreak});
+    }else{
       try {
         window.localStorage.setItem(KEY_PuzzleStreakDays, '0,01-01-2001');
       } catch (error) {
         window.alert('window.localStorage error: ' + error.message);
       }
     }
-
   }
 
   toggleMenu(respond) {
@@ -226,15 +157,14 @@ class App extends Component {
     }
   }
 
-  // reloadGame(){
-  //   window.location.reload();
-  // }
-
   handleVisibilityChange(visible) {
     if (visible) {
       const currentTime = new Date();
       const minutesSinceVisible = differenceInMinutes(currentTime, new Date(this.state.lastVisibleTime));
-
+console.log("currentTime: " + currentTime);
+console.log("this.state.lastVisibleTime: " + this.state.lastVisibleTime);
+console.log("new Date(this.state.lastVisibleTime: " + new Date(this.state.lastVisibleTime));
+console.log("minutesSinceVisible: " + minutesSinceVisible);
       if (!this.state.visible && minutesSinceVisible >= 15) {
         window.location.reload(); // Reload the page
       }
@@ -248,11 +178,7 @@ class App extends Component {
         if (dateToday !== openedStr) {
           launchText = getLaunchText(dateToday);
           const puzzlesObj = getPuzzles(dateToday);
-          this.setState({puzzlesObj: puzzlesObj});
-                this.setState({ dailyPuzzleCompleted: false });
-          setTimeout(() => {
-            this.reloadGame();
-          }, 200);
+          this.setState({puzzlesObj: puzzlesObj, dailyPuzzleCompleted: false});
         }
       }
       try {
@@ -283,7 +209,7 @@ class App extends Component {
             showMenu={this.state.showMenu}
             closeMenu={(respond) => this.toggleMenu(respond)}
             showModal={(which, open) => this.showModal(which, open)}
-            themeColor={colors.gray_3}//global.bgColor
+            themeColor={colors.gray_3}
             scrHeight={this.state.scrHeight}
             scrWidth={this.state.scrWidth}
           />
@@ -312,7 +238,6 @@ class App extends Component {
                 fragments={this.state.puzzlesObj["3"].fragments} 
                 fragObj={this.state.puzzlesObj["3"].fragObj} 
                 daily={this.state.daily}
-                puzzleStreak={this.state.puzzleStreak}
                 startGame={(which, daily) => { this.startGame(which, daily) }}
                 keyIDFragment={keyIDFrag}
                 showLaunch={() => { this.showLaunch() }}
@@ -326,7 +251,6 @@ class App extends Component {
                 fragments={this.state.puzzlesObj["4"].fragments} 
                 fragObj={this.state.puzzlesObj["4"].fragObj} 
                 daily={this.state.daily}
-                puzzleStreak={this.state.puzzleStreak}
                 startGame={(which, daily) => { this.startGame(which, daily) }}
                 keyIDFragment={keyIDFrag}
                 showLaunch={() => { this.showLaunch() }}
@@ -340,7 +264,6 @@ class App extends Component {
                 fragments={this.state.puzzlesObj["5"].fragments} 
                 fragObj={this.state.puzzlesObj["5"].fragObj} 
                 daily={this.state.daily}
-                puzzleStreak={this.state.puzzleStreak}
                 startGame={(which, daily) => { this.startGame(which, daily) }}
                 keyIDFragment={keyIDFrag}
                 showLaunch={() => { this.showLaunch() }}
