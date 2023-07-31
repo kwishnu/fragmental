@@ -213,20 +213,17 @@ class GameBoard extends Component {
       window.localStorage.setItem(KEY_PlayedFirstGame, 'true');
     }
     let dailySolvedArray = JSON.parse(window.localStorage.getItem(KEY_DailySolvedArray));
-    if(dailySolvedArray.length > 1){
+    if(dailySolvedArray.length === 2){
       toast.success("\u2605 Daily puzzles complete...\r\nWoo hoo! \u2605", {toastParams});
-      dailySolvedArray.length = 0;
       this.setState({dailyComplete: true});
     }else if(dailySolvedArray.length === 0 && playedBool){
       toast.success("\u2605 Daily streak extended \u2605", {toastParams});
-      if(!dailySolvedArray.includes(this.props.count)){
-        dailySolvedArray.push(this.props.count);
-      }
-    }else{
-      if(!dailySolvedArray.includes(this.props.count)){
-        dailySolvedArray.push(this.props.count);
-      }
     }
+    
+    if(!dailySolvedArray.includes(this.props.count)){
+      dailySolvedArray.push(this.props.count);
+    }
+    
     try {
       window.localStorage.setItem(KEY_DailySolvedArray, JSON.stringify(dailySolvedArray));
     } catch (error) {

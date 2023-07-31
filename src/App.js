@@ -32,7 +32,7 @@ class App extends Component {
       scrWidth: window.innerWidth,
       showLaunch: true,
       daily: false,
-      dailyPuzzleCompleted: false,
+      dailySolvedArray: [],
       puzzleStreak: "0,01-01-2001",
       showGame3: false,
       showGame4: false,
@@ -54,12 +54,30 @@ class App extends Component {
     const puzzlesObj = getPuzzles(dateToday);
     this.setState({puzzlesObj: puzzlesObj});
 
-    try {
-      window.localStorage.setItem(KEY_DailySolvedArray, JSON.stringify([]));
-    } catch (error) {
-      window.alert('window.localStorage error: ' + error.message);
+    let needToClearDailyArray = false;
+    const openedStr = window.localStorage.getItem(KEY_LastOpenedDate);
+
+    if (openedStr !== null) {
+      if (dateToday !== openedStr) {
+        needToClearDailyArray = true;
+      }
     }
+
+    if(needToClearDailyArray){
+      try {
+        window.localStorage.setItem(KEY_DailySolvedArray, JSON.stringify([]));
+      } catch (error) {
+        window.alert('window.localStorage error: ' + error.message);
+      }
+      try {
+        window.localStorage.setItem(KEY_LastOpenedDate, dateToday);
+      } catch (error) {
+        window.alert('window.localStorage error: ' + error.message);
+      }
+    }
+
     this.updatePuzzleStreak();
+    this.updateDailySolvedArray();
   }
 
   updatePuzzleStreak(){
@@ -69,6 +87,19 @@ class App extends Component {
     }else{
       try {
         window.localStorage.setItem(KEY_PuzzleStreakDays, '0,01-01-2001');
+      } catch (error) {
+        window.alert('window.localStorage error: ' + error.message);
+      }
+    }
+  }
+
+  updateDailySolvedArray(){
+    const solvedArray = window.localStorage.getItem(KEY_DailySolvedArray);
+    if (solvedArray !== null) {
+      this.setState({dailySolvedArray: JSON.parse(solvedArray)});
+    }else{
+      try {
+        window.localStorage.setItem(KEY_DailySolvedArray, JSON.stringify([]));
       } catch (error) {
         window.alert('window.localStorage error: ' + error.message);
       }
@@ -87,6 +118,7 @@ class App extends Component {
 
   showLaunch(){
     this.updatePuzzleStreak();
+    this.updateDailySolvedArray();
     this.setState({ showLaunch: true, title: "" });
     setTimeout(() => {
       this.setState({showGame3: false, showGame4: false, showGame5: false});
@@ -98,6 +130,7 @@ class App extends Component {
       switch (which) {
         case "Home":
           this.updatePuzzleStreak();
+          this.updateDailySolvedArray();
           this.toggleMenu(true);
           this.setState({ showLaunch: true, title: "" });
           setTimeout(() => {
@@ -178,7 +211,7 @@ console.log("minutesSinceVisible: " + minutesSinceVisible);
         if (dateToday !== openedStr) {
           launchText = getLaunchText(dateToday);
           const puzzlesObj = getPuzzles(dateToday);
-          this.setState({puzzlesObj: puzzlesObj, dailyPuzzleCompleted: false});
+          this.setState({puzzlesObj: puzzlesObj});//, dailyPuzzleCompleted: false
         }
       }
       try {
@@ -279,6 +312,7 @@ console.log("minutesSinceVisible: " + minutesSinceVisible);
             introText={launchText}
             dateToday={prettyDate}
             puzzleStreak={this.state.puzzleStreak}
+            dailySolvedArray={this.state.dailySolvedArray}
             requestModalClose={(which, open, startingGame) => { this.toggleModal(which, open, startingGame) }}
             startGame={(which, daily) => { this.startGame(which, daily) }}
             requestMenuClose={() => { this.closeMenu()}}

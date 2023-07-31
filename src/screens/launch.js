@@ -8,6 +8,9 @@ import MenuImage from '../images/fragmental4.png';
 import SmallPuzzle from '../images/small_puzzle.png';
 import MediumPuzzle from '../images/medium_puzzle.png';
 import LargePuzzle from '../images/large_puzzle.png';
+import SmallPuzzleDark from '../images/small_puzzle_dark.png';
+import MediumPuzzleDark from '../images/medium_puzzle_dark.png';
+import LargePuzzleDark from '../images/large_puzzle_dark.png';
 const scrHeight = config.scrHeight;
 const isPhone = config.isPhone;
 
@@ -22,19 +25,8 @@ class Launch extends Component {
     };
   }
   componentDidMount() {
-    // AsyncStorage.getItem(KEY_ModePref).then((modePref) => {
-    //   if (modePref !== null) {
-    //     const modePrefBool = (modePref == 'true')?true:false;
-    //     this.setState({ darkModeEnabled: modePrefBool});
-    //   }else{
-    //     try {
-    //         AsyncStorage.setItem(KEY_ModePref, 'false');
-    //     } catch (error) {
-    //         window.alert('AsyncStorage error: ' + error.message);
-    //     }
-    //   }
-    // }).done();
   }
+
   closeSelf(){
     this.props.requestModalClose("Home", false, true);
   }
@@ -52,12 +44,17 @@ class Launch extends Component {
   }
 
   render() {
-    const { isModalVisible, dateToday, introText, puzzleStreak } = this.props;
-    // const date = formatDate(dateToday, "EEEE, MMM d");
-
+    const { isModalVisible, dateToday, introText, puzzleStreak, dailySolvedArray } = this.props;
     const dailyPuzzlesText = "Daily Puzzles";
     const playText = "Play";
     const numPuzzStreakDays = puzzleStreak.split(",")[0];
+    const smallDone = dailySolvedArray.includes(3)?true:false;
+    const smallImage = smallDone?SmallPuzzleDark:SmallPuzzle;
+    const mediumDone = dailySolvedArray.includes(4)?true:false;
+    const mediumImage = mediumDone?MediumPuzzleDark:MediumPuzzle;
+    const largeDone = dailySolvedArray.includes(5)?true:false;
+    const largeImage = largeDone?LargePuzzleDark:LargePuzzle;
+    const allDone = smallDone && mediumDone && largeDone?true:false;
 
     return(
       <AnimatePresence>
@@ -76,7 +73,7 @@ class Launch extends Component {
             </div>
             <div style={{...launch_styles.modalBody, justifyContent: isPhone?"flex-start":"center"}}>
               <div style={{...launch_styles.intro_container}}>
-                <div style={launch_styles.title}>
+              <div style={{...launch_styles.title, color: colors.text_white}}>
                   {dateToday}
                 </div>
                 <div style={{...launch_styles.text, marginLeft: 15}}>
@@ -84,8 +81,8 @@ class Launch extends Component {
                 </div>
               </div>
               <div style={launch_styles.labelContainer}>
-                <div style={launch_styles.labelBackground}>
-                  <div style={launch_styles.title}>
+                <div style={{...launch_styles.labelBackground, borderColor: allDone?colors.gray_4:colors.light_blue_gray}}>
+                  <div style={{...launch_styles.title, color: allDone?colors.gray_4:colors.text_white}}>
                     {dailyPuzzlesText}
                   </div>
                 </div>
@@ -106,35 +103,33 @@ class Launch extends Component {
                 </div>
               }
           </div>
-
               </div>
-              <div style={{...launch_styles.button_container}}>
-                {/* <div style={{...launch_styles.launchButton, marginTop: 10, marginBottom: 10, backgroundColor: colors.dark_green, borderRadius: "15% 0 0 15%"}} onClick={() => this.launchPuzzle(3, true)}> */}
-                <div style={{...launch_styles.launchButton, margin: 10, backgroundColor: colors.dark_green, borderRadius: 15}} onClick={() => this.launchPuzzle(3, true)}>
-                  <img src={SmallPuzzle} alt={"Small Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/22}}/>
+              <div style={{...launch_styles.button_container, backgroundColor: allDone?colors.gray_4:colors.gray_3}}>
+                <div style={{...launch_styles.launchButton, backgroundColor: smallDone?colors.very_dark_green:colors.dark_green}} onClick={() => this.launchPuzzle(3, true)}>
+                  <img src={smallImage} alt={"Small Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/22}}/>
                 </div>
-                <div style={{...launch_styles.launchButton, margin: 10, backgroundColor: colors.dark_blue, borderRadius: 15}} onClick={() => this.launchPuzzle(4, true)}>
-                  <img src={MediumPuzzle} alt={"Medium Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/18}}/>
+                <div style={{...launch_styles.launchButton, backgroundColor: mediumDone?colors.very_dark_blue:colors.dark_blue}} onClick={() => this.launchPuzzle(4, true)}>
+                  <img src={mediumImage} alt={"Medium Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/18}}/>
                 </div>
-                <div style={{...launch_styles.launchButton, margin: 10, backgroundColor: colors.dark_red, borderRadius: 15}} onClick={() => this.launchPuzzle(5, true)}>
-                  <img src={LargePuzzle} alt={"Large Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/15}}/>
+                <div style={{...launch_styles.launchButton, backgroundColor: largeDone?colors.darker_red:colors.dark_red}} onClick={() => this.launchPuzzle(5, true)}>
+                  <img src={largeImage} alt={"Large Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/15}}/>
                 </div>
               </div>
               <div style={launch_styles.labelContainer}>
-                <div style={launch_styles.labelBackground}>
-                  <div style={launch_styles.title}>
+                <div style={{...launch_styles.labelBackground, borderColor: colors.light_blue_gray}}>
+                  <div style={{...launch_styles.title, color: colors.text_white}}>
                     {playText}
                   </div>
                 </div>
               </div>
-              <div style={{...launch_styles.button_container}}>
-                <div style={{...launch_styles.launchButton, margin: 10, backgroundColor: colors.dark_green, borderRadius: 15}} onClick={() => this.launchPuzzle(3, false)}>
+              <div style={{...launch_styles.button_container, backgroundColor: colors.gray_3}}>
+                <div style={{...launch_styles.launchButton, backgroundColor: colors.dark_green}} onClick={() => this.launchPuzzle(3, false)}>
                   <img src={SmallPuzzle} alt={"Small Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/22}}/>
                 </div>
-                <div style={{...launch_styles.launchButton, margin: 10, backgroundColor: colors.dark_blue, borderRadius: 15}} onClick={() => this.launchPuzzle(4, false)}>
+                <div style={{...launch_styles.launchButton, backgroundColor: colors.dark_blue}} onClick={() => this.launchPuzzle(4, false)}>
                   <img src={MediumPuzzle} alt={"Medium Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/18}}/>
                 </div>
-                <div style={{...launch_styles.launchButton, margin: 10, backgroundColor: colors.dark_red, borderRadius: 15}} onClick={() => this.launchPuzzle(5, false)}>
+                <div style={{...launch_styles.launchButton, backgroundColor: colors.dark_red}} onClick={() => this.launchPuzzle(5, false)}>
                   <img src={LargePuzzle} alt={"Large Puzzle"} style={{boxShadow: `4px 4px 16px ${colors.off_black}`, height: config.scrHeight/15}}/>
                 </div>
               </div>

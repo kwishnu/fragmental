@@ -84,7 +84,6 @@ button_container: {
   justifyContent: "center",
   alignItems: "center",
   alignSelf: 'stretch',
-  backgroundColor: colors.gray_3,
   padding: 20,
   borderRadius: 20,
   marginBottom: 20,
@@ -97,7 +96,9 @@ launchButton: {
   justifyContent: "center",
   alignItems: "center",
   padding: 20,
+  margin: 10,
   marginBottom: 15,
+  borderRadius: 15,
   boxShadow: `4px 8px 12px ${colors.gray_4}`,
 },
 labelContainer: {
@@ -113,7 +114,6 @@ labelBackground: {
   justifyContent: "center",
   alignItems: "center",
   backgroundColor: colors.blue_gray,
-  borderColor: colors.light_blue_gray, 
   borderWidth: 2, 
   borderStyle: 'solid',
   borderRadius: 15,
@@ -170,7 +170,6 @@ title: {
   fontSize: config.isPC?convertFont(24):convertFont(22),
   fontFamily: "Acme",
   userSelect: 'none',
-  color: colors.text_white
 },
 text: {
   fontSize: config.isPC?convertFont(18):convertFont(16),
