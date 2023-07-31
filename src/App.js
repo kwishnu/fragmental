@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid';
 import formatDate from 'date-fns/format';
 import { differenceInMinutes } from 'date-fns';
 import colors from './config/colors';
+import config from './config/config';
 import Menu from './components/Menu.js';
 import Header from './components/Header.js';
 import GameBoard from './components/GameBoard';
@@ -18,6 +19,7 @@ const KEY_LastOpenedDate = 'lastOpenedKey';
 const KEY_LastVisibleTime = 'lastVisibleTime';
 const KEY_PuzzleStreakDays = 'puzzleStreakKey';
 const KEY_DailySolvedArray = 'dailySolvedKey';
+const isPC = config.isPC;
 let dateToday = "";
 let prettyDate = "";
 let launchText = "";
@@ -30,6 +32,8 @@ class App extends Component {
       deviceType: window.innerWidth > 1000?"pc":window.innerHeight/window.innerWidth > 1.77?"phone":"tablet",
       scrHeight: window.innerHeight,
       scrWidth: window.innerWidth,
+      widthLeftOrRight: window.innerWidth > 1000?(window.innerWidth - window.innerHeight * 9/16)/2:window.innerHeight/window.innerWidth > 1.77?0:(window.innerWidth - window.innerHeight * 9/16)/2,
+
       showLaunch: true,
       daily: false,
       dailySolvedArray: [],
@@ -78,6 +82,20 @@ class App extends Component {
 
     this.updatePuzzleStreak();
     this.updateDailySolvedArray();
+
+    if(isPC){
+      window.addEventListener("resize", this.updateHeightAndWidth);
+    }
+  }
+
+  updateHeightAndWidth = (m) => {
+    const wlor = window.innerWidth > 1000?(window.innerWidth - window.innerHeight * 9/16)/2:window.innerHeight/window.innerWidth > 1.77?0:(window.innerWidth - window.innerHeight * 9/16)/2
+    this.setState({
+      widthLeftOrRight: wlor,
+      scrHeight: window.innerHeight,
+      scrWidth: window.innerWidth,
+      deviceType: window.innerWidth > 1000?"pc":window.innerHeight/window.innerWidth > 1.77?"phone":"tablet",
+    });
   }
 
   updatePuzzleStreak(){
@@ -157,7 +175,6 @@ class App extends Component {
         showHelpModal: false,
         showSupportModal: false,
         showEndGameModal: false,
-        // showLaunch: false,
       });
 
     }
@@ -194,10 +211,6 @@ class App extends Component {
     if (visible) {
       const currentTime = new Date();
       const minutesSinceVisible = differenceInMinutes(currentTime, new Date(this.state.lastVisibleTime));
-console.log("currentTime: " + currentTime);
-console.log("this.state.lastVisibleTime: " + this.state.lastVisibleTime);
-console.log("new Date(this.state.lastVisibleTime: " + new Date(this.state.lastVisibleTime));
-console.log("minutesSinceVisible: " + minutesSinceVisible);
       if (!this.state.visible && minutesSinceVisible >= 15) {
         window.location.reload(); // Reload the page
       }
@@ -257,11 +270,11 @@ console.log("minutesSinceVisible: " + minutesSinceVisible);
             title={this.state.title}
           />
           <div>
-            <ScreenOrientationReact options={orientationMessageOptions}/>
+        <ScreenOrientationReact options={orientationMessageOptions}/>
           </div>
             <div 
               id="appLeftBox"
-              style={{ ...styles.adBox, backgroundColor: colors.gray_3, borderRightColor: colors.off_black, left: 0 }}
+              style={{ ...styles.adBox, width: this.state.widthLeftOrRight, backgroundColor: colors.gray_3, borderRightColor: colors.off_black, left: 0 }}
             />
             {this.state.showGame3 &&
               <GameBoard 
@@ -304,7 +317,7 @@ console.log("minutesSinceVisible: " + minutesSinceVisible);
                   }
             <div 
               id="appRightBox"
-              style={{ ...styles.adBox, backgroundColor:colors.gray_3, borderRightColor: colors.off_black, right: 0 }}
+              style={{ ...styles.adBox, width: this.state.widthLeftOrRight, backgroundColor:colors.gray_3, borderRightColor: colors.off_black, right: 0 }}
             />
           </div>
           <Launch
