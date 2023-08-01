@@ -33,7 +33,6 @@ class App extends Component {
       scrHeight: window.innerHeight,
       scrWidth: window.innerWidth,
       widthLeftOrRight: window.innerWidth > 1000?(window.innerWidth - window.innerHeight * 9/16)/2:window.innerHeight/window.innerWidth > 1.77?0:(window.innerWidth - window.innerHeight * 9/16)/2,
-
       showLaunch: true,
       daily: false,
       dailySolvedArray: [],
@@ -64,6 +63,12 @@ class App extends Component {
     if (openedStr !== null) {
       if (dateToday !== openedStr) {
         needToClearDailyArray = true;
+      }
+    }else{
+      try {
+        window.localStorage.setItem(KEY_LastOpenedDate, dateToday);
+      } catch (error) {
+        window.alert('window.localStorage error: ' + error.message);
       }
     }
 
@@ -215,23 +220,23 @@ class App extends Component {
         window.location.reload(); // Reload the page
       }
 
-      this.setState({ visible: true, lastVisibleTime: currentTime });
-      localStorage.setItem(KEY_LastVisibleTime, currentTime);
-      dateToday = formatDate(new Date(), "MM-dd-yyyy");
-      prettyDate = formatDate(new Date(), "EEEE, MMMM d");
-      const openedStr = window.localStorage.getItem(KEY_LastOpenedDate);
-      if (openedStr !== null) {
-        if (dateToday !== openedStr) {
-          launchText = getLaunchText(dateToday);
-          const puzzlesObj = getPuzzles(dateToday);
-          this.setState({puzzlesObj: puzzlesObj});//, dailyPuzzleCompleted: false
-        }
-      }
-      try {
-        window.localStorage.setItem(KEY_LastOpenedDate, dateToday);
-      } catch (error) {
-        window.alert('window.localStorage error: ' + error.message);
-      }
+      // this.setState({ visible: true, lastVisibleTime: currentTime });
+      // localStorage.setItem(KEY_LastVisibleTime, currentTime);
+      // dateToday = formatDate(new Date(), "MM-dd-yyyy");
+      // prettyDate = formatDate(new Date(), "EEEE, MMMM d");
+      // const openedStr = window.localStorage.getItem(KEY_LastOpenedDate);
+      // if (openedStr !== null) {
+      //   if (dateToday !== openedStr) {
+      //     launchText = getLaunchText(dateToday);
+      //     const puzzlesObj = getPuzzles(dateToday);
+      //     this.setState({puzzlesObj: puzzlesObj});//, dailyPuzzleCompleted: false
+      //   }
+      // }
+      // try {
+      //   window.localStorage.setItem(KEY_LastOpenedDate, dateToday);
+      // } catch (error) {
+      //   window.alert('window.localStorage error: ' + error.message);
+      // }
     }else{
       this.setState({ visible: false });
     }
