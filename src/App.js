@@ -216,6 +216,7 @@ class App extends Component {
     if (visible) {
       const currentTime = new Date();
       const minutesSinceVisible = differenceInMinutes(currentTime, new Date(this.state.lastVisibleTime));
+      console.log("minutesSinceVisible: " + minutesSinceVisible);
       if (!this.state.visible && minutesSinceVisible >= 15) {
         window.location.reload(); // Reload the page
       }
