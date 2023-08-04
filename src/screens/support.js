@@ -114,7 +114,7 @@ class Support extends Component {
                 </a><span style={{...support_styles.text_small, color: darkModeEnabled ? colors.off_white:colors.off_black}}>{", and our "}</span>
                 <a
                   style={{...support_styles.link_text_small, color: darkModeEnabled ? colors.bright_green:colors.dark_blue}}
-                  href={'https://kwishnu.github.io/ravl_privacy_policy.html'}
+                  href={'https://kwishnu.github.io/fragmental_privacy_policy.html'}
                 >
                   {"Privacy Policy"}
                 </a><span style={{...support_styles.text_small, color: darkModeEnabled ? colors.off_white:colors.off_black}}>{" apply."}</span></div>
