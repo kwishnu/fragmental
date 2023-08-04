@@ -9,14 +9,6 @@ import colors from '../config/colors';
 import config from '../config/config';
 import TileSet from '../components/TileSet';
 import CrosswordTile from '../components/CrosswordTile';
-// import words3 from '../data/3letter.js';
-// import words4 from '../data/4letter.js';
-// import words5 from '../data/5letter.js';
-// import words6 from '../data/6letter.js';
-// import words7 from '../data/7letter.js';
-// import words8 from '../data/8letter.js';
-// import words9 from '../data/9letter.js';
-// import words10 from '../data/10letter.js';
 import { 
   generateArray, 
   getFragments, 
@@ -78,8 +70,9 @@ class GameBoard extends Component {
  init(){
   this.setState({ loading: true });
   const size = this.props.count;
-  let tHeight = (scrHeight * 9/16)/13;
-  tHeight = tHeight >= 62?62:tHeight;
+  let tHeight = (scrHeight * 9/16)/12;
+  let tWidth = scrWidth /12;
+  tHeight = tHeight > tWidth? tWidth:tHeight;
 
   if(!this.props.daily){
     setTimeout(() => {
