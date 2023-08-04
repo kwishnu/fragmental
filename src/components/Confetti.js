@@ -11,7 +11,7 @@ const parameters = {
 
 function Confetti() {
     return <>
-    <ConfettiExplosion {...parameters} />
+      <ConfettiExplosion {...parameters} />
     </>;
 }
 

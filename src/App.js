@@ -11,14 +11,13 @@ import Header from './components/Header.js';
 import GameBoard from './components/GameBoard';
 import Launch from "./screens/launch";
 import Help from "./screens/help";
-import Settings from "./screens/settings";
 import Support from "./screens/support";
 import styles from './styles/appStyles.js';
 import {getLaunchText, getPuzzles} from './data/dataHelper';
-const KEY_LastOpenedDate = 'lastOpenedKey';
-const KEY_LastVisibleTime = 'lastVisibleTime';
-const KEY_PuzzleStreakDays = 'puzzleStreakKey';
-const KEY_DailySolvedArray = 'dailySolvedKey';
+const KEY_LastOpenedDate = 'fmLastOpenedKey';
+const KEY_LastVisibleTime = 'fmLastVisibleTime';
+const KEY_PuzzleStreakDays = 'fmPuzzleStreakKey';
+const KEY_DailySolvedArray = 'fmDailySolvedKey';
 const isPC = config.isPC;
 let dateToday = "";
 let prettyDate = "";
@@ -90,6 +89,12 @@ class App extends Component {
 
     if(isPC){
       window.addEventListener("resize", this.updateHeightAndWidth);
+    }
+  }
+
+  componentWillUnmount(){
+    if(isPC){
+      window.removeEventListener("resize", this.updateHeightAndWidth);
     }
   }
 
@@ -336,12 +341,6 @@ class App extends Component {
             startGame={(which, daily) => { this.startGame(which, daily) }}
             requestMenuClose={() => { this.closeMenu()}}
             // darkModeEnabled={this.state.darkModeEnabled}
-          />
-          <Settings
-            isModalVisible={this.state.showSettingsModal}
-            requestModalClose={() => { this.toggleModal(null, false) }}
-            sendValueToGame={(val) => { this.updateSettingsValue(val) }}
-            navigation={this.props.navigation}
           />
           <Help
             isModalVisible={this.state.showHelpModal}

@@ -35,9 +35,9 @@ const delays = [Math.random(), Math.random(), Math.random(), Math.random(), Math
 const shadow = `3px 3px 8px ${colors.off_black}`;
 const homeImage = require("../images/home.png");
 const nextImage = require("../images/arrow_forward.png");
-const KEY_PuzzleStreakDays = 'puzzleStreakKey';
-const KEY_DailySolvedArray = 'dailySolvedKey';
-const KEY_PlayedFirstGame = 'playedGameKey';
+const KEY_PuzzleStreakDays = 'fmPuzzleStreakKey';
+const KEY_DailySolvedArray = 'fmDailySolvedKey';
+const KEY_PlayedFirstGame = 'fmPlayedGameKey';
 const toastParams = {
   position: toast.POSITION.BOTTOM_CENTER,
   autoClose: 2400,

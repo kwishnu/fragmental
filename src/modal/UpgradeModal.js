@@ -5,7 +5,7 @@ import config from '../config/config';
 import {convertFont} from '../config/config';
 import colors from '../config/colors';
 // import EmailInput from '../components/EmailInput';
-const KEY_HasUpgrade = 'hasUpgradeKey';
+const KEY_HasUpgrade = 'fmHasUpgradeKey';
 const scrWidth = config.scrWidth;
 const scrHeight = config.scrHeight;
 const pc = config.isPC;
